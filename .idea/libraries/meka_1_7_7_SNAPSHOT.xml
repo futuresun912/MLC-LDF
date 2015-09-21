@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="meka-1.7.7-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Public/meka-1.7.7/lib/meka-1.7.7-SNAPSHOT.jar!/" />
+      <root url="jar://$USER_HOME$/Public/meka-1.7.7/lib/mst.jar!/" />
+      <root url="jar://$USER_HOME$/Public/meka-1.7.7/lib/mulan.jar!/" />
+      <root url="jar://$USER_HOME$/Public/meka-1.7.7/lib/weka.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
