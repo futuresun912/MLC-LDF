@@ -30,7 +30,8 @@ public class PerformMLC {
         BCC testClassifier2 = new BCC();
         PACC testClassifier3 = new PACC();
         MULAN testClassifier4 = new MULAN();      // MLkNN
-        BRFS testClassifier5 = new BRFS();        // BR-FS
+//        BRFS testClassifier5 = new BRFS();        // BR-FS
+        BRFS_testT testClassifier5 = new BRFS_testT();        // BR-FS
         CCFS testClassifier6 = new CCFS();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
         PACCFS testClassifier8 = new PACCFS();        // PACC-FS
@@ -40,9 +41,9 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "emotions";
+        String filename = "genbase";
 
-        int i = 10;
+        int i = 7;
 
         switch (i) {
             case 0:
@@ -143,7 +144,7 @@ public class PerformMLC {
 
         // select a data set
         gOptions[0] = "-t";
-        gOptions[1] = "/home/pipi/workspace/data/" + arffname + ".arff";
+        gOptions[1] = "/home/sunlu/workspace/data/" + arffname + ".arff";
 
 //		// use n-fold cross validation // comment this snippet when using
 //		// splitting

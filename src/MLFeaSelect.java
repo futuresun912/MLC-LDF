@@ -24,7 +24,7 @@ public class MLFeaSelect {
     protected int L;
     protected int m_numThreads;
     protected boolean m_FlagRanker;
-    protected boolean[] m_Flag;
+    protected boolean[] m_FlagFS;
     protected double m_PercentFeature;
     protected int[][] m_Indices1;
     protected int[][] m_Indices2;
@@ -35,8 +35,8 @@ public class MLFeaSelect {
         this.L = L;
         this.m_numThreads = 1;
         this.m_FlagRanker = false;
-        this.m_Flag = new boolean[2];
-        Arrays.fill(this.m_Flag, false);
+        this.m_FlagFS = new boolean[2];
+        Arrays.fill(this.m_FlagFS, false);
         this.m_PercentFeature = 0.2;
         this.m_Indices1 = new int[L][];
         this.m_Indices2 = new int[L][];
@@ -108,7 +108,7 @@ public class MLFeaSelect {
         }
 
         System.out.println("*****************************************");
-        m_Flag[0] = true;
+        m_FlagFS[0] = true;
         m_FlagRanker = false;
         return outputD;
     }
@@ -165,7 +165,7 @@ public class MLFeaSelect {
 
         System.out.println(j + " " + (outputD.numAttributes() - L));
 
-        m_Flag[1] =true;
+        m_FlagFS[1] =true;
         return outputD;
     }
 
@@ -176,12 +176,17 @@ public class MLFeaSelect {
         int L = x.classIndex();
         int n = x.numAttributes();
         Instance[] outputX = new Instance[L];
+//        Instance[] tempX = new Instance[L];
 
         for (int j = 0; j < L; j ++) {
-            Instance tempX = (Instance)x.copy();
-            tempX.setDataset(null);     // Can it be removed?
 
-            if (m_Flag[0] == true && m_Flag[1] == true) {
+            Instance tempX = (Instance)x.copy();
+            tempX.setDataset(null);
+
+//            tempX[j] = (Instance)x.copy();
+//            tempX[j].setDataset(null);
+
+            if (m_FlagFS[0] && m_FlagFS[1]) {
                 // m_Indices <-- m_Indices1( m_Indices2 )
                 int[] indexTemp = new int[m_Indices2[j].length - L];
                 for (int k = 0; k < m_Indices2[j].length - L; k++)
@@ -189,17 +194,21 @@ public class MLFeaSelect {
                 m_Indices[j] = indexTemp.clone();
                 for (int k = 0; k < L; k++)
                     m_Indices[j] = A.append(m_Indices[j], k);
-            }
-            if (m_Flag[0] == true && m_Flag[1] ==false)
+            } else if (m_FlagFS[0]) {
                 m_Indices[j] = m_Indices1[j].clone();
-            if (m_Flag[0] == false && m_Flag[1] == true)
+            } else if (m_FlagFS[1]) {
                 m_Indices[j] = m_Indices2[j].clone();
+            }
 
-            outputX[j] = MLUtils.keepAttributesAt(tempX, m_Indices[j], n);
+            outputX[j] = MLUtils.keepAttributesAt(tempX, m_Indices[j], n);  // Consume too much time in this step
             outputX[j].setDataset(m_instHeader[j]);
+
+//            tempX[j] = MLUtils.keepAttributesAt(tempX[j], m_Indices[j], n);  // Consume too much time in this step
+//            tempX[j].setDataset(m_instHeader[j]);
         }
 
         return outputX;
+//        return tempX;
     }
 
 

@@ -1,3 +1,6 @@
+/**
+ * Created by sunlu on 10/15/15.
+ */
 
 import meka.classifiers.multilabel.BR;
 import meka.core.MLUtils;
@@ -9,7 +12,7 @@ import weka.core.Instances;
 /**
  * Created by sunlu on 9/15/15.
  */
-public class BRFS extends BR {
+public class BRFS_testT extends BR {
 
     protected Classifier m_MultiClassifiers[] = null;
     protected Instances m_InstancesTemplates[] = null;
@@ -34,8 +37,8 @@ public class BRFS extends BR {
         for(int j = 0; j < L; j++) {
             int[] pa = new int[]{};
 
-            // Second-stage feature selection
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
+//            // Second-stage feature selection
+//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
 
             // Remove labels except j-th
             Instances D_j = MLUtils.keepAttributesAt(new Instances(newD[j]), new int[]{j}, L);
@@ -52,8 +55,16 @@ public class BRFS extends BR {
 
         int L = x.classIndex();
         double y[] = new double[L];
-        Instance[] newX = mlFeaSelect.instTransform(x);
 
+        long start1 = System.nanoTime();
+//        long start1 = System.currentTimeMillis();
+        Instance[] newX = mlFeaSelect.instTransform(x);
+        long diff1 = System.nanoTime() - start1;
+        // record the processing time for transformation
+        pastTime1 = pastTime1 + (diff1/1000000000.0);
+        System.out.println("Single1: "+(diff1/1000000000.0)+" Total1: "+pastTime1);
+
+        long start2 = System.nanoTime();
         for (int j = 0; j < L; j++) {
             Instance x_j = (Instance)newX[j].copy();
             x_j.setDataset(null);
@@ -62,6 +73,9 @@ public class BRFS extends BR {
 
             y[j] = m_MultiClassifiers[j].distributionForInstance(x_j)[1];
         }
+        long diff2 = System.nanoTime() - start2;
+        pastTime2 = pastTime2 + (diff2/1000000000.0);
+        System.out.println("Single2: "+(diff2/1000000000.0)+" Total2: "+pastTime2+"\n");
 
         return y;
     }

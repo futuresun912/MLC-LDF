@@ -69,7 +69,7 @@ public class BCCFS extends BCC {
 
         // First-stage feature selection
         Instances[] newD = new Instances[L];
-        mlFeaSelect.setNumThreads(4);
+        mlFeaSelect.setNumThreads(8);
         mlFeaSelect.setPercentFeature(0.3);
         newD = mlFeaSelect.feaSelect1(D);
 
