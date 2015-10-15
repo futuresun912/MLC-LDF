@@ -34,13 +34,15 @@ public class PerformMLC {
         CCFS testClassifier6 = new CCFS();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
         PACCFS testClassifier8 = new PACCFS();        // PACC-FS
+        PACCFS_I testClassifier9 = new PACCFS_I();    // PACC-Filter
+        PACCFS_II testClassifier10 = new PACCFS_II();    // PACC-Wrapper
 
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
         String filename = "emotions";
 
-        int i = 6;
+        int i = 10;
 
         switch (i) {
             case 0:
@@ -78,6 +80,14 @@ public class PerformMLC {
             case 8:
                 setTestOptions(filename, "paccfs", 1, 0);
                 Evaluation.runExperiment(testClassifier8, options);
+                break;
+            case 9:
+                setTestOptions(filename, "paccfs-I", 1, 0);
+                Evaluation.runExperiment(testClassifier9, options);
+                break;
+            case 10:
+                setTestOptions(filename, "paccfs-II", 1, 0);
+                Evaluation.runExperiment(testClassifier10, options);
                 break;
         }
         // **************************************************************
@@ -133,7 +143,7 @@ public class PerformMLC {
 
         // select a data set
         gOptions[0] = "-t";
-        gOptions[1] = "/home/pipi/IdeaProjects/data/" + arffname + ".arff";
+        gOptions[1] = "/home/pipi/workspace/data/" + arffname + ".arff";
 
 //		// use n-fold cross validation // comment this snippet when using
 //		// splitting
