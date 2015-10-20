@@ -1,4 +1,3 @@
-
 import meka.classifiers.multilabel.BR;
 import meka.core.MLUtils;
 import weka.classifiers.AbstractClassifier;
@@ -7,14 +6,16 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 /**
- * Created by sunlu on 9/15/15.
+ * Created by sunlu on 10/20/15.
+ * Incorporate two-stage feature selection for BR.
+ * Directly use the original GreedyStepwise search function
+ * Incomplete
  */
-public class BRFS extends BR {
+public class BRFSpro extends BR {
 
     protected Classifier m_MultiClassifiers[] = null;
     protected Instances m_InstancesTemplates[] = null;
-    protected MLFeaSelect mlFeaSelect;
-
+    protected BRFeaSelect mlFeaSelect;
 
     public void buildClassifier(Instances D) throws Exception {
         testCapabilities(D);
@@ -24,11 +25,10 @@ public class BRFS extends BR {
         m_InstancesTemplates = new Instances[L];
 
         // First-stage feature selection
-        mlFeaSelect = new MLFeaSelect(L);
+        mlFeaSelect = new BRFeaSelect(L);
         mlFeaSelect.setNumThreads(8);
-        Instances[] newD = new Instances[L];
-        mlFeaSelect.setPercentFeature(0.3);
-        newD = mlFeaSelect.feaSelect1(D);
+//        mlFeaSelect.setPercentFeature(0.3);
+        Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         for(int j = 0; j < L; j++) {
             int[] pa = new int[]{};

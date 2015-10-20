@@ -28,10 +28,12 @@ public class PerformMLC {
         BR testClassifier0 = new BR();
         CC testClassifier1 = new CC();
 //        BCC testClassifier2 = new BCC();
-        BCCpro testClassifier2 = new BCCpro();
+        BCCpro testClassifier2 = new BCCpro();  // BCC built based on normalized MI matirx
         PACC testClassifier3 = new PACC();
         MULAN testClassifier4 = new MULAN();      // MLkNN
-        BRFS testClassifier5 = new BRFS();        // BR-FS
+//        BRFS testClassifier5 = new BRFS();        // BR-FS
+//        BRFSpro testClassifier5 = new BRFSpro();        // BR-FS with specialized FS class
+        BRFSpro2 testClassifier5 = new BRFSpro2();        // BR-FS with specialized FS class
 //        BRFS_testT testClassifier5 = new BRFS_testT();        // BR-FS
         CCFS testClassifier6 = new CCFS();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
@@ -42,9 +44,9 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "yeast";
+        String filename = "birds";
 
-        int i = 2;
+        int i = 5;
 
         switch (i) {
             case 0:

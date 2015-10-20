@@ -1,3 +1,8 @@
+/**
+ * Created by sunlu on 10/20/15.
+ * For BRFSpro
+ * Incomplete
+ */
 
 import meka.core.A;
 import meka.core.MLUtils;
@@ -6,21 +11,11 @@ import weka.classifiers.functions.Logistic;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
-import weka.gui.graphvisualizer.GraphEdge;
 
 import java.util.Arrays;
 
-/**
- * Created by sunlu on 9/14/15.
- * This class is designed to mine label-specific features by two-stage feature selection
- * It should implement the following methods:
- * 1. feaSelect1
- * 2. feaSelect2
- * 3. instTransform
- * 4. shiftIndices
- * 5. initialFS   /incomplete
- */
-public class MLFeaSelect {
+
+public class BRFeaSelect {
 
     protected int L;
     protected int m_numThreads;
@@ -32,7 +27,7 @@ public class MLFeaSelect {
     protected int[][] m_Indices;
     protected Instances[] m_instHeader;
 
-    public MLFeaSelect(int L) {
+    public BRFeaSelect(int L) {
         this.L = L;
         this.m_numThreads = 1;
         this.m_FlagRanker = false;
@@ -60,6 +55,7 @@ public class MLFeaSelect {
         Instances[] outputD = new Instances[L];
         AttributeSelection selector;
         CfsSubsetEval evaluator;
+//        GreedyCC searcher;
         GreedyStepwise searcher;
 //        InfoGainAttributeEval evaluator;
 //        Ranker searcher;
@@ -77,6 +73,8 @@ public class MLFeaSelect {
             // Initializing the feature selector
             selector = new AttributeSelection();
             evaluator = new CfsSubsetEval();
+//            searcher = new GreedyCC();
+//            searcher.m_pa = pa;
             searcher = new GreedyStepwise();
             searcher.setNumExecutionSlots(m_numThreads);
 
@@ -123,6 +121,7 @@ public class MLFeaSelect {
         D_j.setClassIndex(j);
         pa = A.append(pa, j);
         Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), pa, L);
+        tempD.setClassIndex(0);
 
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
@@ -142,9 +141,14 @@ public class MLFeaSelect {
 //        searcher.setLookupCacheSize(3);
 
         // GreedyStepwise search
-        GreedyCC searcher = new GreedyCC();
-        searcher.m_pa = pa;
+//        GreedyCC searcher = new GreedyCC();
+//        searcher.m_pa = pa;
+        GreedyStepwise searcher = new GreedyStepwise();
+//        BestFirst searcher = new BestFirst();
+//        searcher.setSearchTermination(5);
+//        searcher.setLookupCacheSize(3);
         searcher.setNumExecutionSlots(m_numThreads);
+        searcher.setSearchBackwards(true);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
