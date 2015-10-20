@@ -12,7 +12,7 @@ import meka.classifiers.multilabel.MULAN;
 
 public class PerformMLC {
 
-    static String n = "10";         // n-fold
+    static String n = "5";         // n-fold
     static String percent = "66.0"; // split percentage
     static String outputType = "2"; // 1, 2, 3, 4, 5, 6
     static String baseline = "Logistic"; // SMO, Logistic
@@ -27,11 +27,12 @@ public class PerformMLC {
 
         BR testClassifier0 = new BR();
         CC testClassifier1 = new CC();
-        BCC testClassifier2 = new BCC();
+//        BCC testClassifier2 = new BCC();
+        BCCpro testClassifier2 = new BCCpro();
         PACC testClassifier3 = new PACC();
         MULAN testClassifier4 = new MULAN();      // MLkNN
-//        BRFS testClassifier5 = new BRFS();        // BR-FS
-        BRFS_testT testClassifier5 = new BRFS_testT();        // BR-FS
+        BRFS testClassifier5 = new BRFS();        // BR-FS
+//        BRFS_testT testClassifier5 = new BRFS_testT();        // BR-FS
         CCFS testClassifier6 = new CCFS();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
         PACCFS testClassifier8 = new PACCFS();        // PACC-FS
@@ -41,9 +42,9 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "genbase";
+        String filename = "yeast";
 
-        int i = 7;
+        int i = 2;
 
         switch (i) {
             case 0:
