@@ -126,7 +126,7 @@ public class BRFeaSelect2 {
 //        WrapperSubsetEval evaluator = new WrapperSubsetEval();
 //        evaluator.setClassifier(new Logistic());
         evaluator.setClassifier(new Logistic());
-        evaluator.setFolds(10);
+        evaluator.setFolds(5);
 //        evaluator.setEvaluationMeasure(new SelectedTag(1,WrapperSubsetEval.TAGS_EVALUATION));
 
 //        // GreedyStepwise search

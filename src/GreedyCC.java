@@ -61,7 +61,7 @@ public class GreedyCC extends GreedyStepwise {
 
         //**************************************************************************************
         // set the parent labels as the initial selected features (restrict the searching space)
-        int[] paIndices = null;
+        int[] paIndices;
         if (m_pa.length > 0) {
             paIndices = Utils.sort(m_pa);
             m_starting = paIndices.clone();

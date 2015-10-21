@@ -2,21 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e536d856-5f39-4554-b8ad-4f27c0da9f08" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BRFS_wrapper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BRFeaSelect2.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/WrapperSubset.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/BRFS.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/BRFS.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/BRFSpro.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/BRFSpro.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/BRFSpro2.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/BRFSpro2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/BRFeaSelect.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/BRFeaSelect.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/GreedyCC$1.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/GreedyCC$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/CCFS.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/CCFS.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/GreedyCC.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/GreedyCC.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/MLFeaSelect.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/MLFeaSelect.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/PerformMLC.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/PerformMLC.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BRFS.java" afterPath="$PROJECT_DIR$/src/BRFS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BRFSpro.java" afterPath="$PROJECT_DIR$/src/BRFSpro.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BRFSpro2.java" afterPath="$PROJECT_DIR$/src/BRFSpro2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BRFeaSelect.java" afterPath="$PROJECT_DIR$/src/BRFeaSelect.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BRFeaSelect2.java" afterPath="$PROJECT_DIR$/src/BRFeaSelect2.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CCFS.java" afterPath="$PROJECT_DIR$/src/CCFS.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GreedyCC.java" afterPath="$PROJECT_DIR$/src/GreedyCC.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MLFeaSelect.java" afterPath="$PROJECT_DIR$/src/MLFeaSelect.java" />
@@ -62,7 +52,7 @@
             <entry file="file://$PROJECT_DIR$/src/PerformMLC.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="38" column="37" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+                  <caret line="49" column="17" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -70,11 +60,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="CCFS.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="CCFS.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/CCFS.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="36" column="34" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
+                <state vertical-scroll-proportion="0.8535565">
+                  <caret line="50" column="55" selection-start-line="50" selection-start-column="55" selection-end-line="50" selection-end-column="55" />
                   <folding />
                 </state>
               </provider>
@@ -84,20 +74,10 @@
             <entry file="file://$PROJECT_DIR$/src/MLFeaSelect.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="144" column="36" selection-start-line="144" selection-start-column="36" selection-end-line="144" selection-end-column="36" />
+                  <caret line="124" column="27" selection-start-line="124" selection-start-column="27" selection-end-line="124" selection-end-column="27" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="GreedyCC.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/GreedyCC.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6527197">
-                  <caret line="134" column="20" selection-start-line="134" selection-start-column="20" selection-end-line="134" selection-end-column="20" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -106,11 +86,11 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="BRFeaSelect2.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="BRFeaSelect2.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/BRFeaSelect2.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="140" column="44" selection-start-line="140" selection-start-column="44" selection-end-line="140" selection-end-column="44" />
+                <state vertical-scroll-proportion="0.43793583">
+                  <caret line="128" column="28" selection-start-line="128" selection-start-column="28" selection-end-line="128" selection-end-column="28" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                     <element signature="imports" expanded="true" />
@@ -123,18 +103,62 @@
             <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/attributeSelection/GreedyStepwise.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="801" column="0" selection-start-line="801" selection-start-column="0" selection-end-line="801" selection-end-column="0" />
+                  <caret line="937" column="3" selection-start-line="722" selection-start-column="2" selection-end-line="937" selection-end-column="3" />
                   <folding>
+                    <element signature="e#11274#11275#0" expanded="true" />
+                    <element signature="e#11311#11312#0" expanded="true" />
                     <element signature="e#22222#22240#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="WrapperSubset.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Range.java" pinned="false" current-in-tab="false">
+            <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/core/Range.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="311" column="17" selection-start-line="311" selection-start-column="17" selection-end-line="311" selection-end-column="17" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Evaluation.java" pinned="false" current-in-tab="false">
+            <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar!/src/main/java/meka/classifiers/multilabel/Evaluation.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="GreedyCC.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/GreedyCC.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Utils.java" pinned="false" current-in-tab="false">
+            <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/core/Utils.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="1556" column="33" selection-start-line="1556" selection-start-column="33" selection-end-line="1556" selection-end-column="33" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WrapperSubset.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/WrapperSubset.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.31241283">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="758" column="0" selection-start-line="758" selection-start-column="0" selection-end-line="758" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#33969#0" expanded="true" />
@@ -223,15 +247,16 @@
         <option value="$PROJECT_DIR$/src/newMLCFS/CCFS.java" />
         <option value="$PROJECT_DIR$/src/newMLCFS/Perform.java" />
         <option value="$PROJECT_DIR$/src/BRFeaSelect.java" />
-        <option value="$PROJECT_DIR$/src/MLFeaSelect.java" />
         <option value="$PROJECT_DIR$/src/BRFS_wrapper.java" />
         <option value="$PROJECT_DIR$/src/newMLCFS/WrapperSubset.java" />
         <option value="$PROJECT_DIR$/src/WrapperSubset.java" />
-        <option value="$PROJECT_DIR$/src/BRFeaSelect2.java" />
         <option value="$PROJECT_DIR$/src/BRFSpro2.java" />
+        <option value="$PROJECT_DIR$/src/GreedyForWrapper.java" />
+        <option value="$PROJECT_DIR$/src/GreedyCC.java" />
+        <option value="$PROJECT_DIR$/src/MLFeaSelect.java" />
+        <option value="$PROJECT_DIR$/src/BRFeaSelect2.java" />
         <option value="$PROJECT_DIR$/src/PerformMLC.java" />
         <option value="$PROJECT_DIR$/src/CCFS.java" />
-        <option value="$PROJECT_DIR$/src/GreedyCC.java" />
       </list>
     </option>
   </component>
@@ -594,8 +619,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1369863" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15013699" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.221875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15013699" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.221875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -650,7 +675,7 @@
           <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="42" />
+      <option name="time" value="49" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -867,14 +892,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/core/Range.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-7-oracle/src.zip!/java/util/List.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -931,38 +948,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/attributeSelection/AttributeSelection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3323442">
-          <caret line="609" column="0" selection-start-line="609" selection-start-column="0" selection-end-line="609" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/attributeSelection/GreedyStepwise.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="801" column="0" selection-start-line="801" selection-start-column="0" selection-end-line="801" selection-end-column="0" />
-          <folding>
-            <element signature="e#22222#22240#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BRFeaSelect2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="140" column="44" selection-start-line="140" selection-start-column="44" selection-end-line="140" selection-end-column="44" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/WrapperSubset.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31241283">
+        <state vertical-scroll-proportion="0.0">
           <caret line="758" column="0" selection-start-line="758" selection-start-column="0" selection-end-line="758" selection-end-column="0" />
           <folding>
             <element signature="e#0#33969#0" expanded="true" />
@@ -1008,6 +996,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/core/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1556" column="33" selection-start-line="1556" selection-start-column="33" selection-end-line="1556" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/core/Range.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="311" column="17" selection-start-line="311" selection-start-column="17" selection-end-line="311" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar!/src/main/java/meka/classifiers/multilabel/Evaluation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/attributeSelection/GreedyStepwise.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="937" column="3" selection-start-line="722" selection-start-column="2" selection-end-line="937" selection-end-column="3" />
+          <folding>
+            <element signature="e#11274#11275#0" expanded="true" />
+            <element signature="e#11311#11312#0" expanded="true" />
+            <element signature="e#22222#22240#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/attributeSelection/AttributeSelection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="609" column="0" selection-start-line="609" selection-start-column="0" selection-end-line="609" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/BRFSpro2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1019,10 +1051,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/GreedyCC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BRFeaSelect2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.43793583">
+          <caret line="128" column="28" selection-start-line="128" selection-start-column="28" selection-end-line="128" selection-end-column="28" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MLFeaSelect.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="124" column="27" selection-start-line="124" selection-start-column="27" selection-end-line="124" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/PerformMLC.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="37" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+          <caret line="49" column="17" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1031,26 +1094,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CCFS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="34" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MLFeaSelect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="144" column="36" selection-start-line="144" selection-start-column="36" selection-end-line="144" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GreedyCC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6527197">
-          <caret line="134" column="20" selection-start-line="134" selection-start-column="20" selection-end-line="134" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.8535565">
+          <caret line="50" column="55" selection-start-line="50" selection-start-column="55" selection-end-line="50" selection-end-column="55" />
           <folding />
         </state>
       </provider>

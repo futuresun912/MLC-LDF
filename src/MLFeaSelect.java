@@ -121,8 +121,11 @@ public class MLFeaSelect {
 
         // Remove all the labels except j and its parents
         D_j.setClassIndex(j);
+//        int[] paCopy = pa.clone();
         pa = A.append(pa, j);
         Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), pa, L);
+
+//        int xxx = tempD.classIndex();
 
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
@@ -130,22 +133,63 @@ public class MLFeaSelect {
         // Correlation-based evaluator
 //        CfsSubsetEval evaluator = new CfsSubsetEval();
 
+//        // Wrapper evaluator
+//        WrapperSubsetEval evaluator = new WrapperSubsetEval();
+//        evaluator.setClassifier(new Logistic());
+//        evaluator.setFolds(5);
+//
+//        // GreedyStepwise search
+//        GreedyCC searcher = new GreedyCC();
+//        searcher.m_pa = pa;
+//        searcher.setNumExecutionSlots(m_numThreads);
+////        searcher.setSearchBackwards(true);
+
+
         // Wrapper evaluator
-        WrapperSubsetEval evaluator = new WrapperSubsetEval();
+        WrapperSubset evaluator = new WrapperSubset();
         evaluator.setClassifier(new Logistic());
         evaluator.setFolds(5);
+
+//        // GreedyStepwise search
+//        GreedyStepwise searcher = new GreedyStepwise();
+////        searcher.m_pa = pa;
+//        searcher.setNumExecutionSlots(m_numThreads);
+//        searcher.setConservativeForwardSelection(true);
+
+//        // GreedyStepwise search
+//        GreedyForWrapper searcher = new GreedyForWrapper();
+////        searcher.m_pa = pa;
+//        searcher.setNumExecutionSlots(m_numThreads);
+//        searcher.setConservativeForwardSelection(true);
+
+        // GreedyStepwise search
+        GreedyCC searcher = new GreedyCC();
+        searcher.m_pa = pa;
+        searcher.setNumExecutionSlots(m_numThreads);
+        searcher.setConservativeForwardSelection(true);
+//        searcher.setSearchBackwards(true);
+
+
+        // generate the start set for searching
+        int[] paIndices = Utils.sort(pa);
+        int[] paTemp = Arrays.copyOf(paIndices, paIndices.length - 1);
+        for (int k = 0; k < paTemp.length; k ++)
+            paTemp[k] += 1;
+        String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
+        searcher.setStartSet(startSet);
+//        searcher.setStartSet("");
+//        System.out.println(startSet);
+
+
+//        searcher.setStartSet(Arrays.toString(paCopy));
+//        searcher.setSearchBackwards(true);
+
 
         // BestFirst search
 //        BestFirstFS searcher = new BestFirstFS();
 //        searcher.m_pa = pa;
 //        searcher.setSearchTermination(5);
 //        searcher.setLookupCacheSize(3);
-
-        // GreedyStepwise search
-        GreedyCC searcher = new GreedyCC();
-        searcher.m_pa = pa;
-        searcher.setNumExecutionSlots(m_numThreads);
-//        searcher.setSearchBackwards(true);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);

@@ -5,6 +5,7 @@ import meka.core.A;
 import weka.core.Instance;
 import weka.core.Instances;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -46,6 +47,9 @@ public class CCFS extends CC {
             nodes[j] = new CNode(j, null, pa);
             nodes[j].build(newD[j], m_Classifier);
             pa = A.append(pa, j);
+
+//            System.out.println(Arrays.toString(pa).replace("[", "\"").replace("]","\""));
+
         }
 
     }
