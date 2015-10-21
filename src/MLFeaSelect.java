@@ -6,7 +6,6 @@ import weka.classifiers.functions.Logistic;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
-import weka.gui.graphvisualizer.GraphEdge;
 
 import java.util.Arrays;
 
@@ -61,9 +60,6 @@ public class MLFeaSelect {
         AttributeSelection selector;
         CfsSubsetEval evaluator;
         GreedyStepwise searcher;
-//        InfoGainAttributeEval evaluator;
-//        Ranker searcher;
-//        int numFeature = (int) ((n - L)*m_PercentFeature);
 
         // Perform FS for each label
         for (int j = 0; j < L; j ++) {
@@ -80,17 +76,13 @@ public class MLFeaSelect {
             searcher = new GreedyStepwise();
             searcher.setNumExecutionSlots(m_numThreads);
 
-//            evaluator = new InfoGainAttributeEval();
-//            searcher = new Ranker();
-//            searcher.setNumToSelect(numFeature);
-
             selector.setEvaluator(evaluator);
             selector.setSearch(searcher);
 
             // Obtain the indices of selected features
             selector.SelectAttributes(D_j);
             m_Indices1[j] = selector.selectedAttributes();
-            // Sort the selected features for the Ranker based searcher for instTransform
+            // Sort the selected features for the Ranker
 //            if (searcher instanceof Ranker)
 //                m_FlagRanker = true;
             m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
@@ -121,56 +113,22 @@ public class MLFeaSelect {
 
         // Remove all the labels except j and its parents
         D_j.setClassIndex(j);
-//        int[] paCopy = pa.clone();
         pa = A.append(pa, j);
         Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), pa, L);
 
-//        int xxx = tempD.classIndex();
-
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
-
-        // Correlation-based evaluator
-//        CfsSubsetEval evaluator = new CfsSubsetEval();
-
-//        // Wrapper evaluator
-//        WrapperSubsetEval evaluator = new WrapperSubsetEval();
-//        evaluator.setClassifier(new Logistic());
-//        evaluator.setFolds(5);
-//
-//        // GreedyStepwise search
-//        GreedyCC searcher = new GreedyCC();
-//        searcher.m_pa = pa;
-//        searcher.setNumExecutionSlots(m_numThreads);
-////        searcher.setSearchBackwards(true);
-
 
         // Wrapper evaluator
         WrapperSubset evaluator = new WrapperSubset();
         evaluator.setClassifier(new Logistic());
         evaluator.setFolds(5);
 
-//        // GreedyStepwise search
-//        GreedyStepwise searcher = new GreedyStepwise();
-////        searcher.m_pa = pa;
-//        searcher.setNumExecutionSlots(m_numThreads);
-//        searcher.setConservativeForwardSelection(true);
-
-//        // GreedyStepwise search
-//        GreedyForWrapper searcher = new GreedyForWrapper();
-////        searcher.m_pa = pa;
-//        searcher.setNumExecutionSlots(m_numThreads);
-//        searcher.setConservativeForwardSelection(true);
-
- //        evaluator.setEvaluationMeasure(new SelectedTag(1,WrapperSubsetEval.TAGS_EVALUATION));
-
         // GreedyStepwise search
         GreedyCC searcher = new GreedyCC();
         searcher.m_pa = pa;
         searcher.setNumExecutionSlots(m_numThreads);
         searcher.setConservativeForwardSelection(true);
-//        searcher.setSearchBackwards(true);
-
 
         // generate the start set for searching
         int[] paIndices = Utils.sort(pa);
@@ -179,18 +137,6 @@ public class MLFeaSelect {
             paTemp[k] += 1;
         String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
         searcher.setStartSet(startSet);
-
-
-
-//        searcher.setStartSet(Arrays.toString(paCopy));
-//        searcher.setSearchBackwards(true);
-
-
-        // BestFirst search
-//        BestFirstFS searcher = new BestFirstFS();
-//        searcher.m_pa = pa;
-//        searcher.setSearchTermination(5);
-//        searcher.setLookupCacheSize(3);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
@@ -222,15 +168,11 @@ public class MLFeaSelect {
         int L = x.classIndex();
         int n = x.numAttributes();
         Instance[] outputX = new Instance[L];
-//        Instance[] tempX = new Instance[L];
 
         for (int j = 0; j < L; j ++) {
 
             Instance tempX = (Instance)x.copy();
             tempX.setDataset(null);
-
-//            tempX[j] = (Instance)x.copy();
-//            tempX[j].setDataset(null);
 
             if (m_FlagFS[0] && m_FlagFS[1]) {
                 // m_Indices <-- m_Indices1( m_Indices2 )
@@ -248,13 +190,9 @@ public class MLFeaSelect {
 
             outputX[j] = MLUtils.keepAttributesAt(tempX, m_Indices[j], n);  // Consume too much time in this step
             outputX[j].setDataset(m_instHeader[j]);
-
-//            tempX[j] = MLUtils.keepAttributesAt(tempX[j], m_Indices[j], n);  // Consume too much time in this step
-//            tempX[j].setDataset(m_instHeader[j]);
         }
 
         return outputX;
-//        return tempX;
     }
 
 
