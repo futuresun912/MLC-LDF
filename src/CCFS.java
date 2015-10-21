@@ -32,8 +32,8 @@ public class CCFS extends CC {
 
         Instances[] newD = new Instances[L];
         // First-stage feature selection
-        mlFeaSelect.setNumThreads(4);
-        mlFeaSelect.setPercentFeature(0.3);
+        mlFeaSelect.setNumThreads(8);
+//        mlFeaSelect.setPercentFeature(0.3);
         newD = mlFeaSelect.feaSelect1(D);
         nodes = new CNode[L];
         int[] pa = new int[]{};

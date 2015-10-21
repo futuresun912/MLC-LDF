@@ -27,7 +27,7 @@ public class BRFSpro extends BR {
         // First-stage feature selection
         mlFeaSelect = new BRFeaSelect(L);
         mlFeaSelect.setNumThreads(8);
-//        mlFeaSelect.setPercentFeature(0.3);
+        mlFeaSelect.setPercentFeature(0.2);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         for(int j = 0; j < L; j++) {

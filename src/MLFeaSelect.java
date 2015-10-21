@@ -145,6 +145,7 @@ public class MLFeaSelect {
         GreedyCC searcher = new GreedyCC();
         searcher.m_pa = pa;
         searcher.setNumExecutionSlots(m_numThreads);
+//        searcher.setSearchBackwards(true);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);

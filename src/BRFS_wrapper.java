@@ -1,4 +1,6 @@
-
+/**
+ * Created by sunlu on 10/21/15.
+ */
 import meka.classifiers.multilabel.BR;
 import meka.core.MLUtils;
 import weka.classifiers.AbstractClassifier;
@@ -7,15 +9,15 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 /**
- * Created by sunlu on 9/15/15.
- * There is something wrong in this class.
+ * Created by sunlu on 10/20/15.
+ * Incorporate two-stage feature selection for BR.
+ * Cfs + Wrapper
  */
-public class BRFS extends BR {
+public class BRFS_wrapper extends BR {
 
     protected Classifier m_MultiClassifiers[] = null;
     protected Instances m_InstancesTemplates[] = null;
-    protected MLFeaSelect mlFeaSelect;
-
+    protected BRFeaSelect2 mlFeaSelect;
 
     public void buildClassifier(Instances D) throws Exception {
         testCapabilities(D);
@@ -25,17 +27,17 @@ public class BRFS extends BR {
         m_InstancesTemplates = new Instances[L];
 
         // First-stage feature selection
-        mlFeaSelect = new MLFeaSelect(L);
+        mlFeaSelect = new BRFeaSelect2(L);
         mlFeaSelect.setNumThreads(8);
+
         Instances[] newD = new Instances[L];
-        mlFeaSelect.setPercentFeature(0.3);
-        newD = mlFeaSelect.feaSelect1(D);
 
         for(int j = 0; j < L; j++) {
+
             int[] pa = new int[]{};
 
-            // Second-stage feature selection
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
+            // Wrapper
+            newD[j] = mlFeaSelect.feaSelect2(new Instances(D), j, pa);
 
             // Remove labels except j-th
             Instances D_j = MLUtils.keepAttributesAt(new Instances(newD[j]), new int[]{j}, L);

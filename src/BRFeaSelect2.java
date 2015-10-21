@@ -1,7 +1,7 @@
 /**
- * Created by sunlu on 10/20/15.
+ * Created by sunlu on 10/21/15.
  * For BRFSpro
- * IG + Gfs
+ * Gfs + Wrapper
  */
 
 import meka.core.A;
@@ -10,14 +10,12 @@ import weka.attributeSelection.*;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Utils;
+import weka.core.*;
 
 import java.util.Arrays;
 
 
-public class BRFeaSelect {
+public class BRFeaSelect2 {
 
     protected int L;
     protected int m_numThreads;
@@ -29,7 +27,7 @@ public class BRFeaSelect {
     protected int[][] m_Indices;
     protected Instances[] m_instHeader;
 
-    public BRFeaSelect(int L) {
+    public BRFeaSelect2(int L) {
         this.L = L;
         this.m_numThreads = 1;
         this.m_FlagRanker = false;
@@ -56,13 +54,9 @@ public class BRFeaSelect {
         int n = D.numAttributes();
         Instances[] outputD = new Instances[L];
         AttributeSelection selector;
-//        CfsSubsetEval evaluator;
-////        GreedyCC searcher;
+        CfsSubsetEval evaluator;
 //        GreedyStepwise searcher;
 //        BestFirst searcher;
-        InfoGainAttributeEval evaluator;
-        Ranker searcher;
-        int numFeature = (int) ((n - L)*m_PercentFeature);
 
         // Perform FS for each label
         for (int j = 0; j < L; j ++) {
@@ -75,21 +69,16 @@ public class BRFeaSelect {
 
             // Initializing the feature selector
             selector = new AttributeSelection();
-//            evaluator = new CfsSubsetEval();
-////            searcher = new GreedyCC();
-////            searcher.m_pa = pa;
-//
-//            searcher = new GreedyStepwise();
-//            searcher.setNumExecutionSlots(m_numThreads);
+            evaluator = new CfsSubsetEval();
+
+            GreedyStepwise searcher = new GreedyStepwise();
+            searcher.setNumExecutionSlots(m_numThreads);
+//            searcher.setSearchBackwards(true);
+
 //            searcher = new BestFirst();
 //            searcher.setLookupCacheSize(10);
 //            searcher.setSearchTermination(5);
-
-//            searcher.setSearchBackwards(true);
-
-            evaluator = new InfoGainAttributeEval();
-            searcher = new Ranker();
-            searcher.setNumToSelect(numFeature);
+//            searcher.setDirection(new SelectedTag(0, BestFirst.TAGS_SELECTION));
 
             selector.setEvaluator(evaluator);
             selector.setSearch(searcher);
@@ -97,9 +86,6 @@ public class BRFeaSelect {
             // Obtain the indices of selected features
             selector.SelectAttributes(D_j);
             m_Indices1[j] = selector.selectedAttributes();
-            // Sort the selected features for the Ranker based searcher for instTransform
-            if (searcher instanceof Ranker)
-                m_FlagRanker = true;
             m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
 
             D.setClassIndex(0);
@@ -135,29 +121,29 @@ public class BRFeaSelect {
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
 
-        // Correlation-based evaluator
-        CfsSubsetEval evaluator = new CfsSubsetEval();
-
-//        // Wrapper evaluator
+        // Wrapper evaluator
+        WrapperSubset evaluator = new WrapperSubset();
 //        WrapperSubsetEval evaluator = new WrapperSubsetEval();
 //        evaluator.setClassifier(new Logistic());
-//        evaluator.setFolds(5);
+        evaluator.setClassifier(new Logistic());
+        evaluator.setFolds(10);
+//        evaluator.setEvaluationMeasure(new SelectedTag(1,WrapperSubsetEval.TAGS_EVALUATION));
 
-        // BestFirst search
-//        BestFirstFS searcher = new BestFirstFS();
-//        searcher.m_pa = pa;
-//        searcher.setSearchTermination(5);
-//        searcher.setLookupCacheSize(3);
-
-        // GreedyStepwise search
+//        // GreedyStepwise search
 //        GreedyCC searcher = new GreedyCC();
-//        searcher.m_pa = pa;
-//        GreedyStepwise searcher = new GreedyStepwise();
-        BestFirst searcher = new BestFirst();
-        searcher.setSearchTermination(5);
-        searcher.setLookupCacheSize(10);
+////        int[] paTemp = new int[]{-1};
+////        searcher.m_pa = paTemp;
 //        searcher.setNumExecutionSlots(m_numThreads);
 //        searcher.setSearchBackwards(true);
+
+        GreedyStepwise searcher = new GreedyStepwise();
+//        searcher.setSearchBackwards(true);
+        searcher.setNumExecutionSlots(m_numThreads);
+
+//        BestFirst searcher = new BestFirst();
+//        searcher.setLookupCacheSize(10);
+//        searcher.setSearchTermination(5);
+////        searcher.setDirection(new SelectedTag(0, BestFirst.TAGS_SELECTION));
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
@@ -165,22 +151,6 @@ public class BRFeaSelect {
         // Obtain the indices of selected features
         selector.SelectAttributes(tempD);
         m_Indices2[j] = selector.selectedAttributes();
-
-//        // prevent from removing all features
-//        if (m_Indices2[j].length == 1) {
-//            System.out.println(j);
-//            for (int k = 1; k < m_Indices1[j].length - L + 1; k++)
-//                m_Indices2[j] = A.append(m_Indices2[j], k);
-//            for (int k = 0; k < m_Indices2[j].length; k ++) {
-//                if (k != m_Indices2[j].length-1)
-//                    m_Indices2[j][k] += 1;
-//                else
-//                    m_Indices2[j][k] = 0;
-//            }
-//        }
-
-
-
         m_Indices2[j] = shiftIndices(m_Indices2[j], L, pa);
 
         D_j.setClassIndex(0);
