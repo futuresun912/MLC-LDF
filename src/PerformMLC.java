@@ -31,7 +31,7 @@ public class PerformMLC {
         BCCpro testClassifier2 = new BCCpro();  // BCC built based on normalized MI matirx
         PACC testClassifier3 = new PACC();
         MULAN testClassifier4 = new MULAN();      // MLkNN
-        BRFS testClassifier5 = new BRFS();        // BR-FS /something wrong here
+        BRFS testClassifier5 = new BRFS();        // BR-FS
 //        BRFSpro testClassifier5 = new BRFSpro();        // BR-FS (filter+Cfs)
 //        BRFSpro2 testClassifier5 = new BRFSpro2();        // BR-FS (Cfs+Wrapper)
 //        BRFS_wrapper testClassifier5 new BRFS_wrapper();  // BR-FS (Wrapper)
@@ -45,7 +45,7 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "birds";
+        String filename = "genbase";
 
         int i = 6;
 

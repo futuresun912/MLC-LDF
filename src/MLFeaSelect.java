@@ -162,6 +162,8 @@ public class MLFeaSelect {
 //        searcher.setNumExecutionSlots(m_numThreads);
 //        searcher.setConservativeForwardSelection(true);
 
+ //        evaluator.setEvaluationMeasure(new SelectedTag(1,WrapperSubsetEval.TAGS_EVALUATION));
+
         // GreedyStepwise search
         GreedyCC searcher = new GreedyCC();
         searcher.m_pa = pa;
@@ -177,8 +179,7 @@ public class MLFeaSelect {
             paTemp[k] += 1;
         String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
         searcher.setStartSet(startSet);
-//        searcher.setStartSet("");
-//        System.out.println(startSet);
+
 
 
 //        searcher.setStartSet(Arrays.toString(paCopy));
