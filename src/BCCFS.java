@@ -29,7 +29,9 @@ public class BCCFS extends BCC {
         int d = D.numAttributes() - L;
         mlFeaSelect = new MLFeaSelect(L);
 
-        double[][] CD = StatUtils.margDepMatrix(D, "Ibf");
+//        double[][] CD = StatUtils.margDepMatrix(D, "Ibf");
+        double[][] CD = StatUtilsPro.NormMargDep(D);
+
         CD = M.multiply(CD, -1); // because we want a *maximum* spanning tree
         if (getDebug())
             System.out.println("Make a graph ...");
@@ -68,10 +70,8 @@ public class BCCFS extends BCC {
             System.out.println("sequence: " + Arrays.toString(m_Chain));
 
         // First-stage feature selection
-        Instances[] newD = new Instances[L];
         mlFeaSelect.setNumThreads(8);
-        mlFeaSelect.setPercentFeature(0.3);
-        newD = mlFeaSelect.feaSelect1(D);
+        Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         nodes = new CNode[L];
         for (int j : m_Chain) {

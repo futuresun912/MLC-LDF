@@ -44,10 +44,6 @@ public class MLFeaSelect {
         this.m_instHeader = new Instances[L];
     }
 
-    protected void setPercentFeature(double fraction) throws Exception {
-        this.m_PercentFeature = fraction;
-    }
-
     protected void setNumThreads(int numThreads) throws Exception {
         this.m_numThreads = numThreads;
     }

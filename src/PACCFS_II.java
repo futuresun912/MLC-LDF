@@ -27,13 +27,13 @@ public class PACCFS_II extends CC {
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
-        mlFeaSelect.setPercentFeature(0.2);
-        mlFeaSelect.setNumThreads(4);
+        mlFeaSelect.setNumThreads(8);
 //        Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
+        polytree.setDepMode(false);
         int[][] pa = polytree.polyTree(D, null);
         m_Chain = polytree.getChainOrder();
 

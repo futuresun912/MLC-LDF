@@ -21,6 +21,7 @@ public class PACC extends CC {
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
+        polytree.setDepMode(false);
         int[][] pa = polytree.polyTree(D, null);
         m_Chain = polytree.getChainOrder();
 

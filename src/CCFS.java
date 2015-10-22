@@ -31,11 +31,9 @@ public class CCFS extends CC {
         }
         System.out.println(A.toString(m_Chain));
 
-        Instances[] newD = new Instances[L];
         // First-stage feature selection
         mlFeaSelect.setNumThreads(8);
-//        mlFeaSelect.setPercentFeature(0.3);
-        newD = mlFeaSelect.feaSelect1(D);
+        Instances[] newD = mlFeaSelect.feaSelect1(D);
         nodes = new CNode[L];
         int[] pa = new int[]{};
 
@@ -47,8 +45,6 @@ public class CCFS extends CC {
             nodes[j] = new CNode(j, null, pa);
             nodes[j].build(newD[j], m_Classifier);
             pa = A.append(pa, j);
-
-//            System.out.println(Arrays.toString(pa).replace("[", "\"").replace("]","\""));
 
         }
 

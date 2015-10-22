@@ -32,6 +32,7 @@ public class Polytree {
     private int L;
     protected int[] chainOrder;
     protected int numFolds = 5;
+    protected boolean depMode = true;  // true for conMI; false for margMI
 
     protected void setNumFolds(int n) throws Exception {
         this.numFolds = n;
@@ -40,6 +41,11 @@ public class Polytree {
     protected int[] getChainOrder() throws Exception {
         return chainOrder;
     }
+
+    protected void setDepMode(boolean mode) throws Exception {
+        this.depMode = mode;
+    }
+
 
     // Build a polytree on the tree
     protected int[][] polyTree(Instances D, Instances[] newD) throws Exception {
@@ -54,11 +60,16 @@ public class Polytree {
         Arrays.fill(visited, false);
         Arrays.fill(flagCB, false);
 
-        // Get the conditional mutual information matrix
-        if (D != null && newD == null)
-            CD = conDepMatrix(D);
-        if (D == null && newD != null)
-            CD = conDepMatrix(newD);
+        if (depMode) {
+            // Calculate the conditional MI matrix
+            if (newD == null)
+                CD = conDepMatrix(D);
+            if (newD != null)
+                CD = conDepMatrix(newD);
+        } else {
+            // Calculate the marginal normalized MI matrix
+            CD = StatUtilsPro.NormMargDep(D);
+        }
 
         // Build the tree skeleton
         int[][] paTree = skeleton(CD);
