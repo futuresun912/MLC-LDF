@@ -13,7 +13,7 @@ import meka.classifiers.multilabel.MULAN;
 public class PerformMLC {
 
     static String n = "10";         // n-fold
-    static String percent = "80.0"; // split percentage
+    static String percent = "66.0"; // split percentage
     static String outputType = "2"; // 1, 2, 3, 4, 5, 6
     static String baseline = "Logistic"; // SMO, Logistic
     static String[] gOptions = new String[12];  // general options
@@ -51,9 +51,9 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = arfflist[2];
+        String filename = arfflist[7];
 
-        int i = 5;
+        int i = 9;
 
         switch (i) {
             case 0:

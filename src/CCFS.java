@@ -18,6 +18,10 @@ public class CCFS extends CC {
 
     public void buildClassifier(Instances D) throws Exception {
         testCapabilities(D);
+
+        // Get the IR factor for Wrapper
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+
         int L = D.classIndex();
         m_R = new Random(m_S);
         mlFeaSelect = new MLFeaSelect(L);
@@ -39,9 +43,8 @@ public class CCFS extends CC {
 
 
         for (int j : m_Chain) {
-//            newD[j] = mlFeaSelect.feaSelect2(D, j, pa);
             // Second-stage feature selection
-//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
+            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa, IRfactor[j]);
             nodes[j] = new CNode(j, null, pa);
             nodes[j].build(newD[j], m_Classifier);
             pa = A.append(pa, j);

@@ -25,6 +25,9 @@ public class PACCFS_II extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
+        // Get the IR factor for Wrapper
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
         mlFeaSelect.setNumThreads(8);
@@ -41,7 +44,7 @@ public class PACCFS_II extends CC {
         Instances[] newD = new Instances[L];
         nodes = new CNode[L];
         for (int j : m_Chain) {
-//            newD[j] = mlFeaSelect.feaSelect2(D, j, pa[j]);
+            newD[j] = mlFeaSelect.feaSelect2(D, j, pa[j], IRfactor[j]);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

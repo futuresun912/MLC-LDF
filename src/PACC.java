@@ -22,17 +22,6 @@ public class PACC extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-        // Get the Imbalance ratio-related statistics
-        double[] statIR = StatUtilsPro.CalcIR(D);
-        double[] IR = Arrays.copyOfRange(statIR, 0, L);
-        double meanIR = statIR[L];
-        double varIR = statIR[L+1];
-        if (getDebug()) {
-            System.out.println("IR = "+ Arrays.toString(IR));
-            System.out.println("meanIR = " + meanIR);
-            System.out.println("varIR = " + varIR);
-        }
-
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);

@@ -78,7 +78,8 @@ public class StatUtilsPro extends StatUtils{
 
 
     // Calcualte the statistics (Imbalance ratio with its mean and variance) of the dataset
-    public static double[] CalcIR(Instances D) {
+    // Return the IR factor for balancing merits in Wrapper based Feature selection
+    public static double[] CalcIRFactor(Instances D) {
 
         int L = D.classIndex();
         int N = D.numInstances();
@@ -86,34 +87,29 @@ public class StatUtilsPro extends StatUtils{
         int[] countA = new int[L];        // count of positive instances
         double[] IR = new double[L];      // save the imbalance ratio
         double meanIR, varIR, CVIR;       // mean, variance and Coefficient of Variance of IR
-        double[] posRatio = new double[L]; // the ratio of positives over all instances
         double[] factor = new double[L];  // return the IR factor for Wrapper
-
 
         // get the count and ratio of positive instances for each label with the max count
         int maxA = countM[0][0];
         for (int j = 0; j < L; j ++) {
             countA[j] = countM[j][j];
-            posRatio[j] = (double)countA[j] / (double)N;
             if (maxA < countA[j])
                 maxA = countA[j];
         }
         for (int j = 0; j < L; j ++)
             if (countA[j] == 0)
                 countA[j] = maxA;
-        System.out.println("CA = "+Arrays.toString(countA));
+//        System.out.println(Arrays.toString(countA));
 //        System.out.println(maxA);
-        System.out.println(Arrays.toString(posRatio));
 
         // calculate the label-individual Imbalance Ratio array with its mean
         meanIR = 0.0;
         for (int j = 0; j < L; j++) {
             IR[j] = (double) maxA / (double) countA[j];
             meanIR += IR[j];
-//            output[j] = IR[j];
         }
         meanIR = meanIR / (double)L;
-        System.out.println(Arrays.toString(IR));
+//        System.out.println(Arrays.toString(IR));
 
         // calculate the variance of IR array and CVIR
         varIR = 0.0;
@@ -123,19 +119,12 @@ public class StatUtilsPro extends StatUtils{
 
         // compute the IR facter for balancing Wrapper's merit
         for (int j = 0; j < L; j ++) {
-            // posRatio
-//            double temp = Math.exp(Math.pow(meanIR,1)*CVIR/Math.pow((posRatio[j]+2),2));
-//            double temp = meanIR * CVIR / Math.pow(10, posRatio[j]);
             double temp = Math.exp(Math.pow(IR[j] * meanIR, 0.5) * CVIR);
-//            double temp = Math.exp(Math.log(IR[j] * meanIR) * CVIR);
             factor[j] = 2 * (temp - 1) / (temp + 1);
         }
 
-//        output[L+1] = varIR;
-//        output[L+1] = CVIR;
-        System.out.println("meanIR = "+meanIR);
-//        System.out.println("varIR = "+varIR);
-        System.out.println("CVIR = "+CVIR);
+//        System.out.println("meanIR = "+meanIR);
+//        System.out.println("CVIR = "+CVIR);
 
         return factor;
     }
