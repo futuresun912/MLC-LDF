@@ -24,15 +24,16 @@ public class BRFS extends BR {
         int L = D.classIndex();
 
         // Get the Imbalance ratio-related statistics
-        double[] statIR = StatUtilsPro.CalcIR(D);
-        double[] IR = Arrays.copyOfRange(statIR, 0, L);
-        double meanIR = statIR[L];
-        double CVIR = statIR[L+1];
-        if (getDebug()) {
-            System.out.println("IR = "+ Arrays.toString(IR));
-            System.out.println("meanIR = " + meanIR);
-            System.out.println("varIR = " + CVIR);
-        }
+        double[] IRfactor = StatUtilsPro.CalcIR(D);
+//        double[] statIR = StatUtilsPro.CalcIR(D);
+//        double[] IR = Arrays.copyOfRange(statIR, 0, L);
+//        double meanIR = statIR[L];
+//        double CVIR = statIR[L+1];
+//        if (getDebug()) {
+//            System.out.println("IR = "+ Arrays.toString(IR));
+//            System.out.println("meanIR = " + meanIR);
+//            System.out.println("varIR = " + CVIR);
+//        }
 
 
         m_MultiClassifiers = AbstractClassifier.makeCopies(m_Classifier, L);
@@ -44,23 +45,20 @@ public class BRFS extends BR {
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         for(int j = 0; j < L; j++) {
+
             int[] pa = new int[]{};
 
-            double et = Math.exp((IR[j]/Math.pow(meanIR, 0.5))*CVIR);
-//            System.out.println(et);
-
-            // f(t) = 1- e^(-t);
-//            double IRfactor = 0.5*(1 - (1 / et);
-
-            // f(t) = (e^t - 1) / (e^t + 1);
-            double IRfactor = 2 * (et - 1) / (et + 1);
-
-
-//            IRfactor = 2;
-            System.out.println(IRfactor);
+//            double et = Math.exp((IR[j]/Math.pow(meanIR, 0.5))*CVIR);
+            System.out.println(IRfactor[j]);
+//
+//            // f(t) = 1- e^(-t);
+////            double IRfactor = 0.5*(1 - (1 / et);
+//
+//            // f(t) = (e^t - 1) / (e^t + 1);
+//            double IRfactor = 2 * (et - 1) / (et + 1);
 
             // Second-stage feature selection
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa, IRfactor);
+            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa, IRfactor[j]);
 
             // Remove labels except j-th
             Instances D_j = MLUtils.keepAttributesAt(new Instances(newD[j]), new int[]{j}, L);

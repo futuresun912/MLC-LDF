@@ -16,12 +16,22 @@ public class PerformMLC {
     static String percent = "80.0"; // split percentage
     static String outputType = "2"; // 1, 2, 3, 4, 5, 6
     static String baseline = "Logistic"; // SMO, Logistic
-    static String arfflist[] = { "scene", "emotions", "flags", "yeast",
-            "birds", "genbase", "medical", "enron", "languagelog", "mediamill", "bibtex",
-            "Corel5k" };
-
     static String[] gOptions = new String[12];  // general options
     static String[] options;                    // specified options
+    static String arfflist[] = {
+            "scene",        // 0
+            "emotions",     // 1
+            "flags",        // 2
+            "yeast",        // 3
+            "birds",        // 4
+            "genbase",      // 5
+            "medical",      // 6
+            "enron",        // 7
+            "languagelog",  // 8
+            "mediamill",    // 9
+            "bibtex",       // 10
+            "Corel5k"       // 11
+    };
 
     public static void  main(String[] args) throws Exception {
 
@@ -41,7 +51,7 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "flags";
+        String filename = arfflist[2];
 
         int i = 5;
 
