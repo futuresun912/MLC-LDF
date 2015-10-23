@@ -46,11 +46,17 @@ public class BRFS extends BR {
         for(int j = 0; j < L; j++) {
             int[] pa = new int[]{};
 
-            double IRfactor =  (1 - (1 / Math.exp(IR[j] * CVIR / meanIR)));
-//            double IRfactor =  (1 - (1 / Math.exp(Math.pow(IR[j] * meanIR * CVIR, 0.5))));
-//            double IRfactor = 0.5 * (1 - (1 / Math.exp(500)));
+            double et = Math.exp((IR[j]/Math.pow(meanIR, 0.5))*CVIR);
+//            System.out.println(et);
 
-//            IRfactor = 0.5;
+            // f(t) = 1- e^(-t);
+//            double IRfactor = 0.5*(1 - (1 / et);
+
+            // f(t) = (e^t - 1) / (e^t + 1);
+            double IRfactor = 2 * (et - 1) / (et + 1);
+
+
+//            IRfactor = 2;
             System.out.println(IRfactor);
 
             // Second-stage feature selection

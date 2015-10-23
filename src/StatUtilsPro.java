@@ -81,16 +81,20 @@ public class StatUtilsPro extends StatUtils{
     public static double[] CalcIR(Instances D) {
 
         int L = D.classIndex();
+        int N = D.numInstances();
         int[][] countM = StatUtils.getApproxC(D);
         int[] countA = new int[L];
         double[] output = new double[L+2];
+//        double[] posRatio = new double[L];
 
-        // get the count of positive instances for each label with the max count
+        // get the count and ratio of positive instances for each label with the max count
         int maxA = countM[0][0];
         int indexMax = 0;
         for (int j = 0; j < L; j ++) {
 //            countA[j] = countM[j][j] == 0 ? 1 : countM[j][j];
             countA[j] = countM[j][j];
+//            posRatio[j] = (double)countA[j] / (double)N;
+//            output[j] = posRatio[j];
             if (maxA < countA[j]) {
                 maxA = countA[j];
                 indexMax = j;

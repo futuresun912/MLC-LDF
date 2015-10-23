@@ -4,15 +4,10 @@
     <list default="true" id="e536d856-5f39-4554-b8ad-4f27c0da9f08" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/BRFS.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/BRFS.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/PerformMLC.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/PerformMLC.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BCCFS.java" afterPath="$PROJECT_DIR$/src/BCCFS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/StatUtilsPro.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/StatUtilsPro.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BRFS.java" afterPath="$PROJECT_DIR$/src/BRFS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CCFS.java" afterPath="$PROJECT_DIR$/src/CCFS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MLFeaSelect.java" afterPath="$PROJECT_DIR$/src/MLFeaSelect.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PACCFS.java" afterPath="$PROJECT_DIR$/src/PACCFS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PACCFS_II.java" afterPath="$PROJECT_DIR$/src/PACCFS_II.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PerformMLC.java" afterPath="$PROJECT_DIR$/src/PerformMLC.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/StatUtilsPro.java" afterPath="$PROJECT_DIR$/src/StatUtilsPro.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/WrapperSubset.java" afterPath="$PROJECT_DIR$/src/WrapperSubset.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MLC-LDF.iws" />
@@ -52,8 +47,8 @@
           <file leaf-file-name="BRFS.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/BRFS.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.60923076">
-                  <caret line="53" column="29" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
+                <state vertical-scroll-proportion="0.6646154">
+                  <caret line="55" column="31" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
                   <folding />
                 </state>
               </provider>
@@ -63,7 +58,7 @@
             <entry file="file://$PROJECT_DIR$/src/StatUtilsPro.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="100" column="33" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="33" />
+                  <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -152,10 +147,10 @@
         <option value="$PROJECT_DIR$/src/CCFS.java" />
         <option value="$PROJECT_DIR$/src/PACCFS_II.java" />
         <option value="$PROJECT_DIR$/src/WrapperSubset.java" />
-        <option value="$PROJECT_DIR$/src/MLFeaSelect.java" />
         <option value="$PROJECT_DIR$/src/StatUtilsPro.java" />
-        <option value="$PROJECT_DIR$/src/BRFS.java" />
         <option value="$PROJECT_DIR$/src/PerformMLC.java" />
+        <option value="$PROJECT_DIR$/src/MLFeaSelect.java" />
+        <option value="$PROJECT_DIR$/src/BRFS.java" />
       </list>
     </option>
   </component>
@@ -987,7 +982,7 @@
     <entry file="file://$PROJECT_DIR$/src/StatUtilsPro.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="100" column="33" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="33" />
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1004,8 +999,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BRFS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60923076">
-          <caret line="53" column="29" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.6646154">
+          <caret line="55" column="31" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
           <folding />
         </state>
       </provider>

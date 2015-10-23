@@ -41,7 +41,7 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "birds";
+        String filename = "flags";
 
         int i = 5;
 
