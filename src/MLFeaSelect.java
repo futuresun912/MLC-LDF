@@ -5,6 +5,7 @@ import weka.attributeSelection.*;
 import weka.classifiers.functions.Logistic;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SelectedTag;
 import weka.core.Utils;
 
 import java.util.Arrays;
@@ -119,6 +120,7 @@ public class MLFeaSelect {
         WrapperSubset evaluator = new WrapperSubset();
         evaluator.setClassifier(new Logistic());
         evaluator.setFolds(5);
+        evaluator.setEvaluationMeasure(new SelectedTag(8, WrapperSubset.TAGS_EVALUATION));
 
         // GreedyStepwise search
         GreedyCC searcher = new GreedyCC();

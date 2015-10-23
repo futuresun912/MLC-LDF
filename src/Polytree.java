@@ -1,4 +1,5 @@
 
+import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Header1_1Impl;
 import meka.classifiers.multilabel.cc.CNode;
 import meka.core.A;
 import meka.core.M;
@@ -231,7 +232,9 @@ public class Polytree {
                     MI[j][k] = conMI(D_test[j], D_test[k], miNodes, j, k);
             MI = addMatrix(MI, MI);
         }
+
         return MI;
+//        return MI / numFolds;
     }
 
 
@@ -242,8 +245,7 @@ public class Polytree {
         int N = D_j.numInstances();
         double y[] = new double[L];
         double I = 0.0;       		 	 // conditional mutual information for y_j and y_k
-        double p_1 = 0.0;      			 // p( y_j = 1 | x )
-        double p_2 = 0.0;      			 // p( y_k = 1 | x )
+        double p_1, p_2;      			 // p( y_j = 1 | x ), p( y_j = 2 | x )
         double p_12[] = {0.0,0.0};       // p_12[0] = p( y_j = 1 | y_k = 0, x ) and p_12[1] = p( y_j = 1 | y_k = 1, x )
 
         for (int i = 0; i < N; i ++) {
@@ -274,6 +276,59 @@ public class Polytree {
         return I;
     }
 
+
+//    // use the learned classifiers to get normalized conditional probability
+//    protected double conMI(Instances D_j, Instances D_k, CNode[][] miNodes, int j, int k) throws Exception {
+//
+//        int L = D_j.classIndex();
+//        int N = D_j.numInstances();
+//        double y[] = new double[L];
+//        double I = 0.0;       		 	 // conditional mutual information for y_j and y_k
+//        double H_1 = 0.0;
+//        double H_2 = 0.0;                 // conditional entropy for Y_j and Y_k
+//        double minH;
+//        double p_1, p_2;      			 // p( y_j = 1 | x ), p( y_k = 1 | x )
+//        double p_12[] = {0.0,0.0};       // p_12[0] = p( y_j = 1 | y_k = 0, x ) and p_12[1] = p( y_j = 1 | y_k = 1, x )
+//
+//        for (int i = 0; i < N; i ++) {
+//
+//            Arrays.fill(y, 0);
+//            p_1 = Math.max( miNodes[j][0].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );                         // p( y_j = 1 | x )
+//            p_1 = Math.min(p_1, 0.999999);
+//
+//            Arrays.fill(y, 0);
+//            p_2 = Math.max(miNodes[k][0].distribution((Instance) D_k.instance(i).copy(), y)[1], 0.000001);                           // p( y_k = 1 | x )
+//            p_2 = Math.min(p_2, 0.999999);
+//
+//            Arrays.fill(y, 0);
+//            p_12[0] = Math.max(miNodes[j][k - j].distribution((Instance) D_j.instance(i).copy(), y)[1], 0.000001);     // p( y_j = 1 | y_k = 0, x )
+//            p_12[0] = Math.min(p_12[0], 0.999999);
+//
+//            Arrays.fill(y, 0);
+//            Arrays.fill(y, k, k+1, 1.0);
+//            p_12[1] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 1, x )
+//            p_12[1] = Math.min(p_12[1], 0.999999);
+//
+//            // calculation of conditional MI
+//            I += ( 1 - p_12[0] ) * ( 1 - p_2 ) * Math.log( ( 1 - p_12[0] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 0 )
+//            I += ( 1 - p_12[1] ) * (     p_2 ) * Math.log( ( 1 - p_12[1] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 1 )
+//            I += (     p_12[0] ) * ( 1 - p_2 ) * Math.log( (     p_12[0] ) / (     p_1 ) );     // I( y_j = 1 ; y_k = 0 )
+//            I += (     p_12[1] ) * (     p_2 ) * Math.log( (     p_12[1] ) / (     p_1 ) );     // I( y_j = 1 ; y_k = 0 )
+//
+//            // calculation of conditional entropy
+//            H_1 -=      p_1  * Math.log(    p_1);
+//            H_1 -= (1 - p_1) * Math.log(1 - p_1);
+//            H_2 -=      p_2  * Math.log(    p_2);
+//            H_2 -= (1 - p_2) * Math.log(1 - p_2);
+//         }
+//
+//        minH = H_1 < H_2 ? H_1 : H_2;
+//
+//        return I / minH;
+//
+//    }
+
+
     // C = A + B
     protected double[][] addMatrix(double[][] A, double[][] B) {
 
@@ -298,7 +353,7 @@ public class Polytree {
                 G.addEdge(e);
             }
         }
-        CD = M.multiply(CD, -1);
+//        CD = M.multiply(CD, -1);
 
         KruskalMST mst = new KruskalMST(G);
         int[][] paTree =new int[L][0];

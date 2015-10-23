@@ -13,7 +13,7 @@ import meka.classifiers.multilabel.MULAN;
 public class PerformMLC {
 
     static String n = "10";         // n-fold
-    static String percent = "66.0"; // split percentage
+    static String percent = "100.0"; // split percentage
     static String outputType = "2"; // 1, 2, 3, 4, 5, 6
     static String baseline = "Logistic"; // SMO, Logistic
     static String arfflist[] = { "scene", "emotions", "flags", "yeast",
@@ -41,9 +41,9 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = "scene";
+        String filename = "emotions";
 
-        int i = 5;
+        int i = 3;
 
         switch (i) {
             case 0:
@@ -146,14 +146,14 @@ public class PerformMLC {
         gOptions[0] = "-t";
         gOptions[1] = "/home/sunlu/workspace/data/" + arffname + ".arff";
 
-		// use n-fold cross validation // comment this snippet when using
-		// splitting
-		gOptions[2] = "-x";
-		gOptions[3] = n;
+//		// use n-fold cross validation // comment this snippet when using
+//		// splitting
+//		gOptions[2] = "-x";
+//		gOptions[3] = n;
 
-//        // split train/test in percent%
-//        gOptions[2] = "-split-percentage";
-//        gOptions[3] = percent;
+        // split train/test in percent%
+        gOptions[2] = "-split-percentage";
+        gOptions[3] = percent;
 
         // unknown
         gOptions[4] = "-s";

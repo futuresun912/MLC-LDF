@@ -2,6 +2,8 @@ import meka.core.M;
 import meka.core.StatUtils;
 import weka.core.Instances;
 
+import java.util.Arrays;
+
 /**
  * Created by sunlu on 10/20/15.
  * Designed for calculation of normalized mutual information matrix.
@@ -73,4 +75,53 @@ public class StatUtilsPro extends StatUtils{
 
         return NI(P);
     }
+
+
+    // Calcualte the statistics (Imbalance ratio with its mean and variance) of the dataset
+    public static double[] CalcIR(Instances D) {
+
+        int L = D.classIndex();
+        int[][] countM = StatUtils.getApproxC(D);
+        int[] countA = new int[L];
+        double[] output = new double[L+2];
+
+        // get the count of positive instances for each label with the max count
+        int maxA = countM[0][0];
+        int indexMax = 0;
+        for (int j = 0; j < L; j ++) {
+            countA[j] = countM[j][j];
+            if (maxA < countA[j]) {
+                maxA = countA[j];
+                indexMax = j;
+            }
+        }
+//        System.out.println(Arrays.toString(countA));
+//        System.out.println(maxA+" "+indexMax);
+
+        // calculate the label-individual Imbalance Ratio array with its mean
+        double[] IR = new double[L];
+        double sum = 0;
+        for (int j = 0; j < L; j++) {
+            IR[j] = (double) maxA / (double) countA[j];
+            sum += IR[j];
+            output[j] = IR[j];
+        }
+        double meanIR = sum / (double)L;
+        output[L] = meanIR;
+        System.out.println(Arrays.toString(IR));
+
+        // calculate the variance of IR array and CVIR
+        double varIR = 0.0;
+        for (int j = 0; j < L; j ++)
+            varIR += Math.pow((IR[j]-meanIR), 2) / (L-1);
+        double CVIR = Math.pow(varIR,0.5)/meanIR;
+        output[L+1] = varIR;
+//        System.out.println("meanIR = "+meanIR);
+//        System.out.println("varIR = "+varIR);
+//        System.out.println("CVIR = "+CVIR);
+
+        return output;
+    }
+
+
 }

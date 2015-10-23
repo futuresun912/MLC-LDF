@@ -170,6 +170,7 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
     public static final int EVAL_FMEASURE = 5;
     public static final int EVAL_AUC = 6;
     public static final int EVAL_AUPRC = 7;
+    public static final int EVAL_NEW = 8;
 
     public static final Tag[] TAGS_EVALUATION = {
             new Tag(EVAL_DEFAULT,
@@ -180,7 +181,9 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
             new Tag(EVAL_FMEASURE, "F-measure (discrete class only)"),
             new Tag(EVAL_AUC, "AUC (area under the ROC curve - discrete class only)"),
             new Tag(EVAL_AUPRC,
-                    "AUPRC (area under the precision-recall curve - discrete class only)") };
+                    "AUPRC (area under the precision-recall curve - discrete class only)"),
+            new Tag(EVAL_NEW,
+            "NEW (average over accuracy and fmeasure - discrete class only)") };
 
     /** The evaluation measure to use */
     protected int m_evaluationMeasure = EVAL_DEFAULT;
@@ -798,15 +801,15 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
             switch (m_evaluationMeasure) {
                 case EVAL_DEFAULT:
                     repError[i] = m_Evaluation.errorRate();
-                    // if (m_trainInstances.classAttribute().isNominal()) {
-                    // repError[i] = 1.0 - repError[i];
-                    // }
+//                     if (m_trainInstances.classAttribute().isNominal()) {
+//                     repError[i] = 1.0 - repError[i];
+//                     }
                     break;
                 case EVAL_ACCURACY:
                     repError[i] = m_Evaluation.errorRate();
-                    // if (m_trainInstances.classAttribute().isNominal()) {
-                    // repError[i] = 1.0 - repError[i];
-                    // }
+//                     if (m_trainInstances.classAttribute().isNominal()) {
+//                     repError[i] = 1.0 - repError[i];
+//                     }
                     break;
                 case EVAL_RMSE:
                     repError[i] = m_Evaluation.rootMeanSquaredError();
@@ -834,6 +837,10 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
                     } else {
                         repError[i] = m_Evaluation.areaUnderPRC(m_IRClassVal);
                     }
+                    break;
+                case EVAL_NEW:
+                    repError[i] = (1.0 - m_Evaluation.errorRate()) + 0.5*m_Evaluation.weightedFMeasure();
+//                    repError[i] = -3*m_Evaluation.errorRate()+m_Evaluation.weightedFMeasure();
                     break;
             }
 
