@@ -6,6 +6,8 @@ import weka.classifiers.Classifier;
 import weka.core.Instance;
 import weka.core.Instances;
 
+import java.util.Arrays;
+
 /**
  * Created by sunlu on 9/15/15.
  * There is something wrong in this class.
@@ -21,6 +23,18 @@ public class BRFS extends BR {
         testCapabilities(D);
         int L = D.classIndex();
 
+        // Get the Imbalance ratio-related statistics
+        double[] statIR = StatUtilsPro.CalcIR(D);
+        double[] IR = Arrays.copyOfRange(statIR, 0, L);
+        double meanIR = statIR[L];
+        double CVIR = statIR[L+1];
+        if (getDebug()) {
+            System.out.println("IR = "+ Arrays.toString(IR));
+            System.out.println("meanIR = " + meanIR);
+            System.out.println("varIR = " + CVIR);
+        }
+
+
         m_MultiClassifiers = AbstractClassifier.makeCopies(m_Classifier, L);
         m_InstancesTemplates = new Instances[L];
 
@@ -32,8 +46,15 @@ public class BRFS extends BR {
         for(int j = 0; j < L; j++) {
             int[] pa = new int[]{};
 
+            double IRfactor =  (1 - (1 / Math.exp(IR[j] * CVIR / meanIR)));
+//            double IRfactor =  (1 - (1 / Math.exp(Math.pow(IR[j] * meanIR * CVIR, 0.5))));
+//            double IRfactor = 0.5 * (1 - (1 / Math.exp(500)));
+
+//            IRfactor = 0.5;
+            System.out.println(IRfactor);
+
             // Second-stage feature selection
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
+            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa, IRfactor);
 
             // Remove labels except j-th
             Instances D_j = MLUtils.keepAttributesAt(new Instances(newD[j]), new int[]{j}, L);

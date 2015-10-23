@@ -104,7 +104,7 @@ public class MLFeaSelect {
 
 
     // The second-stage feature selection for MLC
-    protected Instances feaSelect2(Instances D_j, int j, int[] pa) throws Exception {
+    protected Instances feaSelect2(Instances D_j, int j, int[] pa, double factor) throws Exception {
 
         int n = D_j.numAttributes();
 
@@ -120,6 +120,7 @@ public class MLFeaSelect {
         WrapperSubset evaluator = new WrapperSubset();
         evaluator.setClassifier(new Logistic());
         evaluator.setFolds(5);
+        evaluator.setIRfactor(factor);
         evaluator.setEvaluationMeasure(new SelectedTag(8, WrapperSubset.TAGS_EVALUATION));
 
         // GreedyStepwise search

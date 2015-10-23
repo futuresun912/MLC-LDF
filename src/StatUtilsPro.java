@@ -70,8 +70,8 @@ public class StatUtilsPro extends StatUtils{
         int N = D.numInstances();
         int[][] C = getApproxC(D);
         double[][] P = getP(C, N);
-        System.out.println("Count matrix: \n"+M.toString(C));
-        System.out.println("Probability matrix: \n"+M.toString(P));
+//        System.out.println("Count matrix: \n"+M.toString(C));
+//        System.out.println("Probability matrix: \n"+M.toString(P));
 
         return NI(P);
     }
@@ -89,13 +89,17 @@ public class StatUtilsPro extends StatUtils{
         int maxA = countM[0][0];
         int indexMax = 0;
         for (int j = 0; j < L; j ++) {
+//            countA[j] = countM[j][j] == 0 ? 1 : countM[j][j];
             countA[j] = countM[j][j];
             if (maxA < countA[j]) {
                 maxA = countA[j];
                 indexMax = j;
             }
         }
-//        System.out.println(Arrays.toString(countA));
+        for (int j = 0; j < L; j ++)
+            if (countA[j] == 0)
+                countA[j] = maxA;
+//        System.out.println("CA = "+Arrays.toString(countA));
 //        System.out.println(maxA+" "+indexMax);
 
         // calculate the label-individual Imbalance Ratio array with its mean
@@ -108,14 +112,15 @@ public class StatUtilsPro extends StatUtils{
         }
         double meanIR = sum / (double)L;
         output[L] = meanIR;
-        System.out.println(Arrays.toString(IR));
+//        System.out.println(Arrays.toString(IR));
 
         // calculate the variance of IR array and CVIR
         double varIR = 0.0;
         for (int j = 0; j < L; j ++)
             varIR += Math.pow((IR[j]-meanIR), 2) / (L-1);
         double CVIR = Math.pow(varIR,0.5)/meanIR;
-        output[L+1] = varIR;
+//        output[L+1] = varIR;
+        output[L+1] = CVIR;
 //        System.out.println("meanIR = "+meanIR);
 //        System.out.println("varIR = "+varIR);
 //        System.out.println("CVIR = "+CVIR);

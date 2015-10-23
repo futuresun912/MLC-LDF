@@ -76,7 +76,7 @@ public class BCCFS extends BCC {
         nodes = new CNode[L];
         for (int j : m_Chain) {
             // Second-stage feature selection
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, paL[j]);
+//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, paL[j]);
             nodes[j] = new CNode(j, null, paL[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

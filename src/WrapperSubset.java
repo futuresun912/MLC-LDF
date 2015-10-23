@@ -140,6 +140,8 @@ import weka.filters.unsupervised.attribute.Remove;
 public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
         OptionHandler, TechnicalInformationHandler {
 
+    private double m_IRfactor;
+
     /** for serialization */
     static final long serialVersionUID = -4573057658746728675L;
 
@@ -162,6 +164,11 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
      * accuracy of a subset
      */
     private double m_threshold;
+
+
+    protected void setIRfactor(double factor) {
+        this.m_IRfactor = factor;
+    }
 
     public static final int EVAL_DEFAULT = 1;
     public static final int EVAL_ACCURACY = 2;
@@ -839,7 +846,8 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
                     }
                     break;
                 case EVAL_NEW:
-                    repError[i] = (1.0 - m_Evaluation.errorRate()) + 0.5*m_Evaluation.weightedFMeasure();
+                    repError[i] = (1.0 - m_Evaluation.errorRate()) + m_IRfactor*m_Evaluation.weightedFMeasure();
+//                    repError[i] = (1.0 - m_Evaluation.errorRate()) + 0.5*m_Evaluation.weightedFMeasure();
 //                    repError[i] = -3*m_Evaluation.errorRate()+m_Evaluation.weightedFMeasure();
                     break;
             }

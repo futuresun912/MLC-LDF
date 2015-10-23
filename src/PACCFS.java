@@ -45,7 +45,7 @@ public class PACCFS extends CC {
         // Building the PACC
         nodes = new CNode[L];
         for (int j : m_Chain) {
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j]);
+//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j]);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

@@ -41,7 +41,7 @@ public class CCFS extends CC {
         for (int j : m_Chain) {
 //            newD[j] = mlFeaSelect.feaSelect2(D, j, pa);
             // Second-stage feature selection
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
+//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa);
             nodes[j] = new CNode(j, null, pa);
             nodes[j].build(newD[j], m_Classifier);
             pa = A.append(pa, j);
