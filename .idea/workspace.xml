@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e536d856-5f39-4554-b8ad-4f27c0da9f08" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/CCFS.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/CCFS.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/MLFeaSelect.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/MLFeaSelect.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BCCFS_I.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BRFS_I.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CCFS_I.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/EvaluationPro.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/PerformMLC.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/PerformMLC.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MLC-LDF/Polytree.class" afterPath="$PROJECT_DIR$/out/production/MLC-LDF/Polytree.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CCFS.java" afterPath="$PROJECT_DIR$/src/CCFS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MLFeaSelect.java" afterPath="$PROJECT_DIR$/src/MLFeaSelect.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PerformMLC.java" afterPath="$PROJECT_DIR$/src/PerformMLC.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Polytree.java" afterPath="$PROJECT_DIR$/src/Polytree.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MLC-LDF.iws" />
@@ -37,9 +35,22 @@
           <file leaf-file-name="PerformMLC.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/PerformMLC.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.47076923">
-                  <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+                <state vertical-scroll-proportion="0.15483871">
+                  <caret line="130" column="67" selection-start-line="130" selection-start-column="67" selection-end-line="130" selection-end-column="67" />
                   <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BCCFS_I.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/BCCFS_I.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="85" column="43" selection-start-line="85" selection-start-column="43" selection-end-line="85" selection-end-column="43" />
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
                     <element signature="imports" expanded="true" />
                   </folding>
                 </state>
@@ -56,16 +67,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="CCFS.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/CCFS.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -73,22 +74,9 @@
           <file leaf-file-name="MLFeaSelect.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MLFeaSelect.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.49846154">
-                  <caret line="129" column="50" selection-start-line="129" selection-start-column="50" selection-end-line="129" selection-end-column="50" />
+                <state vertical-scroll-proportion="0.5419355">
+                  <caret line="139" column="41" selection-start-line="139" selection-start-column="41" selection-end-line="139" selection-end-column="41" />
                   <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="WrapperSubset.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/WrapperSubset.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="849" column="50" selection-start-line="849" selection-start-column="50" selection-end-line="849" selection-end-column="50" />
-                  <folding>
-                    <element signature="e#0#34618#0" expanded="true" />
                     <element signature="imports" expanded="true" />
                   </folding>
                 </state>
@@ -148,8 +136,12 @@
         <option value="$PROJECT_DIR$/src/BCCFS.java" />
         <option value="$PROJECT_DIR$/src/Polytree.java" />
         <option value="$PROJECT_DIR$/src/CCFS.java" />
-        <option value="$PROJECT_DIR$/src/BRFS.java" />
         <option value="$PROJECT_DIR$/src/MLFeaSelect.java" />
+        <option value="$PROJECT_DIR$/src/EvaluationPro.java" />
+        <option value="$PROJECT_DIR$/src/BRFS.java" />
+        <option value="$PROJECT_DIR$/src/BRFS_I.java" />
+        <option value="$PROJECT_DIR$/src/CCFS_I.java" />
+        <option value="$PROJECT_DIR$/src/BCCFS_I.java" />
         <option value="$PROJECT_DIR$/src/PerformMLC.java" />
       </list>
     </option>
@@ -269,6 +261,7 @@
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
     <property name="FullScreen" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -280,13 +273,14 @@
   </component>
   <component name="RunManager" selected="Application.PerformMLC">
     <configuration default="false" name="PerformMLC" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <output_file path="$USER_HOME$/experiment" is_save="true" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="PerformMLC" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
@@ -531,7 +525,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15013699" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29166666" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29166666" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -595,42 +589,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Polytree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PACCFS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="35" selection-start-line="41" selection-start-column="35" selection-end-line="41" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MLFeaSelect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PerformMLC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="43" column="35" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/CCFS.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -832,14 +790,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar!/src/main/java/meka/classifiers/multilabel/Evaluation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java/weka/attributeSelection/AttributeSelection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -930,14 +880,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BCCFS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.9107692">
-          <caret line="82" column="47" selection-start-line="82" selection-start-column="47" selection-end-line="82" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PACCFS.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -965,26 +907,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CCFS.java">
+    <entry file="jar://$USER_HOME$/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar!/src/main/java/meka/classifiers/multilabel/Evaluation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
-          <folding />
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EvaluationPro.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25376344">
+          <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BRFS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4523077">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="48" selection-start-line="0" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BRFS_I.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CCFS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="35" column="48" selection-start-line="0" selection-start-column="0" selection-end-line="69" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CCFS_I.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="29" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BCCFS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="36" selection-start-line="0" selection-start-column="0" selection-end-line="121" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BCCFS_I.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="43" selection-start-line="85" selection-start-column="43" selection-end-line="85" selection-end-column="43" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MLFeaSelect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49846154">
-          <caret line="129" column="50" selection-start-line="129" selection-start-column="50" selection-end-line="129" selection-end-column="50" />
+        <state vertical-scroll-proportion="0.5419355">
+          <caret line="139" column="41" selection-start-line="139" selection-start-column="41" selection-end-line="139" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -993,8 +996,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PerformMLC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47076923">
-          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.15483871">
+          <caret line="130" column="67" selection-start-line="130" selection-start-column="67" selection-end-line="130" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

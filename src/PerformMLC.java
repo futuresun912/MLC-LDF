@@ -20,17 +20,23 @@ public class PerformMLC {
     static String[] options;                    // specified options
     static String arfflist[] = {
             "scene",        // 0
-            "emotions",     // 1
-            "flags",        // 2
+//            "emotions",     // 1
+//            "flags",        // 2
             "yeast",        // 3
-            "birds",        // 4
+//            "birds",        // 4
             "genbase",      // 5
-            "medical",      // 6
+//            "medical",      // 6
             "enron",        // 7
             "languagelog",  // 8
-            "mediamill",    // 9
+            "CAL500",       // 9
             "bibtex",       // 10
-            "Corel5k"       // 11
+
+//            "rcv1subset1",   // 11
+//            "rcv1subset3",   // 12
+//            "mediamill",    // 13
+//            "Corel5k",       // 14
+//            "delicious"      // 15
+
     };
 
     public static void  main(String[] args) throws Exception {
@@ -42,107 +48,124 @@ public class PerformMLC {
         PACC testClassifier3 = new PACC();
         MULAN testClassifier4 = new MULAN();      // MLkNN
         BRFS testClassifier5 = new BRFS();        // BR-FS
+        BRFS_I testClassifier51 = new BRFS_I();        // BR-FS
         CCFS testClassifier6 = new CCFS();        // CC-FS
+        CCFS_I testClassifier61 = new CCFS_I();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
+        BCCFS_I testClassifier71 = new BCCFS_I();      // BCC-FS
         PACCFS testClassifier8 = new PACCFS();        // PACC-FS
         PACCFS_I testClassifier9 = new PACCFS_I();    // PACC-Filter
         PACCFS_II testClassifier10 = new PACCFS_II();    // PACC-Wrapper
 
-        // **************************************************************
-        // *************** Evaluate a single method *********************
-        // **************************************************************
-        String filename = arfflist[6];
+//        // **************************************************************
+//        // *************** Evaluate a single method *********************
+//        // **************************************************************
+//        String filename = arfflist[10];
+//
+//        int i = 8;
+//
+//        switch (i) {
+//            case 0:
+//                setTestOptions(filename, "br", 1, 0);
+//                Evaluation.runExperiment(testClassifier0, options);
+//                break;
+//            case 1:
+//                setTestOptions(filename, "cc", 1, 0);
+//                Evaluation.runExperiment(testClassifier1, options);
+//                break;
+//            case 2:
+//                setTestOptions(filename, "bcc", 1, 0);
+//                Evaluation.runExperiment(testClassifier2, options);
+//                break;
+//            case 3:
+//                setTestOptions(filename, "pacc", 1, 0);
+//                Evaluation.runExperiment(testClassifier3, options);
+//                break;
+//            case 4:
+//                setTestOptions(filename, "mlknn", 1, 1);
+//                Evaluation.runExperiment(testClassifier4, options);
+//                break;
+//            case 5:
+//                setTestOptions(filename, "brfs", 1, 0);
+//                Evaluation.runExperiment(testClassifier5, options);
+//                break;
+//            case 6:
+//                setTestOptions(filename, "ccfs", 1, 0);
+//                Evaluation.runExperiment(testClassifier6, options);
+//                break;
+//            case 7:
+//                setTestOptions(filename, "bccfs", 1, 0);
+//                Evaluation.runExperiment(testClassifier7, options);
+//                break;
+//            case 8:
+//                setTestOptions(filename, "paccfs", 1, 0);
+//                Evaluation.runExperiment(testClassifier8, options);
+//                break;
+//            case 9:
+//                setTestOptions(filename, "paccfs-I", 1, 0);
+//                Evaluation.runExperiment(testClassifier9, options);
+//                break;
+//            case 10:
+//                setTestOptions(filename, "paccfs-II", 1, 0);
+//                Evaluation.runExperiment(testClassifier10, options);
+//                break;
+//        }
+//        // **************************************************************
+//        // **************************************************************
+//        // **************************************************************
 
-        int i = 0;
-
-        switch (i) {
-            case 0:
-                setTestOptions(filename, "br", 1, 0);
-                Evaluation.runExperiment(testClassifier0, options);
-                break;
-            case 1:
-                setTestOptions(filename, "cc", 1, 0);
-                Evaluation.runExperiment(testClassifier1, options);
-                break;
-            case 2:
-                setTestOptions(filename, "bcc", 1, 0);
-                Evaluation.runExperiment(testClassifier2, options);
-                break;
-            case 3:
-                setTestOptions(filename, "pacc", 1, 0);
-                Evaluation.runExperiment(testClassifier3, options);
-                break;
-            case 4:
-                setTestOptions(filename, "mlknn", 1, 1);
-                Evaluation.runExperiment(testClassifier4, options);
-                break;
-            case 5:
-                setTestOptions(filename, "brfs", 1, 0);
-                Evaluation.runExperiment(testClassifier5, options);
-                break;
-            case 6:
-                setTestOptions(filename, "ccfs", 1, 0);
-                Evaluation.runExperiment(testClassifier6, options);
-                break;
-            case 7:
-                setTestOptions(filename, "bccfs", 1, 0);
-                Evaluation.runExperiment(testClassifier7, options);
-                break;
-            case 8:
-                setTestOptions(filename, "paccfs", 1, 0);
-                Evaluation.runExperiment(testClassifier8, options);
-                break;
-            case 9:
-                setTestOptions(filename, "paccfs-I", 1, 0);
-                Evaluation.runExperiment(testClassifier9, options);
-                break;
-            case 10:
-                setTestOptions(filename, "paccfs-II", 1, 0);
-                Evaluation.runExperiment(testClassifier10, options);
-                break;
-        }
-        // **************************************************************
-        // **************************************************************
-        // **************************************************************
 
 
-
-//		 //**************************************************************
-//		 //************** Experiments on all methods ********************
-//		 //**************************************************************
-//		 for (int i = 0 ; i < 1; i ++) { // traverse all data sets
+		 //**************************************************************
+		 //************** Experiments on all methods ********************
+		 //**************************************************************
+		 for (int i = 0 ; i < arfflist.length; i ++) { // traverse all data sets
 //
 //			 setTestOptions(arfflist[i], "br", 1, 0);
-//			 Evaluation.runExperiment(testClassifier0, options);
-//
+//			 EvaluationPro.runExperiment(testClassifier0, options);
+
 //			 setTestOptions(arfflist[i], "cc", 1, 0);
-//			 Evaluation.runExperiment(testClassifier1, options);
+//			 EvaluationPro.runExperiment(testClassifier1, options);
 //
 //			 setTestOptions(arfflist[i], "bcc", 0, 0);
-//			 Evaluation.runExperiment(testClassifier2, options);
+//			 EvaluationPro.runExperiment(testClassifier2, options);
 //
 //             setTestOptions(arfflist[i], "pacc", 0, 0);
-//             Evaluation.runExperiment(testClassifier3, options);
-//
+//             EvaluationPro.runExperiment(testClassifier3, options);
+
 //			 setTestOptions(arfflist[i], "mlknn", 0, 1);
-//			 Evaluation.runExperiment(testClassifier4, options);
+//			 EvaluationPro.runExperiment(testClassifier4, options);
 //
-//			 setTestOptions(arfflist[i], "brfs", 0, 0);
-//			 Evaluation.runExperiment(testClassifier5, options);
-//
-//			 setTestOptions(arfflist[i], "ccfs", 0, 0);
-//			 Evaluation.runExperiment(testClassifier6, options);
-//
-//             setTestOptions(arfflist[i], "bccfs", 0, 0);
-//             Evaluation.runExperiment(testClassifier8, options);
-//
-//			 setTestOptions(arfflist[i], "paccfs", 0, 0);
-//			 Evaluation.runExperiment(testClassifier8, options);
-//
-//		 }
-//	   //**************************************************************
-//	   //**************************************************************
-//	   //**************************************************************
+			 setTestOptions(arfflist[i], "brfs", 1, 0);
+			 EvaluationPro.runExperiment(testClassifier5, options);
+
+             setTestOptions(arfflist[i], "brfsI", 1, 0);
+             EvaluationPro.runExperiment(testClassifier51, options);
+
+			 setTestOptions(arfflist[i], "ccfs", 1, 0);
+			 EvaluationPro.runExperiment(testClassifier6, options);
+
+             setTestOptions(arfflist[i], "ccfsI", 1, 0);
+             EvaluationPro.runExperiment(testClassifier61, options);
+
+             if (i != 4) {
+                 setTestOptions(arfflist[i], "bccfs", 1, 0);
+                 EvaluationPro.runExperiment(testClassifier7, options);
+
+                 setTestOptions(arfflist[i], "paccfs", 1, 0);
+                 EvaluationPro.runExperiment(testClassifier8, options);
+             }
+
+             setTestOptions(arfflist[i], "bccfsI", 1, 0);
+             EvaluationPro.runExperiment(testClassifier71, options);
+
+             setTestOptions(arfflist[i], "paccfs-I", 1, 0);
+             EvaluationPro.runExperiment(testClassifier9, options);
+
+		 }
+	   //**************************************************************
+	   //**************************************************************
+	   //**************************************************************
 
     }
 
@@ -223,7 +246,7 @@ public class PerformMLC {
             }
 
             options[11] = "-f";
-            options[12] = "MLCFS/" + baseline + "/" + arffname + "/" + method;
+            options[12] = "/home/sunlu/experiments/" + arffname + "/" + method;
         }
         // *************** Meka & save file ********************
 
@@ -237,7 +260,7 @@ public class PerformMLC {
             }
 
             options[11] = "-f";
-            options[12] = "MLCFS/" + baseline + "/" + arffname + "/" + method;
+            options[12] = "experiments/" + arffname + "/" + method;
             options[13] = "-S";
             if (method == "clr")
                 options[14] = "CLR";
