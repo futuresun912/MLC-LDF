@@ -51,9 +51,9 @@ public class PerformMLC {
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
-        String filename = arfflist[7];
+        String filename = arfflist[6];
 
-        int i = 9;
+        int i = 0;
 
         switch (i) {
             case 0:
@@ -156,14 +156,14 @@ public class PerformMLC {
         gOptions[0] = "-t";
         gOptions[1] = "/home/sunlu/workspace/data/" + arffname + ".arff";
 
-//		// use n-fold cross validation // comment this snippet when using
-//		// splitting
-//		gOptions[2] = "-x";
-//		gOptions[3] = n;
+		// use n-fold cross validation // comment this snippet when using
+		// splitting
+		gOptions[2] = "-x";
+		gOptions[3] = n;
 
-        // split train/test in percent%
-        gOptions[2] = "-split-percentage";
-        gOptions[3] = percent;
+//        // split train/test in percent%
+//        gOptions[2] = "-split-percentage";
+//        gOptions[3] = percent;
 
         // unknown
         gOptions[4] = "-s";
@@ -180,8 +180,8 @@ public class PerformMLC {
 //		gOptions[10] = "weka.classifiers.bayes.NaiveBayes";
 
         // output debug information
-        gOptions[11] = "-output-debug-info";
-//        gOptions[11] = "";
+//        gOptions[11] = "-output-debug-info";
+        gOptions[11] = "";
 
         // *************** general options ********************
 

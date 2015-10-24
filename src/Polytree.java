@@ -79,9 +79,9 @@ public class Polytree {
         int[][] paPoly = new int[L][L];
         causalBasin(root, paTree, paPoly);
 
-        System.out.println(M.toString(CD));
-        System.out.println(M.toString(paTree));
-        System.out.println(M.toString(paPoly));
+//        System.out.println(M.toString(CD));
+//        System.out.println(M.toString(paTree));
+//        System.out.println(M.toString(paPoly));
 
         // If causal basin can't cover all labels, build a directed tree (paTemp)
         int[][] paTemp = new int[L][0];
@@ -89,7 +89,7 @@ public class Polytree {
         for (int j = 0; j < L; j ++) {
             for (int k = j; k < L; k ++){
                 if (paPoly[j][k] == 1) {
-                    System.out.println("root: " + j);
+//                    System.out.println("root: " + j);
                     root = j;
                     Arrays.fill(visited, false);
                     visited[root] = true;
@@ -142,9 +142,9 @@ public class Polytree {
             temp = A.append(temp, j);
         }
 
-        System.out.println(M.toString(CD));
-        System.out.println(M.toString(paTree));
-        System.out.println(M.toString(paPoly));
+//        System.out.println(M.toString(CD));
+//        System.out.println(M.toString(paTree));
+//        System.out.println(M.toString(paPoly));
 
         return pa;
     }
@@ -373,7 +373,7 @@ public class Polytree {
     // paPoly contains three types of dependence: connected(1), children(2) and parents(3). (check it from rows not columns)
     private void causalBasin(int root, int[][] paTree, int[][] paPoly) throws Exception {
 
-        if ( visited[root] == false ) {
+        if ( !visited[root] ) {
             if ( paTree[root].length == 1 ) {      // 1 if root isn't multi-parent node
                 if (paPoly[root][paTree[root][0]] == 0) {
                     paPoly[root][paTree[root][0]] = 1;
@@ -391,7 +391,7 @@ public class Polytree {
                         miSum += CD[j][root];
                 }
                 miThreshold = 0.1 * miSum / (double)paTree[root].length;
-                System.out.println("node: "+root+"; Threshold: "+miThreshold);
+//                System.out.println("node: "+root+"; Threshold: "+miThreshold);
 
                 for (int j : paTree[root]) {
                     for (int k : paTree[root]) {
@@ -406,7 +406,7 @@ public class Polytree {
                         }
                     }
                 }
-                if (flagCB[root] == true) {       // 2.1 if causal basin exists for root
+                if (flagCB[root]) {       // 2.1 if causal basin exists for root
                     for (int j : paTree[root]) {
                         if (paPoly[root][j] != 3) {
                             paPoly[root][j] = 2;
@@ -429,7 +429,7 @@ public class Polytree {
         }
 
         for (int connectedNode : paTree[root]) {  // Recursively perform on connected nodes
-            if (visited[connectedNode] == false)
+            if (!visited[connectedNode])
                 causalBasin(connectedNode, paTree, paPoly);
             else if (numVisited == visited.length)
                 break;
@@ -444,7 +444,7 @@ public class Polytree {
 
         int children[] = new int[]{};
         for(int j = 0; j < paPoly[root].length; j ++) {
-            if (paPoly[root][j] != 0 && visited[j] == false) {
+            if (paPoly[root][j] != 0 && !visited[j]) {
                 visited[j] = true;
                 children = A.append(children, j);
                 if (paPoly[root][j] != 3)
@@ -460,7 +460,7 @@ public class Polytree {
     // Rank the labels for the chain order
     private void rankLabel(int root, int[][] paPoly, int[] rank) throws Exception {
 
-        if (visited[root] == false) {
+        if (!visited[root]) {
 
             int[] parents = new int[]{};
             int[] children = new int[]{};

@@ -92,11 +92,11 @@ public class MLFeaSelect {
             m_instHeader[j] = new Instances(outputD[j]);
             m_instHeader[j].delete();
 
-            System.out.println(j+" "+(outputD[j].numAttributes()-L));
+//            System.out.println(j+" "+(outputD[j].numAttributes()-L));
 
         }
 
-        System.out.println("*****************************************");
+//        System.out.println("*****************************************");
         m_FlagFS[0] = true;
         m_FlagRanker = false;
         return outputD;
@@ -154,7 +154,7 @@ public class MLFeaSelect {
         m_instHeader[j] = new Instances(outputD);
         m_instHeader[j].delete();
 
-        System.out.println(j + " " + (outputD.numAttributes() - L));
+//        System.out.println(j + " " + (outputD.numAttributes() - L));
 
         m_FlagFS[1] =true;
         return outputD;

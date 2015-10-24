@@ -33,7 +33,7 @@ public class CCFS extends CC {
             A.shuffle(indices, m_R);
             setChain(indices);
         }
-        System.out.println(A.toString(m_Chain));
+//        System.out.println(A.toString(m_Chain));
 
         // First-stage feature selection
         mlFeaSelect.setNumThreads(8);
