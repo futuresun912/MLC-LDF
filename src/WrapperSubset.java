@@ -765,8 +765,8 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
     @Override
     public double evaluateSubset(BitSet subset) throws Exception {
 
-        if (subset.isEmpty())
-            return 0.0;
+//        if (subset.isEmpty())
+//            return 0.0;
 
         double evalMetric = 0;
         double[] repError = new double[5];
@@ -847,8 +847,6 @@ public class WrapperSubset extends ASEvaluation implements SubsetEvaluator,
                     break;
                 case EVAL_NEW:
                     repError[i] = (1.0 - m_Evaluation.errorRate()) + m_IRfactor*m_Evaluation.weightedFMeasure();
-//                    repError[i] = (1.0 - m_Evaluation.errorRate()) + 0.5*m_Evaluation.weightedFMeasure();
-//                    repError[i] = -3*m_Evaluation.errorRate()+m_Evaluation.weightedFMeasure();
                     break;
             }
 

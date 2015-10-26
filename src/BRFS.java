@@ -31,7 +31,7 @@ public class BRFS extends BR {
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
-        mlFeaSelect.setNumThreads(8);
+//        mlFeaSelect.setNumThreads(12);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         for(int j = 0; j < L; j++) {

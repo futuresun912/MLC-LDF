@@ -73,7 +73,7 @@ public class BCCFS extends BCC {
             System.out.println("sequence: " + Arrays.toString(m_Chain));
 
         // First-stage feature selection
-        mlFeaSelect.setNumThreads(8);
+//        mlFeaSelect.setNumThreads(12);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         nodes = new CNode[L];

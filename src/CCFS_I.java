@@ -28,7 +28,7 @@ public class CCFS_I extends CC {
         int L = D.classIndex();
         m_R = new Random(m_S);
         mlFeaSelect = new MLFeaSelect(L);
-        mlFeaSelect.setNumThreads(8);
+        mlFeaSelect.setNumThreads(12);
 
         int[] indices = getChain();
         if (indices == null) {
@@ -39,7 +39,7 @@ public class CCFS_I extends CC {
 //        System.out.println(A.toString(m_Chain));
 
         // First-stage feature selection
-        mlFeaSelect.setNumThreads(8);
+//        mlFeaSelect.setNumThreads(8);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
         nodes = new CNode[L];
         int[] pa = new int[]{};

@@ -12,7 +12,7 @@ import meka.classifiers.multilabel.MULAN;
 
 public class PerformMLC {
 
-    static String n = "10";         // n-fold
+    static String n = "5";         // n-fold
     static String percent = "66.0"; // split percentage
     static String outputType = "2"; // 1, 2, 3, 4, 5, 6
     static String baseline = "Logistic"; // SMO, Logistic
@@ -20,21 +20,21 @@ public class PerformMLC {
     static String[] options;                    // specified options
     static String arfflist[] = {
             "scene",        // 0
-//            "emotions",     // 1
-//            "flags",        // 2
+            "emotions",     // 1
+            "flags",        // 2
             "yeast",        // 3
-//            "birds",        // 4
+            "birds",        // 4
             "genbase",      // 5
-//            "medical",      // 6
+            "medical",      // 6
             "enron",        // 7
             "languagelog",  // 8
             "CAL500",       // 9
-            "bibtex",       // 10
+            "Corel5k",      // 10
+//            "bibtex",       // 11
 
 //            "rcv1subset1",   // 11
 //            "rcv1subset3",   // 12
 //            "mediamill",    // 13
-//            "Corel5k",       // 14
 //            "delicious"      // 15
 
     };
@@ -60,7 +60,7 @@ public class PerformMLC {
 //        // **************************************************************
 //        // *************** Evaluate a single method *********************
 //        // **************************************************************
-//        String filename = arfflist[10];
+//        String filename = arfflist[2];
 //
 //        int i = 8;
 //
@@ -120,41 +120,39 @@ public class PerformMLC {
 		 //************** Experiments on all methods ********************
 		 //**************************************************************
 		 for (int i = 0 ; i < arfflist.length; i ++) { // traverse all data sets
-//
+
 //			 setTestOptions(arfflist[i], "br", 1, 0);
 //			 EvaluationPro.runExperiment(testClassifier0, options);
-
+//
 //			 setTestOptions(arfflist[i], "cc", 1, 0);
 //			 EvaluationPro.runExperiment(testClassifier1, options);
 //
-//			 setTestOptions(arfflist[i], "bcc", 0, 0);
+//			 setTestOptions(arfflist[i], "bcc", 1, 0);
 //			 EvaluationPro.runExperiment(testClassifier2, options);
 //
-//             setTestOptions(arfflist[i], "pacc", 0, 0);
+//             setTestOptions(arfflist[i], "pacc", 1, 0);
 //             EvaluationPro.runExperiment(testClassifier3, options);
-
-//			 setTestOptions(arfflist[i], "mlknn", 0, 1);
-//			 EvaluationPro.runExperiment(testClassifier4, options);
 //
+//			 setTestOptions(arfflist[i], "mlknn", 1, 1);
+//			 EvaluationPro.runExperiment(testClassifier4, options);
+
 			 setTestOptions(arfflist[i], "brfs", 1, 0);
 			 EvaluationPro.runExperiment(testClassifier5, options);
 
              setTestOptions(arfflist[i], "brfsI", 1, 0);
              EvaluationPro.runExperiment(testClassifier51, options);
 
-			 setTestOptions(arfflist[i], "ccfs", 1, 0);
-			 EvaluationPro.runExperiment(testClassifier6, options);
+//			 setTestOptions(arfflist[i], "ccfs", 1, 0);
+//			 EvaluationPro.runExperiment(testClassifier6, options);
+//
+//             setTestOptions(arfflist[i], "ccfsI", 1, 0);
+//             EvaluationPro.runExperiment(testClassifier61, options);
 
-             setTestOptions(arfflist[i], "ccfsI", 1, 0);
-             EvaluationPro.runExperiment(testClassifier61, options);
+             setTestOptions(arfflist[i], "bccfs", 1, 0);
+             EvaluationPro.runExperiment(testClassifier7, options);
 
-             if (i != 4) {
-                 setTestOptions(arfflist[i], "bccfs", 1, 0);
-                 EvaluationPro.runExperiment(testClassifier7, options);
-
-                 setTestOptions(arfflist[i], "paccfs", 1, 0);
-                 EvaluationPro.runExperiment(testClassifier8, options);
-             }
+             setTestOptions(arfflist[i], "paccfs", 1, 0);
+             EvaluationPro.runExperiment(testClassifier8, options);
 
              setTestOptions(arfflist[i], "bccfsI", 1, 0);
              EvaluationPro.runExperiment(testClassifier71, options);

@@ -34,7 +34,7 @@ public class MLFeaSelect {
 
     public MLFeaSelect(int L) {
         this.L = L;
-        this.m_numThreads = 1;
+        this.m_numThreads = 12;
         this.m_FlagRanker = false;
         this.m_FlagFS = new boolean[2];
         Arrays.fill(this.m_FlagFS, false);
@@ -129,13 +129,13 @@ public class MLFeaSelect {
         searcher.setNumExecutionSlots(m_numThreads);
         searcher.setConservativeForwardSelection(true);
 
-        // generate the start set for searching
-        int[] paIndices = Utils.sort(pa);
-        int[] paTemp = Arrays.copyOf(paIndices, paIndices.length - 1);
-        for (int k = 0; k < paTemp.length; k ++)
-            paTemp[k] += 1;
-        String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
-        searcher.setStartSet(startSet);
+//        // generate the start set for searching
+//        int[] paIndices = Utils.sort(pa);
+//        int[] paTemp = Arrays.copyOf(paIndices, paIndices.length - 1);
+//        for (int k = 0; k < paTemp.length; k ++)
+//            paTemp[k] += 1;
+//        String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
+//        searcher.setStartSet(startSet);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
