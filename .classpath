@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/Sun/Program/meka-1.7.7/lib/weka.jar" sourcepath="/USER_HOME/Sun/Program/src_MLCFS/weka-src.jar"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/Sun/Program/meka-1.7.7/lib/mulan.jar"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/Sun/Program/meka-1.7.7/lib/meka-1.7.7-SNAPSHOT.jar" sourcepath="/USER_HOME/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/Sun/Program/meka-1.7.7/lib/mst.jar"/>
+	<classpathentry kind="output" path="out/production/MLC-LDF"/>
+</classpath>

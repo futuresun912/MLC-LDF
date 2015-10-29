@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/MLC-LDF"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="weka.jar" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/main/java"/>
+		<srcroot url="jar://$USER_HOME$/Sun/Program/src_MLCFS/weka-src.jar!/src/test/java"/>
+	</lib>
+	<lib name="meka-1.7.7-SNAPSHOT.jar" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar!/src/main/java"/>
+		<srcroot url="jar://$USER_HOME$/Sun/Program/src_MLCFS/meka-src-1.7.7-SNAPSHOT.jar!/src/test/java"/>
+	</lib>
+</component>
