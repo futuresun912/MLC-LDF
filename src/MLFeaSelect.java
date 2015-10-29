@@ -111,7 +111,9 @@ public class MLFeaSelect {
             }
         } else  {
 
-            int numFeature = (int) ((n - L)*m_PercentFeature);
+//            int numFeature = (int) ((n - L)*m_PercentFeature);
+            int numFeature = n > 30 ? 30: n;
+
             AttributeSelection selector;
             InfoGainAttributeEval evaluator;
             Ranker searcher;
@@ -147,6 +149,8 @@ public class MLFeaSelect {
 
                 m_instHeader[j] = new Instances(outputD[j]);
                 m_instHeader[j].delete();
+
+//                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         }
 
@@ -206,7 +210,7 @@ public class MLFeaSelect {
         m_instHeader[j] = new Instances(outputD);
         m_instHeader[j].delete();
 
-//        System.out.println(j + " " + (outputD.numAttributes() - L));
+        System.out.println(j + " " + (outputD.numAttributes() - L));
 
         m_FlagFS[1] =true;
         return outputD;

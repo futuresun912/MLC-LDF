@@ -31,14 +31,17 @@ public class PACCFS_II extends CC {
         // Use IG-Filter as preprocessing
         mlFeaSelect = new MLFeaSelect(L);
         mlFeaSelect.setFilterIG(true);
-        mlFeaSelect.setPercentFeature(0.5);
+//        mlFeaSelect.setPercentFeature(0.04);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
-        polytree.setDepMode(false);
-        int[][] pa = polytree.polyTree(D, null);
+
+//        polytree.setDepMode(false);
+//        int[][] pa = polytree.polyTree(D, null);
+        int[][] pa = polytree.polyTree(D, newD);
+
         m_Chain = polytree.getChainOrder();
 
         // Building the PACC

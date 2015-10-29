@@ -79,9 +79,9 @@ public class Polytree {
         int[][] paPoly = new int[L][L];
         causalBasin(root, paTree, paPoly);
 
-        System.out.println(M.toString(CD));
-        System.out.println(M.toString(paTree));
-        System.out.println(M.toString(paPoly));
+//        System.out.println(M.toString(CD));
+//        System.out.println(M.toString(paTree));
+//        System.out.println(M.toString(paPoly));
 
         // If causal basin can't cover all labels, build a directed tree (paTemp)
         int[][] paTemp = new int[L][0];
