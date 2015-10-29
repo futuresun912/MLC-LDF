@@ -28,7 +28,7 @@ public class CCFS_I extends CC {
         int L = D.classIndex();
         m_R = new Random(m_S);
         mlFeaSelect = new MLFeaSelect(L);
-        mlFeaSelect.setNumThreads(12);
+//        mlFeaSelect.setNumThreads(12);
 
         int[] indices = getChain();
         if (indices == null) {

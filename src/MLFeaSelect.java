@@ -1,6 +1,7 @@
 
 import meka.core.A;
 import meka.core.MLUtils;
+import sun.misc.Sort;
 import weka.attributeSelection.*;
 import weka.classifiers.functions.Logistic;
 import weka.core.Instance;
@@ -26,6 +27,7 @@ public class MLFeaSelect {
     protected int m_numThreads;
     protected boolean m_FlagRanker;
     protected boolean[] m_FlagFS;
+    protected boolean m_IG_On;
     protected double m_PercentFeature;
     protected int[][] m_Indices1;
     protected int[][] m_Indices2;
@@ -34,9 +36,10 @@ public class MLFeaSelect {
 
     public MLFeaSelect(int L) {
         this.L = L;
-        this.m_numThreads = 12;
+        this.m_numThreads = 8;
         this.m_FlagRanker = false;
         this.m_FlagFS = new boolean[2];
+        this.m_IG_On = false;
         Arrays.fill(this.m_FlagFS, false);
         this.m_PercentFeature = 0.2;
         this.m_Indices1 = new int[L][];
@@ -49,56 +52,105 @@ public class MLFeaSelect {
         this.m_numThreads = numThreads;
     }
 
+    protected void setPercentFeature(double fraction) throws Exception {
+        this.m_PercentFeature = fraction;
+    }
+
+
+    protected void setFilterIG(boolean IG_On) throws Exception {
+        this.m_IG_On = IG_On;
+    }
+
     // The first-stage feature selection for MLC
     protected Instances[] feaSelect1(Instances D) throws Exception {
 
         int n = D.numAttributes();
         Instances[] outputD = new Instances[L];
-        AttributeSelection selector;
-        CfsSubsetEval evaluator;
-        GreedyStepwise searcher;
 
-        // Perform FS for each label
-        for (int j = 0; j < L; j ++) {
+        if (!m_IG_On) {
+            AttributeSelection selector;
+            CfsSubsetEval evaluator;
+            GreedyStepwise searcher;
 
-            // Remove all the labels except j
-            int[] pa = new int[0];
-            pa = A.append(pa, j);
-            Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
-            D_j.setClassIndex(0);
+            // Perform FS for each label
+            for (int j = 0; j < L; j++) {
 
-            // Initializing the feature selector
-            selector = new AttributeSelection();
-            evaluator = new CfsSubsetEval();
-            searcher = new GreedyStepwise();
-            searcher.setNumExecutionSlots(m_numThreads);
+                // Remove all the labels except j
+                int[] pa = new int[0];
+                pa = A.append(pa, j);
+                Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
+                D_j.setClassIndex(0);
 
-            selector.setEvaluator(evaluator);
-            selector.setSearch(searcher);
+                // Initializing the feature selector
+                selector = new AttributeSelection();
+                evaluator = new CfsSubsetEval();
+                searcher = new GreedyStepwise();
+                searcher.setNumExecutionSlots(m_numThreads);
 
-            // Obtain the indices of selected features
-            selector.SelectAttributes(D_j);
-            m_Indices1[j] = selector.selectedAttributes();
-            // Sort the selected features for the Ranker
+                selector.setEvaluator(evaluator);
+                selector.setSearch(searcher);
+
+                // Obtain the indices of selected features
+                selector.SelectAttributes(D_j);
+                m_Indices1[j] = selector.selectedAttributes();
+                // Sort the selected features for the Ranker
 //            if (searcher instanceof Ranker)
 //                m_FlagRanker = true;
-            m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
+                m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
 
-            D.setClassIndex(0);
-            outputD[j] = MLUtils.keepAttributesAt(new Instances(D), m_Indices1[j], n);
-            outputD[j].setClassIndex(L);
-            D.setClassIndex(L);
+                D.setClassIndex(0);
+                outputD[j] = MLUtils.keepAttributesAt(new Instances(D), m_Indices1[j], n);
+                outputD[j].setClassIndex(L);
+                D.setClassIndex(L);
 
-            m_instHeader[j] = new Instances(outputD[j]);
-            m_instHeader[j].delete();
+                m_instHeader[j] = new Instances(outputD[j]);
+                m_instHeader[j].delete();
 
+                m_FlagRanker = false;
 //            System.out.println(j+" "+(outputD[j].numAttributes()-L));
+            }
+        } else  {
 
+            int numFeature = (int) ((n - L)*m_PercentFeature);
+            AttributeSelection selector;
+            InfoGainAttributeEval evaluator;
+            Ranker searcher;
+
+            // Perform FS for each label
+            for (int j = 0; j < L; j++) {
+
+                // Remove all the labels except j
+                int[] pa = new int[0];
+                pa = A.append(pa, j);
+                Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
+                D_j.setClassIndex(0);
+
+                selector = new AttributeSelection();
+                evaluator = new InfoGainAttributeEval();
+                searcher = new Ranker();
+                searcher.setNumToSelect(numFeature);
+                selector.setEvaluator(evaluator);
+                selector.setSearch(searcher);
+
+                // Obtain the indices of selected features
+                selector.SelectAttributes(D_j);
+                m_Indices1[j] = selector.selectedAttributes();
+                // Sort the selected features for the Ranker
+                if (searcher instanceof Ranker)
+                    m_FlagRanker = true;
+                m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
+
+                D.setClassIndex(0);
+                outputD[j] = MLUtils.keepAttributesAt(new Instances(D), m_Indices1[j], n);
+                outputD[j].setClassIndex(L);
+                D.setClassIndex(L);
+
+                m_instHeader[j] = new Instances(outputD[j]);
+                m_instHeader[j].delete();
+            }
         }
 
-//        System.out.println("*****************************************");
         m_FlagFS[0] = true;
-        m_FlagRanker = false;
         return outputD;
     }
 

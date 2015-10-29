@@ -34,7 +34,7 @@ public class PACCFS_I extends CC {
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
-//        polytree.setDepMode(false);
+        polytree.setDepMode(false);
         int[][] pa = polytree.polyTree(D, newD);
         m_Chain = polytree.getChainOrder();
 
