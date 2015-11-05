@@ -26,7 +26,7 @@ public class CCLDF extends CC {
 
         // Get the IR factor for Wrapper
         double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
-        System.out.println(A.toString(IRfactor));
+//        System.out.println(A.toString(IRfactor));
 
         int L = D.classIndex();
         m_R = new Random(m_S);

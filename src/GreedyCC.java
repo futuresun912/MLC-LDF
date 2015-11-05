@@ -108,7 +108,7 @@ public class GreedyCC extends GreedyStepwise {
 
         //****************************************************
         // prevent from removing all the features
-        best_merit = 0.0;
+        best_merit = -1000.0;
         //****************************************************
 
         // main search loop

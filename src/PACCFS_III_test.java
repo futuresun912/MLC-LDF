@@ -30,7 +30,7 @@ public class PACCFS_III_test extends CC {
 
         // Get the IR factor for Wrapper
         double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
-        System.out.println(A.toString(IRfactor));
+//        System.out.println(A.toString(IRfactor));
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
@@ -60,8 +60,8 @@ public class PACCFS_III_test extends CC {
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
         }
-        System.out.println("********************************" +
-                "\n********************************");
+//        System.out.println("********************************" +
+//                "\n********************************");
     }
 
     // Test on a single instance deterministically

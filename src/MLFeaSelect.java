@@ -103,7 +103,7 @@ public class MLFeaSelect {
                 // Greedy search
                 searcher = new GreedyStepwise();
                 searcher.setNumExecutionSlots(m_numThreads);
-                searcher.setConservativeForwardSelection(true);
+//                searcher.setConservativeForwardSelection(true);
 
 //                // BestFirst search
 //                searcher = new BestFirst();
@@ -126,7 +126,7 @@ public class MLFeaSelect {
                 m_instHeader[j] = new Instances(outputD[j]);
                 m_instHeader[j].delete();
                 m_FlagRanker = false;
-                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+//                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         } else  {
             int numFeature;
@@ -172,11 +172,11 @@ public class MLFeaSelect {
                 m_instHeader[j] = new Instances(outputD[j]);
                 m_instHeader[j].delete();
 
-                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+//                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         }
 
-        System.out.println("********************************");
+//        System.out.println("********************************");
         m_FlagFS[0] = true;
         return outputD;
     }
@@ -207,7 +207,7 @@ public class MLFeaSelect {
                 evaluator = new CfsSubsetEval();
                 searcher = new GreedyStepwise();
                 searcher.setNumExecutionSlots(m_numThreads);
-                searcher.setConservativeForwardSelection(true);
+//                searcher.setConservativeForwardSelection(true);
 
                 selector.setEvaluator(evaluator);
                 selector.setSearch(searcher);
@@ -229,7 +229,7 @@ public class MLFeaSelect {
                 m_instHeader[j].delete();
 
                 m_FlagRanker = false;
-                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+//                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         } else  {
 //            int numFeature;
@@ -278,11 +278,11 @@ public class MLFeaSelect {
                 m_instHeader[j] = new Instances(outputD[j]);
                 m_instHeader[j].delete();
 
-                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+//                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         }
 
-        System.out.println("********************************");
+//        System.out.println("********************************");
         m_FlagFS[0] = true;
         return outputD;
     }
@@ -313,7 +313,7 @@ public class MLFeaSelect {
             GreedyCC searcher = new GreedyCC();
             searcher.m_pa = pa;
             searcher.setNumExecutionSlots(m_numThreads);
-            searcher.setConservativeForwardSelection(true);
+//            searcher.setConservativeForwardSelection(true);
 
 //        // generate the start set for searching
 //        int[] paIndices = Utils.sort(pa);
@@ -333,7 +333,7 @@ public class MLFeaSelect {
             GreedyCC searcher = new GreedyCC();
             searcher.m_pa = pa;
             searcher.setNumExecutionSlots(m_numThreads);
-            searcher.setConservativeForwardSelection(true);
+//            searcher.setConservativeForwardSelection(true);
 
 //            // BestFirst search
 //            BestFirstLDF searcher = new BestFirstLDF();
@@ -359,7 +359,7 @@ public class MLFeaSelect {
         m_instHeader[j] = new Instances(outputD);
         m_instHeader[j].delete();
 
-        System.out.println(j + " " + (outputD.numAttributes() - L));
+//        System.out.println(j + " " + (outputD.numAttributes() - L));
         m_FlagFS[1] =true;
         return outputD;
     }
@@ -385,7 +385,7 @@ public class MLFeaSelect {
         // GreedyStepwise search
         GreedyStepwise searcher = new GreedyStepwise();
         searcher.setNumExecutionSlots(m_numThreads);
-        searcher.setConservativeForwardSelection(true);
+//        searcher.setConservativeForwardSelection(true);
 
 //        // BestFirst search
 //        BestFirst searcher = new BestFirst();
@@ -409,7 +409,7 @@ public class MLFeaSelect {
         m_instHeader[j] = new Instances(outputD);
         m_instHeader[j].delete();
 
-        System.out.println(j + " " + (outputD.numAttributes() - L));
+//        System.out.println(j + " " + (outputD.numAttributes() - L));
         m_FlagFS[1] =true;
         return outputD;
     }

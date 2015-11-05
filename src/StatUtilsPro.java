@@ -83,6 +83,7 @@ public class StatUtilsPro extends StatUtils{
 
         int L = D.classIndex();
         int N = D.numInstances();
+        int M = D.numAttributes() - L;
         int[][] countM = StatUtils.getApproxC(D);
         int[] countA = new int[L];        // count of positive instances
         double[] IR = new double[L];      // save the imbalance ratio
@@ -124,15 +125,32 @@ public class StatUtilsPro extends StatUtils{
 //        }
 
         // compute the IR facter for the IG-based filtering
-        double maxValue = 0.6;
-        double minValue = 0.2;
-        for (int j = 0; j < L; j ++) {
+        double maxValue;
+        double minValue;
+        if ( M < 1000 ) {
+            maxValue = 0.6;
+            minValue = 0.2;
+
+            for (int j = 0; j < L; j ++) {
+                double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
+                factor[j] =  (temp - 1) / (temp + 1) ;
+                factor[j] = factor[j] > maxValue ? maxValue : factor[j];
+                factor[j] = factor[j] < minValue ? minValue : factor[j];
+            }
+
+        } else {
+            maxValue = 0.06;
+            minValue = 0.02;
+
+            for (int j = 0; j < L; j ++) {
 //            double temp = Math.exp(1/(Math.pow(IR[j] * meanIR, 0.5) * CVIR));
 //            double temp = Math.exp(1/(Math.pow(IR[j], 0.5)));
-            double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
-            factor[j] =  (temp - 1) / (temp + 1) ;
-            factor[j] = factor[j] > maxValue ? maxValue : factor[j];
-            factor[j] = factor[j] < minValue ? minValue : factor[j];
+                double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
+                factor[j] = 0.06 * (temp - 1) / (temp + 1) ;
+                factor[j] = factor[j] > maxValue ? maxValue : factor[j];
+                factor[j] = factor[j] < minValue ? minValue : factor[j];
+            }
+
         }
 
 //        System.out.println("meanIR = "+meanIR);
