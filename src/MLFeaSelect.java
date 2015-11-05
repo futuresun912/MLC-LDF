@@ -28,11 +28,14 @@ public class MLFeaSelect {
     protected boolean m_FlagRanker;
     protected boolean[] m_FlagFS;
     protected boolean m_IG_On;
+    protected boolean m_Cfs_On;
     protected double m_PercentFeature;
     protected int[][] m_Indices1;
     protected int[][] m_Indices2;
     protected int[][] m_Indices;
     protected Instances[] m_instHeader;
+    protected boolean m_IGPercent;
+//    protected int[] m_paPACC;
 
     public MLFeaSelect(int L) {
         this.L = L;
@@ -40,13 +43,19 @@ public class MLFeaSelect {
         this.m_FlagRanker = false;
         this.m_FlagFS = new boolean[2];
         this.m_IG_On = false;
+        this.m_Cfs_On = false;
         Arrays.fill(this.m_FlagFS, false);
         this.m_PercentFeature = 0.2;
         this.m_Indices1 = new int[L][];
         this.m_Indices2 = new int[L][];
         this.m_Indices = new int[L][];
         this.m_instHeader = new Instances[L];
+        this.m_IGPercent =false;
     }
+
+//    protected int[] getPACCpa() throws Exception {
+//        return this.m_paPACC;
+//    }
 
     protected void setNumThreads(int numThreads) throws Exception {
         this.m_numThreads = numThreads;
@@ -54,11 +63,16 @@ public class MLFeaSelect {
 
     protected void setPercentFeature(double fraction) throws Exception {
         this.m_PercentFeature = fraction;
+        this.m_IGPercent = true;
     }
 
 
     protected void setFilterIG(boolean IG_On) throws Exception {
         this.m_IG_On = IG_On;
+    }
+
+    protected void setWrapperCfs(boolean Cfs_On) throws Exception {
+        this.m_Cfs_On = Cfs_On;
     }
 
     // The first-stage feature selection for MLC
@@ -86,6 +100,7 @@ public class MLFeaSelect {
                 evaluator = new CfsSubsetEval();
                 searcher = new GreedyStepwise();
                 searcher.setNumExecutionSlots(m_numThreads);
+                searcher.setConservativeForwardSelection(true);
 
                 selector.setEvaluator(evaluator);
                 selector.setSearch(searcher);
@@ -107,12 +122,16 @@ public class MLFeaSelect {
                 m_instHeader[j].delete();
 
                 m_FlagRanker = false;
-//            System.out.println(j+" "+(outputD[j].numAttributes()-L));
+            System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         } else  {
-
-//            int numFeature = (int) ((n - L)*m_PercentFeature);
-            int numFeature = n > 30 ? 30: n;
+            int numFeature;
+            if (m_IGPercent) {
+                numFeature = (int) ((n - L) * m_PercentFeature);
+            }
+            else {
+                numFeature = n > 30 ? 30 : n;
+            }
 
             AttributeSelection selector;
             InfoGainAttributeEval evaluator;
@@ -138,8 +157,7 @@ public class MLFeaSelect {
                 selector.SelectAttributes(D_j);
                 m_Indices1[j] = selector.selectedAttributes();
                 // Sort the selected features for the Ranker
-                if (searcher instanceof Ranker)
-                    m_FlagRanker = true;
+                m_FlagRanker = true;
                 m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
 
                 D.setClassIndex(0);
@@ -150,10 +168,11 @@ public class MLFeaSelect {
                 m_instHeader[j] = new Instances(outputD[j]);
                 m_instHeader[j].delete();
 
-//                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         }
 
+        System.out.println("********************************");
         m_FlagFS[0] = true;
         return outputD;
     }
@@ -172,18 +191,19 @@ public class MLFeaSelect {
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
 
-        // Wrapper evaluator
-        WrapperSubset evaluator = new WrapperSubset();
-        evaluator.setClassifier(new Logistic());
-        evaluator.setFolds(5);
-        evaluator.setIRfactor(factor);
-        evaluator.setEvaluationMeasure(new SelectedTag(8, WrapperSubset.TAGS_EVALUATION));
+        if (!m_Cfs_On) {
+            // Wrapper evaluator
+            WrapperSubset evaluator = new WrapperSubset();
+            evaluator.setClassifier(new Logistic());
+            evaluator.setFolds(5);
+            evaluator.setIRfactor(factor);
+            evaluator.setEvaluationMeasure(new SelectedTag(8, WrapperSubset.TAGS_EVALUATION));
 
-        // GreedyStepwise search
-        GreedyCC searcher = new GreedyCC();
-        searcher.m_pa = pa;
-        searcher.setNumExecutionSlots(m_numThreads);
-        searcher.setConservativeForwardSelection(true);
+            // GreedyStepwise search
+            GreedyCC searcher = new GreedyCC();
+            searcher.m_pa = pa;
+            searcher.setNumExecutionSlots(m_numThreads);
+            searcher.setConservativeForwardSelection(true);
 
 //        // generate the start set for searching
 //        int[] paIndices = Utils.sort(pa);
@@ -193,8 +213,21 @@ public class MLFeaSelect {
 //        String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
 //        searcher.setStartSet(startSet);
 
-        selector.setEvaluator(evaluator);
-        selector.setSearch(searcher);
+            selector.setEvaluator(evaluator);
+            selector.setSearch(searcher);
+        } else {
+            // Wrapper evaluator
+            CfsSubsetEval evaluator = new CfsSubsetEval();
+
+            // GreedyStepwise search
+            GreedyCC searcher = new GreedyCC();
+            searcher.m_pa = pa;
+            searcher.setNumExecutionSlots(m_numThreads);
+            searcher.setConservativeForwardSelection(true);
+
+            selector.setEvaluator(evaluator);
+            selector.setSearch(searcher);
+        }
 
         // Obtain the indices of selected features
         selector.SelectAttributes(tempD);
@@ -215,6 +248,106 @@ public class MLFeaSelect {
         m_FlagFS[1] =true;
         return outputD;
     }
+
+
+
+//    // The second-stage feature selection for MLC
+//    protected Instances feaSelect2PACC(Instances D_j, int j, int[] paAll, int[] pa, double factor) throws Exception {
+//
+//        int n = D_j.numAttributes();
+//        m_paPACC = pa.clone();
+//
+//        // Remove all the labels except j and its parents
+//        D_j.setClassIndex(j);
+//        paAll = A.append(paAll, j);
+//        pa = A.append(pa, j);
+//        Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), paAll, L);
+//
+//        // Initialization of the feature selector
+//        AttributeSelection selector = new AttributeSelection();
+//
+//        // Wrapper evaluator
+//        WrapperSubset evaluator = new WrapperSubset();
+//        evaluator.setClassifier(new Logistic());
+//        evaluator.setFolds(5);
+//        evaluator.setIRfactor(factor);
+//        evaluator.setEvaluationMeasure(new SelectedTag(8, WrapperSubset.TAGS_EVALUATION));
+//
+//        // GreedyStepwise search
+//        GreedyCC searcher = new GreedyCC();
+//        searcher.m_pa = pa;
+//        searcher.setNumExecutionSlots(m_numThreads);
+//        searcher.setConservativeForwardSelection(true);
+//
+////        // generate the start set for searching
+////        int[] paIndices = Utils.sort(pa);
+////        int[] paTemp = Arrays.copyOf(paIndices, paIndices.length - 1);
+////        for (int k = 0; k < paTemp.length; k ++)
+////            paTemp[k] += 1;
+////        String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
+////        searcher.setStartSet(startSet);
+//
+//        selector.setEvaluator(evaluator);
+//        selector.setSearch(searcher);
+//
+//        // Obtain the indices of selected features
+//        selector.SelectAttributes(tempD);
+//        m_Indices2[j] = selector.selectedAttributes();
+//
+//
+//
+//        if (paAll.length != pa.length) {
+//            int[] tempIndex = {};
+//            int[] tempK = {};
+//            for (int k = 0; k < paAll.length ; k++) {
+//                if (m_Indices2[j][k] < paAll.length) {
+//                    for (int l : pa) {
+//                        if (m_Indices2[j][k] != l) {     // remove paAll-pa
+//                            tempIndex = A.append(tempIndex, m_Indices2[j][k]);
+//                            tempK = A.append(tempK, k);
+//                        }
+//                    }
+////                m_Indices2[j] = A.delete(m_Indices2[j],k);
+//                }
+//            }
+//            m_Indices2[j] = A.delete(m_Indices2[j], tempK);
+//            for (int k = 0; k < m_Indices2[j].length; k ++) {
+//                if ( m_Indices2[j][k] == j) {
+//                    m_Indices2[j] = A.delete(m_Indices2[j],k);
+//                    m_Indices2[j] = A.append(m_Indices2[j],j);
+//                    break;
+//                }
+//            }
+//
+//
+//            int[] paIndex = Utils.sort(paAll);
+//            for (int k : tempIndex) {
+//                for (int l : paIndex) {
+//                    if (k == l) {
+//                        m_paPACC = A.append(m_paPACC, paAll[l]);
+//                    }
+//                }
+//            }
+//        }
+//
+//        m_Indices2[j] = shiftIndices(m_Indices2[j], L, paAll);
+//
+//        D_j.setClassIndex(0);
+//        Instances outputD = MLUtils.keepAttributesAt(new Instances(D_j), m_Indices2[j], n);
+//        outputD.setClassIndex(L);
+//        D_j.setClassIndex(L);
+//
+//        // Save the header information for transform the test instance
+//        m_instHeader[j] = new Instances(outputD);
+//        m_instHeader[j].delete();
+//
+//        System.out.println(j + " " + (outputD.numAttributes() - L));
+//
+//        m_FlagFS[1] =true;
+//        return outputD;
+//    }
+
+
 
 
     // Transform an test instance based on the indices of selected features

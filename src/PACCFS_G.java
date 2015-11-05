@@ -10,11 +10,11 @@ import weka.core.Instances;
 import weka.core.Instance;
 import weka.core.Utils;
 
-
 /**
- * PACCFS with the second-stage feature selection.
+ *  PACC with the first-stage feature selection.
  */
-public class PACCFS_II extends CC {
+
+public class PACCFS_G extends CC {
 
 
     private MLFeaSelect mlFeaSelect;
@@ -25,31 +25,25 @@ public class PACCFS_II extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-        // Get the IR factor for Wrapper
-        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
-
-        // Use IG-Filter as preprocessing
+        // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
+//        mlFeaSelect.setPercentFeature(0.2);
+//        mlFeaSelect.setNumThreads(8);
         mlFeaSelect.setFilterIG(true);
-//        mlFeaSelect.setPercentFeature(0.04);
+        mlFeaSelect.setPercentFeature(0.5);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
-
         polytree.setDepMode(false);
-        int[][] pa = polytree.polyTree(D, null);
-//        int[][] pa = polytree.polyTree(D, newD);
-
+        int[][] pa = polytree.polyTree(D, newD);
         m_Chain = polytree.getChainOrder();
 
         // Building the PACC
-//        Instances[] newD = new Instances[L];
         nodes = new CNode[L];
         for (int j : m_Chain) {
-//            newD[j] = mlFeaSelect.feaSelect2(D, j, pa[j], IRfactor[j]);
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], IRfactor[j]);
+//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j]);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

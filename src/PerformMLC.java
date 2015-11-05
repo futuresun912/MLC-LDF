@@ -13,7 +13,7 @@ import meka.classifiers.multilabel.MULAN;
 public class PerformMLC {
 
     static String n = "5";         // n-fold
-    static String percent = "80.0"; // split percentage
+    static String percent = "75.0"; // split percentage
     static String outputType = "2"; // 1, 2, 3, 4, 5, 6
     static String baseline = "Logistic"; // SMO, Logistic
     static String[] gOptions = new String[12];  // general options
@@ -28,13 +28,14 @@ public class PerformMLC {
             "medical",      // 6
             "enron",        // 7
             "languagelog",  // 8
-//            "CAL500",       // 9
-//            "Corel5k",      // 10
-//            "bibtex",       // 11
+
+            "mediamill",    // 9
+            "Corel5k",      // 10
+            "bibtex",       // 11
 //
+//            "CAL500",       // 9
 //            "rcv1subset1",   // 11
 //            "rcv1subset3",   // 12
-//            "mediamill",    // 13
 //            "delicious"      // 15
 
     };
@@ -53,132 +54,141 @@ public class PerformMLC {
         CCFS_I testClassifier61 = new CCFS_I();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
         BCCFS_I testClassifier71 = new BCCFS_I();      // BCC-FS
-        PACCFS testClassifier8 = new PACCFS();        // PACC-FS
-        PACCFS_I testClassifier9 = new PACCFS_I();    // PACC-Filter
+        PACCFS testClassifier8 = new PACCFS();        // PACC-LDF
+        PACCFS_I testClassifier9 = new PACCFS_I();    // PACC-Cfs
         PACCFS_II testClassifier10 = new PACCFS_II();    // PACC-Wrapper
+        PACCFS_G testClassifier11 = new PACCFS_G();    // PACC-IG
+        PACCFS_III testClassifier12 = new PACCFS_III();   //PACC-(IG+Cfs)
 
-//        // **************************************************************
-//        // *************** Evaluate a single method *********************
-//        // **************************************************************
-//
-//        String filename = arfflist[5];
-//
-////        String filename = "dim10_label5";
-//
-//        int i = 10;
-//
-//        switch (i) {
-//            case 0:
-//                setTestOptions(filename, "br", 1, 0);
-//                Evaluation.runExperiment(testClassifier0, options);
-//                break;
-//            case 1:
-//                setTestOptions(filename, "cc", 1, 0);
-//                Evaluation.runExperiment(testClassifier1, options);
-//                break;
-//            case 2:
-//                setTestOptions(filename, "bcc", 1, 0);
-//                Evaluation.runExperiment(testClassifier2, options);
-//                break;
-//            case 3:
-//                setTestOptions(filename, "pacc", 1, 0);
-//                Evaluation.runExperiment(testClassifier3, options);
-//                break;
-//            case 4:
-//                setTestOptions(filename, "mlknn", 1, 1);
-//                Evaluation.runExperiment(testClassifier4, options);
-//                break;
-//            case 5:
-//                setTestOptions(filename, "brfs", 1, 0);
-//                Evaluation.runExperiment(testClassifier5, options);
-//                break;
-//            case 6:
-//                setTestOptions(filename, "ccfs", 1, 0);
-//                Evaluation.runExperiment(testClassifier6, options);
-//                break;
-//            case 61:
-//                setTestOptions(filename, "ccfs-I", 1, 0);
-//                Evaluation.runExperiment(testClassifier61, options);
-//                break;
-//            case 7:
-//                setTestOptions(filename, "bccfs", 1, 0);
-//                Evaluation.runExperiment(testClassifier7, options);
-//                break;
-//            case 8:
-//                setTestOptions(filename, "paccfs", 1, 0);
-//                Evaluation.runExperiment(testClassifier8, options);
-//                break;
-//            case 9:
-//                setTestOptions(filename, "paccfs-I", 1, 0);
-//                Evaluation.runExperiment(testClassifier9, options);
-//                break;
-//            case 10:
-//                setTestOptions(filename, "paccfs-II", 1, 0);
-//                Evaluation.runExperiment(testClassifier10, options);
-//                break;
-//        }
-//        // **************************************************************
-//        // **************************************************************
-//        // **************************************************************
+        // **************************************************************
+        // *************** Evaluate a single method *********************
+        // **************************************************************
 
+//        String filename = arfflist[2];
+        String filename = "data10";
 
+        int i = 12;
 
-		 //**************************************************************
-		 //************** Experiments on all methods ********************
-		 //**************************************************************
-		 for (int i = 6 ; i < arfflist.length; i ++) { // traverse all data sets
-
-//			 setTestOptions(arfflist[i], "br", 1, 0);
-//			 EvaluationPro.runExperiment(testClassifier0, options);
-//
-//			 setTestOptions(arfflist[i], "bcc", 1, 0);
-//			 EvaluationPro.runExperiment(testClassifier2, options);
-//
-//             setTestOptions(arfflist[i], "bccpro", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier21, options);
-//
-//             setTestOptions(arfflist[i], "pacc", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier3, options);
-//
-//			 setTestOptions(arfflist[i], "mlknn", 1, 1);
-//			 EvaluationPro.runExperiment(testClassifier4, options);
-//
-//			 setTestOptions(arfflist[i], "brfs", 1, 0);
-//			 EvaluationPro.runExperiment(testClassifier5, options);
-//
-//             setTestOptions(arfflist[i], "brfsI", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier51, options);
-//
-//             setTestOptions(arfflist[i], "bccfs", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier7, options);
-//
-//             setTestOptions(arfflist[i], "paccfs", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier8, options);
-//
-//             setTestOptions(arfflist[i], "bccfsI", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier71, options);
-//
-//             setTestOptions(arfflist[i], "paccfs-I", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier9, options);
-
-             setTestOptions(arfflist[i], "paccfs-II", 1, 0);
-             EvaluationPro.runExperiment(testClassifier10, options);
+        switch (i) {
+            case 0:
+                setTestOptions(filename, "br", 1, 0);
+                Evaluation.runExperiment(testClassifier0, options);
+                break;
+            case 1:
+                setTestOptions(filename, "cc", 1, 0);
+                Evaluation.runExperiment(testClassifier1, options);
+                break;
+            case 2:
+                setTestOptions(filename, "bcc", 1, 0);
+                Evaluation.runExperiment(testClassifier21, options);
+                break;
+            case 3:
+                setTestOptions(filename, "pacc", 1, 0);
+                Evaluation.runExperiment(testClassifier3, options);
+                break;
+            case 4:
+                setTestOptions(filename, "mlknn", 1, 1);
+                Evaluation.runExperiment(testClassifier4, options);
+                break;
+            case 5:
+                setTestOptions(filename, "brfs", 1, 0);
+                Evaluation.runExperiment(testClassifier5, options);
+                break;
+            case 6:
+                setTestOptions(filename, "ccfs", 1, 0);
+                Evaluation.runExperiment(testClassifier6, options);
+                break;
+            case 61:
+                setTestOptions(filename, "ccfs-I", 1, 0);
+                Evaluation.runExperiment(testClassifier61, options);
+                break;
+            case 7:
+                setTestOptions(filename, "bccfs", 1, 0);
+                Evaluation.runExperiment(testClassifier7, options);
+                break;
+            case 8:
+                setTestOptions(filename, "paccfs", 1, 0);
+                Evaluation.runExperiment(testClassifier8, options);
+                break;
+            case 9:
+                setTestOptions(filename, "paccfs-I", 1, 0);
+                Evaluation.runExperiment(testClassifier9, options);
+                break;
+            case 10:
+                setTestOptions(filename, "paccfs-II", 1, 0);
+                Evaluation.runExperiment(testClassifier10, options);
+                break;
+            case 11:
+                setTestOptions(filename, "paccfs-G", 1, 0);
+                Evaluation.runExperiment(testClassifier11, options);
+                break;
+            case 12:
+                setTestOptions(filename, "paccfs-III", 1, 0);
+                Evaluation.runExperiment(testClassifier12, options);
+                break;
+        }
+        // **************************************************************
+        // **************************************************************
+        // **************************************************************
 
 
+
+//		 //**************************************************************
+//		 //************** Experiments on all methods ********************
+//		 //**************************************************************
+//		 for (int i = 9 ; i < arfflist.length; i ++) { // traverse all data sets
+//
+////			 setTestOptions(arfflist[i], "br", 1, 0);
+////			 EvaluationPro.runExperiment(testClassifier0, options);
+////
+//////			 setTestOptions(arfflist[i], "bcc", 1, 0);
+//////			 EvaluationPro.runExperiment(testClassifier2, options);
+////
+////             setTestOptions(arfflist[i], "bccpro", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier21, options);
+////
+////             setTestOptions(arfflist[i], "pacc", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier3, options);
+////
+////			 setTestOptions(arfflist[i], "mlknn", 1, 1);
+////			 EvaluationPro.runExperiment(testClassifier4, options);
+////
+////			 setTestOptions(arfflist[i], "brfs", 1, 0);
+////			 EvaluationPro.runExperiment(testClassifier5, options);
+////
+////             setTestOptions(arfflist[i], "brfsI", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier51, options);
+////
+////             setTestOptions(arfflist[i], "bccfs", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier7, options);
+////
+////             setTestOptions(arfflist[i], "paccfs", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier8, options);
+////
+////             setTestOptions(arfflist[i], "bccfsI", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier71, options);
+////
+////             setTestOptions(arfflist[i], "paccfs-I", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier9, options);
+//
+////             setTestOptions(arfflist[i], "paccfs-II", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier10, options);
+//
+//
 //             // CC seems need to be performed separated from others
 //             setTestOptions(arfflist[i], "cc", 1, 0);
 //             EvaluationPro.runExperiment(testClassifier1, options);
-
-//             setTestOptions(arfflist[i], "ccfs", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier6, options);
 //
-//             setTestOptions(arfflist[i], "ccfsI", 1, 0);
-//             EvaluationPro.runExperiment(testClassifier61, options);
-
-		 }
-	   //**************************************************************
-	   //**************************************************************
-	   //**************************************************************
+////             setTestOptions(arfflist[i], "ccfs", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier6, options);
+////
+////             setTestOptions(arfflist[i], "ccfsI", 1, 0);
+////             EvaluationPro.runExperiment(testClassifier61, options);
+//
+//		 }
+//	   //**************************************************************
+//	   //**************************************************************
+//	   //**************************************************************
 
     }
 
@@ -216,8 +226,8 @@ public class PerformMLC {
 //		gOptions[10] = "weka.classifiers.bayes.NaiveBayes";
 
         // output debug information
-        gOptions[11] = "-output-debug-info";
-//        gOptions[11] = "";
+//        gOptions[11] = "-output-debug-info";
+        gOptions[11] = "";
 
         // *************** general options ********************
 

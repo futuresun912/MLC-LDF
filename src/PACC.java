@@ -23,20 +23,20 @@ public class PACC extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-        // Preprocessing for MI estimation
-        MLFeaSelect FSforDep = new MLFeaSelect(L);
-        FSforDep.setFilterIG(true);
-        FSforDep.setPercentFeature(0.5);
-        Instances[] newD = FSforDep.feaSelect1(D);
+//        // Preprocessing for MI estimation
+//        MLFeaSelect FSforDep = new MLFeaSelect(L);
+//        FSforDep.setFilterIG(true);
+//        FSforDep.setPercentFeature(0.5);
+//        Instances[] newD = FSforDep.feaSelect1(D);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
 
-//        polytree.setDepMode(false);
-//        int[][] pa = polytree.polyTree(D, null);
+        polytree.setDepMode(false);
+        int[][] pa = polytree.polyTree(D, null);
 
-        int[][] pa = polytree.polyTree(D, newD);
+//        int[][] pa = polytree.polyTree(D, newD);
 
         m_Chain = polytree.getChainOrder();
 

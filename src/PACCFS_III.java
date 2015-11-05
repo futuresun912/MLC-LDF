@@ -1,4 +1,3 @@
-
 import com.sun.deploy.util.ArrayUtil;
 import meka.classifiers.multilabel.CC;
 import meka.classifiers.multilabel.cc.CNode;
@@ -11,18 +10,9 @@ import weka.core.Utils;
 import java.util.Arrays;
 
 /**
- *  Future tasks:
- *  1. n-fold CV for depMatrix (numFold)
- *  2. How many features should be selected in the first-stage (#Feature varies among labels)
- *  3. How to compute the threshold for causalBasin (miThreshold)
- *  4. How to calculate the threshold for enhancing polytree
- *  5. Make the code simple and clear (remove the member variables of PACCsimple)
- */
-
-/**
  * Created by sunlu on 9/11/15.
  */
-public class PACCFS extends CC {
+public class PACCFS_III extends CC {
 
 
     private MLFeaSelect mlFeaSelect;
@@ -33,11 +23,10 @@ public class PACCFS extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-        // Get the IR factor for Wrapper
-        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
-
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
+        mlFeaSelect.setFilterIG(true);
+        mlFeaSelect.setPercentFeature(0.7);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         // Learning of the polytree
@@ -53,34 +42,16 @@ public class PACCFS extends CC {
         }
 
         // Building the PACC
-//        int[] paTemp = new int[]{};
-//        int[] paAll;
         nodes = new CNode[L];
+        double emptyIR = 0.0;
+        mlFeaSelect.setWrapperCfs(true);
         for (int j : m_Chain) {
-
-//            paAll = Arrays.copyOf(pa[j],pa[j].length);
-//
-//            for (int k : paTemp){
-//                int  count = 0;
-//                for (int l : paAll) {
-//                    if ( k != l )
-//                        count ++;
-//                }
-//                if (count == paAll.length)
-//                    paAll = A.append(paAll, k);
-//            }
-
-            // paAll saves all preceding labels,
-            // while pa[j] saves only the parents in the polytree
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], IRfactor[j]);
-//            pa[j] = mlFeaSelect.getPACCpa();
-
+            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], emptyIR);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
-
-//            paTemp = A.append(paTemp,j);
         }
-
+        System.out.println("********************************" +
+                "\n********************************");
     }
 
     // Test on a single instance deterministically
