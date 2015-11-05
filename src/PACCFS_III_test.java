@@ -1,7 +1,7 @@
 /**
- * Created by pipi on 10/14/15.
+ * Created by sunlu on 11/5/15.
  */
-
+import com.sun.deploy.util.ArrayUtil;
 import meka.classifiers.multilabel.CC;
 import meka.classifiers.multilabel.cc.CNode;
 import meka.core.A;
@@ -10,11 +10,12 @@ import weka.core.Instances;
 import weka.core.Instance;
 import weka.core.Utils;
 
-/**
- *  PACC with the first-stage feature selection.
- */
+import java.util.Arrays;
 
-public class PACCFS_G extends CC {
+/**
+ * Created by sunlu on 9/11/15.
+ */
+public class PACCFS_III_test extends CC {
 
 
     private MLFeaSelect mlFeaSelect;
@@ -25,16 +26,15 @@ public class PACCFS_G extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-//        // Get the IR factor for Wrapper
-//        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+        // Get the IR factor for Wrapper
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+        System.out.println(A.toString(IRfactor));
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
-//        mlFeaSelect.setPercentFeature(0.2);
-//        mlFeaSelect.setNumThreads(8);
         mlFeaSelect.setFilterIG(true);
-        mlFeaSelect.setPercentFeature(0.4);
-        Instances[] newD = mlFeaSelect.feaSelect1(D);
+//        mlFeaSelect.setPercentFeature(0.4);
+        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
@@ -43,18 +43,23 @@ public class PACCFS_G extends CC {
         int[][] pa = polytree.polyTree(D, newD);
         m_Chain = polytree.getChainOrder();
 
-        // Building the PACC
-        nodes = new CNode[L];
-        for (int j : m_Chain) {
-//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j]);
-            nodes[j] = new CNode(j, null, pa[j]);
-            nodes[j].build(newD[j], m_Classifier);
-        }
-
         if (getDebug()) {
             System.out.println(A.toString(m_Chain));
             System.out.println(M.toString(pa));
         }
+
+        // Building the PACC
+        nodes = new CNode[L];
+        double emptyIR = 0.0;
+        mlFeaSelect.setWrapperCfs(true);
+        for (int j : m_Chain) {
+//            newD[j] = mlFeaSelect.feaSelect2CFS(newD[j], j, pa[j], emptyIR);
+            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], emptyIR);
+            nodes[j] = new CNode(j, null, pa[j]);
+            nodes[j].build(newD[j], m_Classifier);
+        }
+        System.out.println("********************************" +
+                "\n********************************");
     }
 
     // Test on a single instance deterministically

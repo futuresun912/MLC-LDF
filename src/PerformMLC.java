@@ -59,15 +59,17 @@ public class PerformMLC {
         PACCFS_II testClassifier10 = new PACCFS_II();    // PACC-Wrapper
         PACCFS_G testClassifier11 = new PACCFS_G();    // PACC-IG
         PACCFS_III testClassifier12 = new PACCFS_III();   //PACC-(IG+Cfs)
+        PACCFS_IG_test testClassifier99 = new PACCFS_IG_test();   //PACC-(IG+Cfs)
+        PACCFS_III_test testClassifier98 = new PACCFS_III_test();   //PACC-(IG+Cfs)
 
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
 
-        String filename = arfflist[1];
+        String filename = arfflist[4];
 //        String filename = "data2";
 
-        int i = 12;
+        int i = 98;
 
         switch (i) {
             case 0:
@@ -125,6 +127,14 @@ public class PerformMLC {
             case 12:
                 setTestOptions(filename, "paccfs-III", 1, 0);
                 Evaluation.runExperiment(testClassifier12, options);
+                break;
+            case 99:
+                setTestOptions(filename, "paccfs-IG-test", 1, 0);
+                Evaluation.runExperiment(testClassifier99, options);
+                break;
+            case 98:
+                setTestOptions(filename, "paccfs-III-test", 1, 0);
+                Evaluation.runExperiment(testClassifier98, options);
                 break;
         }
         // **************************************************************

@@ -1,4 +1,7 @@
 /**
+ * Created by sunlu on 11/5/15.
+ */
+/**
  * Created by pipi on 10/14/15.
  */
 
@@ -14,7 +17,7 @@ import weka.core.Utils;
  *  PACC with the first-stage feature selection.
  */
 
-public class PACCFS_G extends CC {
+public class PACCFS_IG_test extends CC {
 
 
     private MLFeaSelect mlFeaSelect;
@@ -25,16 +28,17 @@ public class PACCFS_G extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-//        // Get the IR factor for Wrapper
-//        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+        // Get the IR factor for Wrapper
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+        System.out.println(A.toString(IRfactor));
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
 //        mlFeaSelect.setPercentFeature(0.2);
 //        mlFeaSelect.setNumThreads(8);
         mlFeaSelect.setFilterIG(true);
-        mlFeaSelect.setPercentFeature(0.4);
-        Instances[] newD = mlFeaSelect.feaSelect1(D);
+//        mlFeaSelect.setPercentFeature(0.4);
+        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();

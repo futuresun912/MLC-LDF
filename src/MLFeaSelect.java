@@ -178,6 +178,112 @@ public class MLFeaSelect {
     }
 
 
+    // The first-stage feature selection for MLC
+    protected Instances[] feaSelect1IR(Instances D, double[] factor) throws Exception {
+
+        int n = D.numAttributes();
+        Instances[] outputD = new Instances[L];
+
+        if (!m_IG_On) {
+            AttributeSelection selector;
+            CfsSubsetEval evaluator;
+            GreedyStepwise searcher;
+
+            // Perform FS for each label
+            for (int j = 0; j < L; j++) {
+
+                // Remove all the labels except j
+                int[] pa = new int[0];
+                pa = A.append(pa, j);
+                Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
+                D_j.setClassIndex(0);
+
+                // Initializing the feature selector
+                selector = new AttributeSelection();
+                evaluator = new CfsSubsetEval();
+                searcher = new GreedyStepwise();
+                searcher.setNumExecutionSlots(m_numThreads);
+                searcher.setConservativeForwardSelection(true);
+
+                selector.setEvaluator(evaluator);
+                selector.setSearch(searcher);
+
+                // Obtain the indices of selected features
+                selector.SelectAttributes(D_j);
+                m_Indices1[j] = selector.selectedAttributes();
+                // Sort the selected features for the Ranker
+//            if (searcher instanceof Ranker)
+//                m_FlagRanker = true;
+                m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
+
+                D.setClassIndex(0);
+                outputD[j] = MLUtils.keepAttributesAt(new Instances(D), m_Indices1[j], n);
+                outputD[j].setClassIndex(L);
+                D.setClassIndex(L);
+
+                m_instHeader[j] = new Instances(outputD[j]);
+                m_instHeader[j].delete();
+
+                m_FlagRanker = false;
+                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+            }
+        } else  {
+//            int numFeature;
+//            if (m_IGPercent) {
+//                numFeature = (int) ((n - L) * m_PercentFeature);
+//            }
+//            else {
+//                numFeature = n > 30 ? 30 : n;
+//            }
+
+//            int numFeature = (int) ( (n-L) * factor[j]);
+
+            AttributeSelection selector;
+            InfoGainAttributeEval evaluator;
+            Ranker searcher;
+
+            // Perform FS for each label
+            for (int j = 0; j < L; j++) {
+
+                // Remove all the labels except j
+                int[] pa = new int[0];
+                pa = A.append(pa, j);
+                Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
+                D_j.setClassIndex(0);
+
+                int numFeature = (int) ( (n-L) * factor[j]);
+                selector = new AttributeSelection();
+                evaluator = new InfoGainAttributeEval();
+                searcher = new Ranker();
+                searcher.setNumToSelect(numFeature);
+                selector.setEvaluator(evaluator);
+                selector.setSearch(searcher);
+
+                // Obtain the indices of selected features
+                selector.SelectAttributes(D_j);
+                m_Indices1[j] = selector.selectedAttributes();
+                // Sort the selected features for the Ranker
+                m_FlagRanker = true;
+                m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
+
+                D.setClassIndex(0);
+                outputD[j] = MLUtils.keepAttributesAt(new Instances(D), m_Indices1[j], n);
+                outputD[j].setClassIndex(L);
+                D.setClassIndex(L);
+
+                m_instHeader[j] = new Instances(outputD[j]);
+                m_instHeader[j].delete();
+
+                System.out.println(j+" "+(outputD[j].numAttributes()-L));
+            }
+        }
+
+        System.out.println("********************************");
+        m_FlagFS[0] = true;
+        return outputD;
+    }
+
+
     // The second-stage feature selection for MLC
     protected Instances feaSelect2(Instances D_j, int j, int[] pa, double factor) throws Exception {
 
@@ -244,7 +350,6 @@ public class MLFeaSelect {
         m_instHeader[j].delete();
 
         System.out.println(j + " " + (outputD.numAttributes() - L));
-
         m_FlagFS[1] =true;
         return outputD;
     }
@@ -264,14 +369,10 @@ public class MLFeaSelect {
 
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
-
-
         // Wrapper evaluator
         CfsSubsetEval evaluator = new CfsSubsetEval();
 
         // GreedyStepwise search
-//        GreedyCC searcher = new GreedyCC();
-//        searcher.m_pa = pa;
         GreedyStepwise searcher = new GreedyStepwise();
         searcher.setNumExecutionSlots(m_numThreads);
         searcher.setConservativeForwardSelection(true);
@@ -294,7 +395,6 @@ public class MLFeaSelect {
         m_instHeader[j].delete();
 
         System.out.println(j + " " + (outputD.numAttributes() - L));
-
         m_FlagFS[1] =true;
         return outputD;
     }

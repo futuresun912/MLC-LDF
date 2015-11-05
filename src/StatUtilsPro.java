@@ -117,10 +117,22 @@ public class StatUtilsPro extends StatUtils{
             varIR += Math.pow((IR[j]-meanIR), 2) / (L-1);
         CVIR = Math.pow(varIR,0.5)/meanIR;
 
-        // compute the IR facter for balancing Wrapper's merit
+//        // compute the IR facter for balancing Wrapper's merit
+//        for (int j = 0; j < L; j ++) {
+//            double temp = Math.exp(Math.pow(IR[j] * meanIR, 0.5) * CVIR);
+//            factor[j] = 2 * (temp - 1) / (temp + 1);
+//        }
+
+        // compute the IR facter for the IG-based filtering
+        double maxValue = 0.6;
+        double minValue = 0.2;
         for (int j = 0; j < L; j ++) {
-            double temp = Math.exp(Math.pow(IR[j] * meanIR, 0.5) * CVIR);
-            factor[j] = 2 * (temp - 1) / (temp + 1);
+//            double temp = Math.exp(1/(Math.pow(IR[j] * meanIR, 0.5) * CVIR));
+//            double temp = Math.exp(1/(Math.pow(IR[j], 0.5)));
+            double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
+            factor[j] =  (temp - 1) / (temp + 1) ;
+            factor[j] = factor[j] > maxValue ? maxValue : factor[j];
+            factor[j] = factor[j] < minValue ? minValue : factor[j];
         }
 
 //        System.out.println("meanIR = "+meanIR);
