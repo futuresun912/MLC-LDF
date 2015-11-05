@@ -48,28 +48,48 @@ public class PerformMLC {
         BCCpro testClassifier21 = new BCCpro();  // BCC built on normalized MI matirx
         PACC testClassifier3 = new PACC();
         MULAN testClassifier4 = new MULAN();      // MLkNN
+
+
+        // **************************************************************
+        // the following seven XXFS class is unavailable
         BRFS testClassifier5 = new BRFS();        // BR-FS
-        BRFS_I testClassifier51 = new BRFS_I();        // BR-FS
         CCFS testClassifier6 = new CCFS();        // CC-FS
-        CCFS_I testClassifier61 = new CCFS_I();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
-        BCCFS_I testClassifier71 = new BCCFS_I();      // BCC-FS
         PACCFS testClassifier8 = new PACCFS();        // PACC-(Cfs+Wrapper)
-        PACCFS_I testClassifier9 = new PACCFS_I();    // PACC-Cfs
         PACCFS_II testClassifier10 = new PACCFS_II();    // PACC-Wrapper
         PACCFS_G testClassifier11 = new PACCFS_G();    // PACC-IG
         PACCFS_III testClassifier12 = new PACCFS_III();   //PACC-(IG+Cfs)
-        PACCFS_IG_test testClassifier99 = new PACCFS_IG_test();   //PACC-(IG+Cfs)
-        PACCFS_III_test testClassifier98 = new PACCFS_III_test();   //PACC-(IG+Cfs)
+        // **************************************************************
+
+
+        // **************************************************************
+        // **************************************************************
+        PACCFS_IG_test testClassifier99 = new PACCFS_IG_test();   // PACC-IG
+        PACCFS_I testClassifier9 = new PACCFS_I();                // PACC-CFS
+        PACCFS_III_test testClassifier98 = new PACCFS_III_test(); // PACC-IG+Cfs
+
+        CCLDF_IG testClassifier62 = new CCLDF_IG();               // CC-IG
+        CCFS_I testClassifier61 = new CCFS_I();                   // CC-CFS
+        CCLDF testClassifier63 = new CCLDF();                     // CC-IG+CFS
+
+        BCCLDF_IG testClassifier72 = new BCCLDF_IG();             // BCC-IG
+        BCCFS_I testClassifier71 = new BCCFS_I();                 // BCC-CFS
+        BCCLDF testClassifier73 = new BCCLDF();                   // BCC-IG+CFS
+
+        BRLDF_IG testClassifier52 = new BRLDF_IG();               // BR-IG
+        BRFS_I testClassifier51 = new BRFS_I();                   // BR-CFS
+        BRLDF testClassifier53 = new BRLDF();                     // BR-IG+CFS
+
+
 
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
 
-        String filename = arfflist[4];
+        String filename = arfflist[1];
 //        String filename = "data2";
 
-        int i = 98;
+        int i = 0;
 
         switch (i) {
             case 0:
@@ -135,6 +155,38 @@ public class PerformMLC {
             case 98:
                 setTestOptions(filename, "paccfs-III-test", 1, 0);
                 Evaluation.runExperiment(testClassifier98, options);
+                break;
+            case 62:
+                setTestOptions(filename, "ccldf_IG", 1, 0);
+                Evaluation.runExperiment(testClassifier62, options);
+                break;
+            case 63:
+                setTestOptions(filename, "ccldf", 1, 0);
+                Evaluation.runExperiment(testClassifier63, options);
+                break;
+            case 72:
+                setTestOptions(filename, "bccldf_IG", 1, 0);
+                Evaluation.runExperiment(testClassifier72, options);
+                break;
+            case 71:
+                setTestOptions(filename, "bccldf_CFS", 1, 0);
+                Evaluation.runExperiment(testClassifier71, options);
+                break;
+            case 73:
+                setTestOptions(filename, "bccldf", 1, 0);
+                Evaluation.runExperiment(testClassifier73, options);
+                break;
+            case 52:
+                setTestOptions(filename, "brldf_IG", 1, 0);
+                Evaluation.runExperiment(testClassifier52, options);
+                break;
+            case 51:
+                setTestOptions(filename, "brldf_CFS", 1, 0);
+                Evaluation.runExperiment(testClassifier51, options);
+                break;
+            case 53:
+                setTestOptions(filename, "brldf", 1, 0);
+                Evaluation.runExperiment(testClassifier53, options);
                 break;
         }
         // **************************************************************

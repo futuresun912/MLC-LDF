@@ -11,7 +11,8 @@ import weka.core.Instance;
 import weka.core.Utils;
 
 /**
- *  PACC with the first-stage feature selection.
+ *  PACC with CFS-based feature selection.
+ *  pa(y_j) is set as the start set
  */
 
 public class PACCFS_I extends CC {
@@ -25,23 +26,24 @@ public class PACCFS_I extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-        // First-stage feature selection
-        mlFeaSelect = new MLFeaSelect(L);
-//        mlFeaSelect.setPercentFeature(0.2);
-//        mlFeaSelect.setNumThreads(8);
-        Instances[] newD = mlFeaSelect.feaSelect1(D);
-
         // Learning of the polytree
         Polytree polytree = new Polytree();
         polytree.setNumFolds(5);
         polytree.setDepMode(false);
-        int[][] pa = polytree.polyTree(D, newD);
+        int[][] pa = polytree.polyTree(D, null);
         m_Chain = polytree.getChainOrder();
+
+        // CFS-based feature selection
+        mlFeaSelect = new MLFeaSelect(L);
+//        Instances[] newD = mlFeaSelect.feaSelect1(D);
+        mlFeaSelect.setWrapperCfs(true);
+        double emptyIR = 0.0;
+        Instances[] newD = new Instances[L];
 
         // Building the PACC
         nodes = new CNode[L];
         for (int j : m_Chain) {
-//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j]);
+            newD[j] = mlFeaSelect.feaSelect2(D, j, pa[j], emptyIR);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

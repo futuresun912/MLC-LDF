@@ -1,6 +1,11 @@
 /**
- * Created by sunlu on 10/25/15.
+ * Created by sunlu on 11/5/15.
  */
+/**
+ * Created by sunlu on 11/5/15.
+ * CC with IG + CFS
+ */
+
 
 import meka.classifiers.multilabel.CC;
 import meka.classifiers.multilabel.cc.CNode;
@@ -11,17 +16,17 @@ import weka.core.Instances;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Created by sunlu on 11/5/15.
- * CC with CFS based feature selection
- * pa(y_j) is set as the start set of search algorithm
- */
-public class CCFS_I extends CC {
+
+public class CCLDF extends CC {
 
     private MLFeaSelect mlFeaSelect;
 
     public void buildClassifier(Instances D) throws Exception {
         testCapabilities(D);
+
+        // Get the IR factor for Wrapper
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+        System.out.println(A.toString(IRfactor));
 
         int L = D.classIndex();
         m_R = new Random(m_S);
@@ -33,17 +38,17 @@ public class CCFS_I extends CC {
             setChain(indices);
         }
 
-        // First-stage feature selection
+        // IG-based feature selection
         mlFeaSelect = new MLFeaSelect(L);
-//        Instances[] newD = mlFeaSelect.feaSelect1(D);
-        mlFeaSelect.setWrapperCfs(true);
-        double emptyIR = 0.0;
-        Instances[] newD = new Instances[L];
-
+        mlFeaSelect.setFilterIG(true);
+        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
         nodes = new CNode[L];
         int[] pa = new int[]{};
+        double emptyIR = 0.0;
+        mlFeaSelect.setWrapperCfs(true);
+
         for (int j : m_Chain) {
-            newD[j] = mlFeaSelect.feaSelect2(D, j, pa, emptyIR);
+            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa, emptyIR);
             nodes[j] = new CNode(j, null, pa);
             nodes[j].build(newD[j], m_Classifier);
             pa = A.append(pa, j);
@@ -62,7 +67,6 @@ public class CCFS_I extends CC {
         for (int j : m_Chain) {
             y[j] = nodes[j].classify((Instance)newX[j].copy(), y);
         }
-
         return y;
     }
 

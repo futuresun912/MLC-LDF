@@ -1,6 +1,8 @@
 /**
- * Created by sunlu on 10/25/15.
+ * Created by sunlu on 11/5/15.
+ * BR with IG + CFS
  */
+
 
 import meka.classifiers.multilabel.BR;
 import meka.core.MLUtils;
@@ -11,11 +13,8 @@ import weka.core.Instances;
 
 import java.util.Arrays;
 
-/**
- * Created by sunlu on 9/15/15.
- * BR with CFS
- */
-public class BRFS_I extends BR {
+
+public class BRLDF extends BR {
 
     protected Classifier m_MultiClassifiers[] = null;
     protected Instances m_InstancesTemplates[] = null;
@@ -26,17 +25,22 @@ public class BRFS_I extends BR {
         testCapabilities(D);
         int L = D.classIndex();
 
+        // Get the Imbalance ratio-related statistics
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
 
         m_MultiClassifiers = AbstractClassifier.makeCopies(m_Classifier, L);
         m_InstancesTemplates = new Instances[L];
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
-        Instances[] newD = mlFeaSelect.feaSelect1(D);
+        mlFeaSelect.setFilterIG(true);
+        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
+        double emptyIR = 0.0;
 
         for(int j = 0; j < L; j++) {
 
             int[] pa = new int[]{};
+            newD[j] = mlFeaSelect.feaSelect2CFS(newD[j], j, pa, emptyIR);
 
             // Remove labels except j-th
             Instances D_j = MLUtils.keepAttributesAt(new Instances(newD[j]), new int[]{j}, L);
@@ -68,3 +72,4 @@ public class BRFS_I extends BR {
     }
 
 }
+

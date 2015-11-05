@@ -14,7 +14,8 @@ import weka.core.Instance;
 import weka.core.Utils;
 
 /**
- *  PACC with the first-stage feature selection.
+ *  PACC with the IG-based first-stage feature selection.
+ *  the number of selected features is adjusted by the IR factor.
  */
 
 public class PACCFS_IG_test extends CC {

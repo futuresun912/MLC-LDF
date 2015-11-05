@@ -1,6 +1,4 @@
-/**
- * Created by sunlu on 11/5/15.
- */
+
 import com.sun.deploy.util.ArrayUtil;
 import meka.classifiers.multilabel.CC;
 import meka.classifiers.multilabel.cc.CNode;
@@ -14,6 +12,10 @@ import java.util.Arrays;
 
 /**
  * Created by sunlu on 9/11/15.
+ * PACC with two-stage feature selection
+ * IG: first stage; CFS: second stage
+ * In IG, #feature is adjusted by IR factor
+ * In CFS, pa(y_j) is set as the start set.
  */
 public class PACCFS_III_test extends CC {
 

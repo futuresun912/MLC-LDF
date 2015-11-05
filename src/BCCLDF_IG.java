@@ -1,6 +1,9 @@
 /**
- * Created by sunlu on 10/25/15.
+ * Created by sunlu on 11/5/15.
+ * BCC with IG feature selection
+ * IR factor is used
  */
+
 
 import meka.classifiers.multilabel.BCC;
 import meka.classifiers.multilabel.cc.CNode;
@@ -17,16 +20,16 @@ import weka.core.Utils;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Created by sunlu on 9/15/15.
- */
-public class BCCFS_I extends BCC {
+
+public class BCCLDF_IG extends BCC {
 
     private MLFeaSelect mlFeaSelect;
 
     public void buildClassifier(Instances D) throws Exception {
         testCapabilities(D);
 
+        // Get the IR factor for Wrapper
+        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
 
         m_R = new Random(getSeed());
         int L = D.classIndex();
@@ -74,14 +77,11 @@ public class BCCFS_I extends BCC {
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
-//        Instances[] newD = mlFeaSelect.feaSelect1(D);
-        mlFeaSelect.setWrapperCfs(true);
-        double emptyIR = 0.0;
-        Instances[] newD = new Instances[L];
+        mlFeaSelect.setFilterIG(true);
+        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
 
         nodes = new CNode[L];
         for (int j : m_Chain) {
-            newD[j] = mlFeaSelect.feaSelect2(D, j, paL[j], emptyIR);
             nodes[j] = new CNode(j, null, paL[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

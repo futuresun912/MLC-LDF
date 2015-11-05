@@ -85,6 +85,7 @@ public class MLFeaSelect {
             AttributeSelection selector;
             CfsSubsetEval evaluator;
             GreedyStepwise searcher;
+//            BestFirst searcher;
 
             // Perform FS for each label
             for (int j = 0; j < L; j++) {
@@ -98,9 +99,16 @@ public class MLFeaSelect {
                 // Initializing the feature selector
                 selector = new AttributeSelection();
                 evaluator = new CfsSubsetEval();
+
+                // Greedy search
                 searcher = new GreedyStepwise();
                 searcher.setNumExecutionSlots(m_numThreads);
                 searcher.setConservativeForwardSelection(true);
+
+//                // BestFirst search
+//                searcher = new BestFirst();
+//                searcher.setSearchTermination(10);
+//                searcher.setLookupCacheSize(5);
 
                 selector.setEvaluator(evaluator);
                 selector.setSearch(searcher);
@@ -108,9 +116,6 @@ public class MLFeaSelect {
                 // Obtain the indices of selected features
                 selector.SelectAttributes(D_j);
                 m_Indices1[j] = selector.selectedAttributes();
-                // Sort the selected features for the Ranker
-//            if (searcher instanceof Ranker)
-//                m_FlagRanker = true;
                 m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
 
                 D.setClassIndex(0);
@@ -120,9 +125,8 @@ public class MLFeaSelect {
 
                 m_instHeader[j] = new Instances(outputD[j]);
                 m_instHeader[j].delete();
-
                 m_FlagRanker = false;
-            System.out.println(j+" "+(outputD[j].numAttributes()-L));
+                System.out.println(j+" "+(outputD[j].numAttributes()-L));
             }
         } else  {
             int numFeature;
@@ -331,6 +335,12 @@ public class MLFeaSelect {
             searcher.setNumExecutionSlots(m_numThreads);
             searcher.setConservativeForwardSelection(true);
 
+//            // BestFirst search
+//            BestFirstLDF searcher = new BestFirstLDF();
+//            searcher.m_pa = pa;
+//            searcher.setSearchTermination(10);
+//            searcher.setLookupCacheSize(5);
+
             selector.setEvaluator(evaluator);
             selector.setSearch(searcher);
         }
@@ -376,6 +386,11 @@ public class MLFeaSelect {
         GreedyStepwise searcher = new GreedyStepwise();
         searcher.setNumExecutionSlots(m_numThreads);
         searcher.setConservativeForwardSelection(true);
+
+//        // BestFirst search
+//        BestFirst searcher = new BestFirst();
+//        searcher.setSearchTermination(10);
+//        searcher.setLookupCacheSize(5);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
