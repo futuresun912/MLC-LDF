@@ -26,7 +26,7 @@ public class PACCFS_III extends CC {
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
         mlFeaSelect.setFilterIG(true);
-        mlFeaSelect.setPercentFeature(0.7);
+        mlFeaSelect.setPercentFeature(0.4);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         // Learning of the polytree
@@ -46,6 +46,7 @@ public class PACCFS_III extends CC {
         double emptyIR = 0.0;
         mlFeaSelect.setWrapperCfs(true);
         for (int j : m_Chain) {
+//            newD[j] = mlFeaSelect.feaSelect2CFS(newD[j], j, pa[j], emptyIR);
             newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], emptyIR);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);

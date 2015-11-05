@@ -251,6 +251,57 @@ public class MLFeaSelect {
 
 
 
+    // The second-stage feature selection for MLC
+    protected Instances feaSelect2CFS(Instances D_j, int j, int[] pa, double factor) throws Exception {
+
+        int n = D_j.numAttributes();
+        pa = new int[0];
+
+        // Remove all the labels except j and its parents
+        D_j.setClassIndex(j);
+        pa = A.append(pa, j);
+        Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), pa, L);
+
+        // Initialization of the feature selector
+        AttributeSelection selector = new AttributeSelection();
+
+
+        // Wrapper evaluator
+        CfsSubsetEval evaluator = new CfsSubsetEval();
+
+        // GreedyStepwise search
+//        GreedyCC searcher = new GreedyCC();
+//        searcher.m_pa = pa;
+        GreedyStepwise searcher = new GreedyStepwise();
+        searcher.setNumExecutionSlots(m_numThreads);
+        searcher.setConservativeForwardSelection(true);
+
+        selector.setEvaluator(evaluator);
+        selector.setSearch(searcher);
+
+        // Obtain the indices of selected features
+        selector.SelectAttributes(tempD);
+        m_Indices2[j] = selector.selectedAttributes();
+        m_Indices2[j] = shiftIndices(m_Indices2[j], L, pa);
+
+        D_j.setClassIndex(0);
+        Instances outputD = MLUtils.keepAttributesAt(new Instances(D_j), m_Indices2[j], n);
+        outputD.setClassIndex(L);
+        D_j.setClassIndex(L);
+
+        // Save the header information for transform the test instance
+        m_instHeader[j] = new Instances(outputD);
+        m_instHeader[j].delete();
+
+        System.out.println(j + " " + (outputD.numAttributes() - L));
+
+        m_FlagFS[1] =true;
+        return outputD;
+    }
+
+
+
+
 //    // The second-stage feature selection for MLC
 //    protected Instances feaSelect2PACC(Instances D_j, int j, int[] paAll, int[] pa, double factor) throws Exception {
 //

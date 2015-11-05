@@ -54,7 +54,7 @@ public class PerformMLC {
         CCFS_I testClassifier61 = new CCFS_I();        // CC-FS
         BCCFS testClassifier7 = new BCCFS();      // BCC-FS
         BCCFS_I testClassifier71 = new BCCFS_I();      // BCC-FS
-        PACCFS testClassifier8 = new PACCFS();        // PACC-LDF
+        PACCFS testClassifier8 = new PACCFS();        // PACC-(Cfs+Wrapper)
         PACCFS_I testClassifier9 = new PACCFS_I();    // PACC-Cfs
         PACCFS_II testClassifier10 = new PACCFS_II();    // PACC-Wrapper
         PACCFS_G testClassifier11 = new PACCFS_G();    // PACC-IG
@@ -64,8 +64,8 @@ public class PerformMLC {
         // *************** Evaluate a single method *********************
         // **************************************************************
 
-//        String filename = arfflist[2];
-        String filename = "data10";
+        String filename = arfflist[1];
+//        String filename = "data2";
 
         int i = 12;
 

@@ -30,7 +30,7 @@ public class PACCFS_G extends CC {
 //        mlFeaSelect.setPercentFeature(0.2);
 //        mlFeaSelect.setNumThreads(8);
         mlFeaSelect.setFilterIG(true);
-        mlFeaSelect.setPercentFeature(0.5);
+        mlFeaSelect.setPercentFeature(0.4);
         Instances[] newD = mlFeaSelect.feaSelect1(D);
 
         // Learning of the polytree
