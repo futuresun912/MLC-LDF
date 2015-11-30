@@ -30,14 +30,12 @@ public class Polytree {
     private double para1;  // for miThreshold
     private int para2;       // set as max|pa(.)|
     private double[][] CD;
-//            = {{0.0,0.0,0.4,0.15,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.1,0.2,0.2,0.0,0.2},
-//            {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
-//            {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
-//            {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
+
     private boolean[] flagCB;
     private int numVisited;
     private boolean[] visited;
     private int L;
+//    private int L = 8;
     protected int[] chainOrder;
     protected int numFolds;
     protected boolean depMode;  // true for conMI; false for margMI
@@ -49,7 +47,17 @@ public class Polytree {
         this.depMode = false;
     }
 
-
+     // contradiction case (3 -> 4 && 3 <- 4)
+//    = {{0.0,0.0,0.4,0.15,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.1,0.2,0.2,0.0,0.2},
+//        {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
+//        {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
+//        {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
+    // partial polytree case
+//    = {{0.0,0.0,0.4,0.15,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.1,0.2,0.2,0.0,0.2},
+//        {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
+//        {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
+//        {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
+//     polytree case
     //        double CD[][] = {{0.0, 0.2, 0.4, 0.2,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.0,0.2,0.2,0.0,0.2},
 //                {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
 //                {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.2},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
@@ -85,8 +93,8 @@ public class Polytree {
     protected int[][] polyTree(Instances D, Instances[] newD) throws Exception {
 
         L = (D==null) ? newD[0].classIndex() : D.classIndex();
-        numVisited = 0;
         CD = new double[L][L];
+        numVisited = 0;
 
         int root = 0;
         int[][] pa = new int[L][0];
@@ -464,7 +472,7 @@ public class Polytree {
             for (int k : paTree[root]) {
                 if (j < k) {
                     // prevent from contradiction ( root -> j(k) && root <- j(k))
-                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2) {
+//                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2) {
                         if (CD[j][k] < miThreshold) {
                             if (!selected[j]) {
                                 paTemp = A.append(paTemp, j);
@@ -474,7 +482,7 @@ public class Polytree {
                                 paTemp = A.append(paTemp, k);
                                 selected[k] = true;
                             }
-                        }
+//                        }
                     }
                 }
             }
@@ -505,13 +513,13 @@ public class Polytree {
                         }
                     }
                 }
-                for (int j : paTree[root]) {
-                    if (paPoly[root][j] != 3) {
-                        paPoly[root][j] = 2;
-                        paPoly[j][root] = 3;
-                        flagCB[j] = true;
-                    }
-                }
+//                for (int j : paTree[root]) {
+//                    if (paPoly[root][j] != 3) {
+//                        paPoly[root][j] = 2;
+//                        paPoly[j][root] = 3;
+//                        flagCB[j] = true;
+//                    }
+//                }
 //            } else if (paTemp.length == paTree[root].length && paTemp.length > (maxN / 2)) {
 //                // 1.2 pa(root) occupies all the connected nodes, remove largest one node from it
 //                for (int j = 0; j < DepScore.length; j++) {
@@ -535,7 +543,20 @@ public class Polytree {
                     paPoly[j][root] = 2;
                     flagCB[root] = true;
                 }
-
+//                for (int j : paTree[root]) {
+//                    if (paPoly[root][j] != 3) {
+//                        paPoly[root][j] = 2;
+//                        paPoly[j][root] = 3;
+//                        flagCB[j] = true;
+//                    }
+//                }
+            }
+            for (int j : paTree[root]) {
+                if (paPoly[root][j] != 3) {
+                    paPoly[root][j] = 2;
+                    paPoly[j][root] = 3;
+                    flagCB[j] = true;
+                }
             }
             visited[root] = true;
             numVisited ++;
