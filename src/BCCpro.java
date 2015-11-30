@@ -5,6 +5,7 @@ import meka.core.M;
 import mst.Edge;
 import mst.EdgeWeightedGraph;
 import mst.KruskalMST;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
 
@@ -25,6 +26,7 @@ public class BCCpro extends BCC {
         double CD[][] = null;
         // CD is the normalized mutual information matrix.
         CD = StatUtilsPro.NormMargDep(D);
+
         if (getDebug())
             System.out.println("Normalized MI matrix: \n" + M.toString(CD));
 
@@ -137,5 +139,82 @@ public class BCCpro extends BCC {
             treeify(child,paM,paL,visited);
         }
     }
+
+
+    // ***************************************************************************************
+	// Exhaustive search *********************************************************************
+	// ***************************************************************************************
+    /**
+     * Push - increment y[0] until = K[0], then reset and start with y[0], etc ...
+     * Basically a counter.
+     * @return	True if finished
+     */
+    private static boolean push(double y[], int K[], int j) {
+        if (j >= y.length) {
+            return true;
+        }
+        else if (y[j] < K[j]-1) {
+            y[j]++;
+            return false;
+        }
+        else {
+            y[j] = 0.0;
+            return push(y,K,++j);
+        }
+    }
+
+    /**
+     * GetKs - return [K_1,K_2,...,K_L] where each Y_j \in {1,...,K_j}.
+     * In the multi-label case, K[j] = 2 for all j = 1,...,L.
+     * @param	D	a dataset
+     * @return	an array of the number of values that each label can take
+     */
+    private static int[] getKs(Instances D) {
+        int L = D.classIndex();
+        int K[] = new int[L];
+        for(int k = 0; k < L; k++) {
+            K[k] = D.attribute(k).numValues();
+        }
+        return K;
+    }
+
+    @Override
+    public double[] distributionForInstance(Instance xy) throws Exception {
+
+        int L = xy.classIndex();
+
+        double y[] = new double[L];
+        double w  = 0.0;
+
+		/*
+		 * e.g. K = [3,3,5]
+		 * we push y_[] from [0,0,0] to [2,2,4] over all necessary iterations.
+		 */
+        int K[] = getKs(xy.dataset());
+        if (getDebug())
+            System.out.println("K[] = "+Arrays.toString(K));
+        double y_[] = new double[L];
+
+        for(int i = 0; i < 1000000; i++) { // limit to 1m
+            //System.out.println(""+i+" "+Arrays.toString(y_));
+            double w_  = A.product(super.probabilityForInstance(xy,y_));
+            if (w_ > w) {
+                if (getDebug()) System.out.println("y' = "+Arrays.toString(y_)+", :"+w_);
+                y = Arrays.copyOf(y_,y_.length);
+                w = w_;
+            }
+            if (push(y_,K,0)) {
+                // Done !
+                if (getDebug())
+                    System.out.println("Tried all "+(i+1)+" combinations.");
+                break;
+            }
+        }
+
+        return y;
+    }
+    // ***************************************************************************************
+	// ***************************************************************************************
+	// ***************************************************************************************
 
 }

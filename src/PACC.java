@@ -22,23 +22,33 @@ public class PACC extends CC {
 
         testCapabilities(D);
         int L = D.classIndex();
+        Instances[] newD = null;
 
 //        // Preprocessing for MI estimation
 //        MLFeaSelect FSforDep = new MLFeaSelect(L);
 //        FSforDep.setFilterIG(true);
-//        FSforDep.setPercentFeature(0.5);
-//        Instances[] newD = FSforDep.feaSelect1(D);
+//        FSforDep.setPercentFeature(0.1);
+//        newD = FSforDep.feaSelect1(D);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
-        polytree.setNumFolds(5);
+//        polytree.setNumFolds(3);
 
-        polytree.setDepMode(false);
-        int[][] pa = polytree.polyTree(D, null);
+//        polytree.setDepMode(true);
+//        polytree.setPara1(0.3);
+//        polytree.setPara2(4);
+        int[][] pa = polytree.polyTree(D, newD);
 
 //        int[][] pa = polytree.polyTree(D, newD);
 
         m_Chain = polytree.getChainOrder();
+
+        if (getDebug()) {
+            System.out.println("m_Chain: \n"+A.toString(m_Chain));
+            System.out.println("pa: \n"+M.toString(pa));
+        }
+
+//        if (getDebug()) System.exit(0);
 
         // Building the PACC
         nodes = new CNode[L];
@@ -46,15 +56,87 @@ public class PACC extends CC {
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(D, m_Classifier);
         }
-
-        if (getDebug()) {
-            System.out.println(A.toString(m_Chain));
-            System.out.println(M.toString(pa));
-        }
     }
 
 
-//    // ***************************************************************************************
+////  // ***************************************************************************************
+////	// Exhaustive search *********************************************************************
+////	// ***************************************************************************************
+//    /**
+//     * Push - increment y[0] until = K[0], then reset and start with y[0], etc ...
+//     * Basically a counter.
+//     * @return	True if finished
+//     */
+//    private static boolean push(double y[], int K[], int j) {
+//        if (j >= y.length) {
+//            return true;
+//        }
+//        else if (y[j] < K[j]-1) {
+//            y[j]++;
+//            return false;
+//        }
+//        else {
+//            y[j] = 0.0;
+//            return push(y,K,++j);
+//        }
+//    }
+//
+//    /**
+//     * GetKs - return [K_1,K_2,...,K_L] where each Y_j \in {1,...,K_j}.
+//     * In the multi-label case, K[j] = 2 for all j = 1,...,L.
+//     * @param	D	a dataset
+//     * @return	an array of the number of values that each label can take
+//     */
+//    private static int[] getKs(Instances D) {
+//        int L = D.classIndex();
+//        int K[] = new int[L];
+//        for(int k = 0; k < L; k++) {
+//            K[k] = D.attribute(k).numValues();
+//        }
+//        return K;
+//    }
+//
+//    @Override
+//    public double[] distributionForInstance(Instance xy) throws Exception {
+//
+//        int L = xy.classIndex();
+//
+//        double y[] = new double[L];
+//        double w  = 0.0;
+//
+//		/*
+//		 * e.g. K = [3,3,5]
+//		 * we push y_[] from [0,0,0] to [2,2,4] over all necessary iterations.
+//		 */
+//        int K[] = getKs(xy.dataset());
+//        if (getDebug())
+//            System.out.println("K[] = "+Arrays.toString(K));
+//        double y_[] = new double[L];
+//
+//        for(int i = 0; i < 1000000; i++) { // limit to 1m
+//            //System.out.println(""+i+" "+Arrays.toString(y_));
+//            double w_  = A.product(super.probabilityForInstance(xy,y_));
+//            if (w_ > w) {
+//                if (getDebug()) System.out.println("y' = "+Arrays.toString(y_)+", :"+w_);
+//                y = Arrays.copyOf(y_,y_.length);
+//                w = w_;
+//            }
+//            if (push(y_,K,0)) {
+//                // Done !
+//                if (getDebug())
+//                    System.out.println("Tried all "+(i+1)+" combinations.");
+//                break;
+//            }
+//        }
+//
+//        return y;
+//    }
+////  // ***************************************************************************************
+////	// ***************************************************************************************
+////	// ***************************************************************************************
+
+
+//  // ***************************************************************************************
 //	// THE MAX-SUM ALGORITHM FOR INFERENCE ***************************************************
 //	// ***************************************************************************************
 //	@Override
@@ -200,7 +282,9 @@ public class PACC extends CC {
 //            return push(y,--j);
 //        }
 //    }
-
+//  // ***************************************************************************************
+//	// ***************************************************************************************
+//	// ***************************************************************************************
 
 
 

@@ -30,17 +30,18 @@ public class PACCFS_III_test extends CC {
 
         // Get the IR factor for Wrapper
         double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
-//        System.out.println(A.toString(IRfactor));
+        System.out.println(A.toString(IRfactor));
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
         mlFeaSelect.setFilterIG(true);
-//        mlFeaSelect.setPercentFeature(0.4);
+//        mlFeaSelect.setPercentFeature(0.5);
+//        Instances[] newD = mlFeaSelect.feaSelect1(D);
         Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
-        polytree.setNumFolds(5);
+        polytree.setNumFolds(3);
         polytree.setDepMode(false);
         int[][] pa = polytree.polyTree(D, newD);
         m_Chain = polytree.getChainOrder();
@@ -55,8 +56,8 @@ public class PACCFS_III_test extends CC {
         double emptyIR = 0.0;
         mlFeaSelect.setWrapperCfs(true);
         for (int j : m_Chain) {
-//            newD[j] = mlFeaSelect.feaSelect2CFS(newD[j], j, pa[j], emptyIR);
-            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], emptyIR);
+            newD[j] = mlFeaSelect.feaSelect2CFS(newD[j], j, pa[j], emptyIR);
+//            newD[j] = mlFeaSelect.feaSelect2(newD[j], j, pa[j], emptyIR);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(newD[j], m_Classifier);
         }

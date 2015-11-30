@@ -132,6 +132,7 @@ public class MLFeaSelect {
             int numFeature;
             if (m_IGPercent) {
                 numFeature = (int) ((n - L) * m_PercentFeature);
+//                numFeature = n > 20 ? 20 : n;
             }
             else {
                 numFeature = n > 30 ? 30 : n;
@@ -333,6 +334,7 @@ public class MLFeaSelect {
             GreedyCC searcher = new GreedyCC();
             searcher.m_pa = pa;
             searcher.setNumExecutionSlots(m_numThreads);
+//            searcher.setSearchBackwards(true);
 //            searcher.setConservativeForwardSelection(true);
 
 //            // BestFirst search

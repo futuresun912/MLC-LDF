@@ -26,14 +26,47 @@ import java.util.Arrays;
 
 public class Polytree {
 
+
+    private double para1;  // for miThreshold
+    private int para2;       // set as max|pa(.)|
     private double[][] CD;
+//            = {{0.0,0.0,0.4,0.15,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.1,0.2,0.2,0.0,0.2},
+//            {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
+//            {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
+//            {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
     private boolean[] flagCB;
     private int numVisited;
     private boolean[] visited;
     private int L;
     protected int[] chainOrder;
-    protected int numFolds = 5;
-    protected boolean depMode = true;  // true for conMI; false for margMI
+    protected int numFolds;
+    protected boolean depMode;  // true for conMI; false for margMI
+
+    public Polytree () {
+        this.para1 = 0.3;
+        this.para2 = 4;
+        this.numFolds = 3;
+        this.depMode = false;
+    }
+
+
+    //        double CD[][] = {{0.0, 0.2, 0.4, 0.2,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.0,0.2,0.2,0.0,0.2},
+//                {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
+//                {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.2},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
+//                {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
+//
+//        double CD[][] = {{0.0,0.0,0.4,0.2,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.0,0.2,0.2,0.0,0.2},
+//                {0.0,0.0,0.0,0.6,0.2,0.0,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
+//                {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
+//                {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
+
+    protected void setPara1(double fraction) throws Exception {
+        this.para1 = fraction;
+    }
+
+    protected void setPara2(int maxPa) throws Exception {
+        this.para2 = maxPa;
+    }
 
     protected void setNumFolds(int n) throws Exception {
         this.numFolds = n;
@@ -54,6 +87,7 @@ public class Polytree {
         L = (D==null) ? newD[0].classIndex() : D.classIndex();
         numVisited = 0;
         CD = new double[L][L];
+
         int root = 0;
         int[][] pa = new int[L][0];
         visited = new boolean[L];
@@ -79,9 +113,9 @@ public class Polytree {
         int[][] paPoly = new int[L][L];
         causalBasin(root, paTree, paPoly);
 
-        System.out.println(M.toString(CD));
-//        System.out.println(M.toString(paTree));
-//        System.out.println(M.toString(paPoly));
+        System.out.println("CD: \n"+M.toString(CD));
+        System.out.println("paTree: \n"+M.toString(paTree));
+        System.out.println("paPoly: \n"+M.toString(paPoly));
 
         // If causal basin can't cover all labels, build a directed tree (paTemp)
         int[][] paTemp = new int[L][0];
@@ -127,23 +161,23 @@ public class Polytree {
         rankLabel(root, paPoly, rank);
         chainOrder = Utils.sort(rank);
 
-        // Enhance the polytree
-        int[] temp = new int[]{};
-        double thCD = 0.01;
-        for (int j : chainOrder) {
-            for (int k : temp) {
-                if (paPoly[j][k] != 3) {
-
+//        // Enhance the polytree
+//        int[] temp = new int[]{};
+//        double thCD = 0.01;
+//        for (int j : chainOrder) {
+//            for (int k : temp) {
+//                if (paPoly[j][k] != 3) {
+//
 //                    pa[j] = A.append(pa[j], k);
-
-                    if (j < k && CD[j][k] > thCD)
-                        pa[j] = A.append(pa[j], k);
-                    if (j > k && CD[k][j] > thCD)
-                        pa[j] = A.append(pa[j], k);
-                }
-            }
-            temp = A.append(temp, j);
-        }
+//
+////                    if (j < k && CD[j][k] > thCD)
+////                        pa[j] = A.append(pa[j], k);
+////                    if (j > k && CD[k][j] > thCD)
+////                        pa[j] = A.append(pa[j], k);
+//                }
+//            }
+//            temp = A.append(temp, j);
+//        }
 
         return pa;
     }
@@ -234,6 +268,7 @@ public class Polytree {
 
         return MI;
 //        return MI / numFolds;
+//        return M.multiply(MI, 1.0 / (double) numFolds);
     }
 
 
@@ -252,19 +287,24 @@ public class Polytree {
             Arrays.fill(y, 0);
             p_1 = Math.max( miNodes[j][0].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );                         // p( y_j = 1 | x )
             p_1 = Math.min(p_1, 0.999999);
+            p_1 = Math.max(p_1, 0.000001);
 
             Arrays.fill(y, 0);
             p_2 = Math.max( miNodes[k][0].distribution((Instance)D_k.instance(i).copy(), y)[1], 0.000001 );                           // p( y_k = 1 | x )
             p_2 = Math.min(p_2, 0.999999);
+            p_2 = Math.max(p_2, 0.000001);
 
             Arrays.fill(y, 0);
             p_12[0] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 0, x )
             p_12[0] = Math.min(p_12[0], 0.999999);
+            p_12[0] = Math.max(p_12[0], 0.000001);
+
 
             Arrays.fill(y, 0);
             Arrays.fill(y, k, k+1, 1.0);
             p_12[1] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 1, x )
             p_12[1] = Math.min(p_12[1], 0.999999);
+            p_12[1] = Math.max(p_12[1], 0.000001);
 
             I += ( 1 - p_12[0] ) * ( 1 - p_2 ) * Math.log( ( 1 - p_12[0] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 0 )
             I += ( 1 - p_12[1] ) * (     p_2 ) * Math.log( ( 1 - p_12[1] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 1 )
@@ -285,7 +325,7 @@ public class Polytree {
 //        double I = 0.0;       		 	 // conditional mutual information for y_j and y_k
 //        double H_1 = 0.0;
 //        double H_2 = 0.0;                 // conditional entropy for Y_j and Y_k
-//        double minH;
+//        double minH, meanH;
 //        double p_1, p_2;      			 // p( y_j = 1 | x ), p( y_k = 1 | x )
 //        double p_12[] = {0.0,0.0};       // p_12[0] = p( y_j = 1 | y_k = 0, x ) and p_12[1] = p( y_j = 1 | y_k = 1, x )
 //
@@ -294,19 +334,24 @@ public class Polytree {
 //            Arrays.fill(y, 0);
 //            p_1 = Math.max( miNodes[j][0].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );                         // p( y_j = 1 | x )
 //            p_1 = Math.min(p_1, 0.999999);
+////            p_1 = Math.max(p_1, 0.000001);
 //
 //            Arrays.fill(y, 0);
 //            p_2 = Math.max(miNodes[k][0].distribution((Instance) D_k.instance(i).copy(), y)[1], 0.000001);                           // p( y_k = 1 | x )
 //            p_2 = Math.min(p_2, 0.999999);
+////            p_2 = Math.max(p_2, 0.000001);
 //
 //            Arrays.fill(y, 0);
 //            p_12[0] = Math.max(miNodes[j][k - j].distribution((Instance) D_j.instance(i).copy(), y)[1], 0.000001);     // p( y_j = 1 | y_k = 0, x )
 //            p_12[0] = Math.min(p_12[0], 0.999999);
+////            p_12[0] = Math.max(p_12[0], 0.000001);
+//
 //
 //            Arrays.fill(y, 0);
 //            Arrays.fill(y, k, k+1, 1.0);
 //            p_12[1] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 1, x )
 //            p_12[1] = Math.min(p_12[1], 0.999999);
+////            p_12[1] = Math.max(p_12[1], 0.000001);
 //
 //            // calculation of conditional MI
 //            I += ( 1 - p_12[0] ) * ( 1 - p_2 ) * Math.log( ( 1 - p_12[0] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 0 )
@@ -322,6 +367,7 @@ public class Polytree {
 //         }
 //
 //        minH = H_1 < H_2 ? H_1 : H_2;
+////        meanH = (H_1 + H_2) / 2.0;
 //
 //        return I / minH;
 //
@@ -352,7 +398,6 @@ public class Polytree {
                 G.addEdge(e);
             }
         }
-//        CD = M.multiply(CD, -1);
 
         KruskalMST mst = new KruskalMST(G);
         int[][] paTree =new int[L][0];
@@ -369,61 +414,19 @@ public class Polytree {
 
 
     // Find possible causal basins based on the tree skeleton
-    // paPoly contains three types of dependence: connected(1), children(2) and parents(3). (check it from rows not columns)
+    // paPoly contains three types of dependence: connected(1),
+    // children(2) and parents(3). (check it from rows not columns)
     private void causalBasin(int root, int[][] paTree, int[][] paPoly) throws Exception {
 
         if ( !visited[root] ) {
-            if ( paTree[root].length == 1 ) {      // 1 if root isn't multi-parent node
+            if ( paTree[root].length == 1 ) {      // if root isn't a multi-edge node
                 if (paPoly[root][paTree[root][0]] == 0) {
                     paPoly[root][paTree[root][0]] = 1;
                 }
                 visited[root] = true;
                 numVisited ++;
-            } else {                              // 2 if root is multi-parent node
-                // Calculation the threshold
-                double miSum = 0.0;
-                double miThreshold = 0.0;
-                for (int j : paTree[root]) {
-                    if (root < j)
-                        miSum += CD[root][j];
-                    else
-                        miSum += CD[j][root];
-                }
-                miThreshold = 0.1 * miSum / (double)paTree[root].length;
-//                System.out.println("node: "+root+"; Threshold: "+miThreshold);
-
-                for (int j : paTree[root]) {
-                    for (int k : paTree[root]) {
-                        if ( j < k ) {
-                            if (CD[j][k] < miThreshold) {
-                                paPoly[root][j] = 3;
-                                paPoly[root][k] = 3;
-                                paPoly[j][root] = 2;
-                                paPoly[k][root] = 2;
-                                flagCB[root] = true;
-                            }
-                        }
-                    }
-                }
-                if (flagCB[root]) {       // 2.1 if causal basin exists for root
-                    for (int j : paTree[root]) {
-                        if (paPoly[root][j] != 3) {
-                            paPoly[root][j] = 2;
-                            paPoly[j][root] = 3;
-                            flagCB[j] = true;
-                        }
-                    }
-                    visited[root] = true;
-                    numVisited ++;
-                } else {                         // 2.2 if causal basin doesn't exist for root
-                    for (int j : paTree[root]) {
-                        if (paPoly[root][j] == 0)
-                            paPoly[root][j] = 1;
-                    }
-
-                    visited[root] = true;
-                    numVisited ++;
-                }
+            } else {                              // if root is a multi-edge (more than two) node
+                zeroMI(root, paTree,paPoly);
             }
         }
 
@@ -437,6 +440,173 @@ public class Polytree {
         }
     }
 
+
+    private void zeroMI(int root, int[][] paTree, int[][] paPoly) throws Exception {
+
+        // Calculation the threshold
+//        double miSum = 0.0;
+//        double miThreshold;
+//        double[] temp = new double[paTree[root].length];
+        double min = 1.0;
+        for (int j : paTree[root]) {
+            if (root < j)
+                min = CD[root][j] < min ? CD[root][j] : min;
+            else
+                min = CD[j][root] < min ? CD[j][root] : min;
+        }
+        double miThreshold = para1 * min;
+        System.out.println("node "+(root+1)+"; Threshold: "+miThreshold);
+        // Find all the candidates parents by thresholding
+        int[] paTemp = new int[]{};
+        boolean[] selected = new boolean[paPoly[0].length];
+        Arrays.fill(selected, false);
+        for (int j : paTree[root]) {
+            for (int k : paTree[root]) {
+                if (j < k) {
+                    // prevent from contradiction ( root -> j(k) && root <- j(k))
+                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2) {
+                        if (CD[j][k] < miThreshold) {
+                            if (!selected[j]) {
+                                paTemp = A.append(paTemp, j);
+                                selected[j] = true;
+                            }
+                            if (!selected[k]) {
+                                paTemp = A.append(paTemp, k);
+                                selected[k] = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // 1 if root is a multi-parent node, save its direct parents and children if any
+        if (paTemp.length > 1) {
+            // Rank the parents by their average independence degrees
+            int maxN = para2;  // set the maximum number of parents
+            double[] DepScore = new double[paTemp.length];
+            for (int j = 0; j < paTemp.length; j++) {
+                for (int k : paTemp) {
+                        if (paTemp[j] < k)
+                            DepScore[j] = DepScore[j] + CD[paTemp[j]][k];
+                        else
+                            DepScore[j] = DepScore[j] + CD[k][paTemp[j]];
+                }
+            }
+            double[] copyDepScore = DepScore.clone();
+            Arrays.sort(copyDepScore);
+            // 1.1 |pa(root)| exceeds the maxN, remove some parents from pa(root)
+            if (paTemp.length > maxN) {
+                for (int j = 0; j < maxN; j++) {
+                    for (int k = 0; k < DepScore.length; k++) {
+                        if (copyDepScore[j] == DepScore[k]) {
+                            paPoly[root][paTemp[k]] = 3;
+                            paPoly[paTemp[k]][root] = 2;
+                            flagCB[root] = true;
+                        }
+                    }
+                }
+                for (int j : paTree[root]) {
+                    if (paPoly[root][j] != 3) {
+                        paPoly[root][j] = 2;
+                        paPoly[j][root] = 3;
+                        flagCB[j] = true;
+                    }
+                }
+//            } else if (paTemp.length == paTree[root].length && paTemp.length > (maxN / 2)) {
+//                // 1.2 pa(root) occupies all the connected nodes, remove largest one node from it
+//                for (int j = 0; j < DepScore.length; j++) {
+//                    if (copyDepScore[copyDepScore.length - 1] == DepScore[j]) {
+//                        paPoly[root][paTemp[j]] = 2;
+//                        paPoly[paTemp[j]][root] = 3;
+//                        flagCB[paTemp[j]] = true;
+//                    }
+//                }
+//                for (int j : paTree[root]) {
+//                    if (paPoly[root][j] != 2) {
+//                        paPoly[root][j] = 3;
+//                        paPoly[j][root] = 2;
+//                        flagCB[root] = true;
+//                    }
+//                }
+            } else {
+                // 1.3 otherwise (pa(root) is small enough), save the pa(root)
+                for (int j : paTemp) {
+                    paPoly[root][j] = 3;
+                    paPoly[j][root] = 2;
+                    flagCB[root] = true;
+                }
+
+            }
+            visited[root] = true;
+            numVisited ++;
+        } else if (flagCB[root]) {   // 2 if CB exists for root, build it following causal flows
+            for (int j : paTree[root]) {
+                if (paPoly[root][j] != 3) {
+                    paPoly[root][j] = 2;
+                    paPoly[j][root] = 3;
+                    flagCB[j] = true;
+                }
+            }
+            visited[root] = true;
+            numVisited ++;
+        } else {              // 3 if CB doesn't exist for root, assign undirected edges
+            for (int j : paTree[root]) {
+                if (paPoly[root][j] == 0)
+                    paPoly[root][j] = 1;
+            }
+
+            visited[root] = true;
+            numVisited ++;
+        }
+
+
+
+
+//        for (int j : paTree[root]) {
+//            if (root < j)
+//                miSum += CD[root][j];
+//            else
+//                miSum += CD[j][root];
+//        }
+//
+//        miThreshold = 0.3 * miSum / (double)paTree[root].length;
+////        System.out.println("node "+(root+1)+"; Threshold: "+miThreshold);
+
+//        for (int j : paTree[root]) {
+//            for (int k : paTree[root]) {
+//                if ( j < k ) {
+////                    if (CD[j][k] < miThreshold) {
+//                    if (CD[j][k] < miThreshold || CD[j][k] == 0.0) {
+//                        paPoly[root][j] = 3;
+//                        paPoly[root][k] = 3;
+//                        paPoly[j][root] = 2;
+//                        paPoly[k][root] = 2;
+//                        flagCB[root] = true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (flagCB[root]) {       // 2.1 if causal basin exists for root
+//            for (int j : paTree[root]) {
+//                if (paPoly[root][j] != 3) {
+//                    paPoly[root][j] = 2;
+//                    paPoly[j][root] = 3;
+//                    flagCB[j] = true;
+//                }
+//            }
+//            visited[root] = true;
+//            numVisited ++;
+//        } else {                         // 2.2 if causal basin doesn't exist for root
+//            for (int j : paTree[root]) {
+//                if (paPoly[root][j] == 0)
+//                    paPoly[root][j] = 1;
+//            }
+//
+//            visited[root] = true;
+//            numVisited ++;
+//        }
+    }
 
     // Build a directed tree from a root
     private void treeify(int root, int[][] paPoly, int[][] paTemp) throws Exception {

@@ -38,7 +38,8 @@ public class PACCFS_IG_test extends CC {
 //        mlFeaSelect.setPercentFeature(0.2);
 //        mlFeaSelect.setNumThreads(8);
         mlFeaSelect.setFilterIG(true);
-//        mlFeaSelect.setPercentFeature(0.4);
+//        mlFeaSelect.setPercentFeature(0.1);
+//        Instances[] newD = mlFeaSelect.feaSelect1(D);
         Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
 
         // Learning of the polytree

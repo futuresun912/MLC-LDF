@@ -124,33 +124,38 @@ public class StatUtilsPro extends StatUtils{
 //            factor[j] = 2 * (temp - 1) / (temp + 1);
 //        }
 
-        // compute the IR facter for the IG-based filtering
-        double maxValue;
-        double minValue;
-        if ( M < 1000 ) {
-            maxValue = 0.6;
-            minValue = 0.2;
+//        // compute the IR facter for the IG-based filtering
+//        double maxValue;
+//        double minValue;
+//        if ( M < 100 ) {
+//            maxValue = 0.6;
+//            minValue = 0.4;
+//        } else if ( M < 700 ) {
+////            maxValue = 0.9 * ((double)N/2000) * (6/(double)L);
+////            minValue = 0.2 * ((double)N/2000) * (6/(double)L);
+////            maxValue = 1.0 * ((double)N/2000) ;
+////            minValue = 0.4 * ((double)N/2000) ;
+//            maxValue = 0.4;
+//            minValue = 0.2;
+//        } else if ( M > 1100 ){
+//            maxValue = 0.007;
+//            minValue = 0.003;
+//        } else {
+//            maxValue = 0.2;
+//            minValue = 0.1;
+//        }
+//        for (int j = 0; j < L; j ++) {
+//            double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
+//            factor[j] = maxValue * (temp - 1) / (temp + 1) ;
+//            factor[j] = factor[j] > maxValue ? maxValue : factor[j];
+//            factor[j] = factor[j] < minValue ? minValue : factor[j];
+//        }
 
-            for (int j = 0; j < L; j ++) {
-                double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
-                factor[j] =  (temp - 1) / (temp + 1) ;
-                factor[j] = factor[j] > maxValue ? maxValue : factor[j];
-                factor[j] = factor[j] < minValue ? minValue : factor[j];
-            }
 
-        } else {
-            maxValue = 0.06;
-            minValue = 0.02;
-
-            for (int j = 0; j < L; j ++) {
-//            double temp = Math.exp(1/(Math.pow(IR[j] * meanIR, 0.5) * CVIR));
-//            double temp = Math.exp(1/(Math.pow(IR[j], 0.5)));
-                double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
-                factor[j] = 0.06 * (temp - 1) / (temp + 1) ;
-                factor[j] = factor[j] > maxValue ? maxValue : factor[j];
-                factor[j] = factor[j] < minValue ? minValue : factor[j];
-            }
-
+        double r = 0.07;
+        for (int j = 0; j < L; j ++) {
+            double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
+            factor[j] = 2*r*(temp - 1) / (temp + 1) + r;
         }
 
 //        System.out.println("meanIR = "+meanIR);
