@@ -27,7 +27,7 @@ import java.util.Arrays;
 public class Polytree {
 
 
-    private double para1;  // for miThreshold
+    private double para1;    // for miThreshold
     private int para2;       // set as max|pa(.)|
     private double[][] CD;
 
@@ -35,7 +35,6 @@ public class Polytree {
     private int numVisited;
     private boolean[] visited;
     private int L;
-//    private int L = 8;
     protected int[] chainOrder;
     protected int numFolds;
     protected boolean depMode;  // true for conMI; false for margMI
@@ -47,26 +46,6 @@ public class Polytree {
         this.depMode = false;
     }
 
-     // contradiction case (3 -> 4 && 3 <- 4)
-//    = {{0.0,0.0,0.4,0.15,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.1,0.2,0.2,0.0,0.2},
-//        {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
-//        {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
-//        {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
-    // partial polytree case
-//    = {{0.0,0.0,0.4,0.15,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.1,0.2,0.2,0.0,0.2},
-//        {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
-//        {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
-//        {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
-//     polytree case
-    //        double CD[][] = {{0.0, 0.2, 0.4, 0.2,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.0,0.2,0.2,0.0,0.2},
-//                {0.0,0.0,0.0,0.6,0.2,0.2,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
-//                {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.2},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
-//                {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
-//
-//        double CD[][] = {{0.0,0.0,0.4,0.2,0.2,0.2,0.0,0.2}, {0.0,0.0,0.5,0.0,0.2,0.2,0.0,0.2},
-//                {0.0,0.0,0.0,0.6,0.2,0.0,0.2,0.2}, {0.0,0.0,0.0,0.0,0.5,0.5,0.2,0.2},
-//                {0.0,0.0,0.0,0.0,0.0,0.2,0.5,0.0},{0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.2},
-//                {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5}, {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
 
     protected void setPara1(double fraction) throws Exception {
         this.para1 = fraction;
@@ -452,9 +431,6 @@ public class Polytree {
     private void zeroMI(int root, int[][] paTree, int[][] paPoly) throws Exception {
 
         // Calculation the threshold
-//        double miSum = 0.0;
-//        double miThreshold;
-//        double[] temp = new double[paTree[root].length];
         double min = 1.0;
         for (int j : paTree[root]) {
             if (root < j)
@@ -464,6 +440,7 @@ public class Polytree {
         }
         double miThreshold = para1 * min;
         System.out.println("node "+(root+1)+"; Threshold: "+miThreshold);
+
         // Find all the candidates parents by thresholding
         int[] paTemp = new int[]{};
         boolean[] selected = new boolean[paPoly[0].length];
@@ -472,7 +449,7 @@ public class Polytree {
             for (int k : paTree[root]) {
                 if (j < k) {
                     // prevent from contradiction ( root -> j(k) && root <- j(k))
-//                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2) {
+                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2) {
                         if (CD[j][k] < miThreshold) {
                             if (!selected[j]) {
                                 paTemp = A.append(paTemp, j);
@@ -482,11 +459,12 @@ public class Polytree {
                                 paTemp = A.append(paTemp, k);
                                 selected[k] = true;
                             }
-//                        }
+                        }
                     }
                 }
             }
         }
+
         // 1 if root is a multi-parent node, save its direct parents and children if any
         if (paTemp.length > 1) {
             // Rank the parents by their average independence degrees
@@ -513,44 +491,15 @@ public class Polytree {
                         }
                     }
                 }
-//                for (int j : paTree[root]) {
-//                    if (paPoly[root][j] != 3) {
-//                        paPoly[root][j] = 2;
-//                        paPoly[j][root] = 3;
-//                        flagCB[j] = true;
-//                    }
-//                }
-//            } else if (paTemp.length == paTree[root].length && paTemp.length > (maxN / 2)) {
-//                // 1.2 pa(root) occupies all the connected nodes, remove largest one node from it
-//                for (int j = 0; j < DepScore.length; j++) {
-//                    if (copyDepScore[copyDepScore.length - 1] == DepScore[j]) {
-//                        paPoly[root][paTemp[j]] = 2;
-//                        paPoly[paTemp[j]][root] = 3;
-//                        flagCB[paTemp[j]] = true;
-//                    }
-//                }
-//                for (int j : paTree[root]) {
-//                    if (paPoly[root][j] != 2) {
-//                        paPoly[root][j] = 3;
-//                        paPoly[j][root] = 2;
-//                        flagCB[root] = true;
-//                    }
-//                }
             } else {
-                // 1.3 otherwise (pa(root) is small enough), save the pa(root)
+                // 1.2 otherwise (pa(root) is small enough), save the pa(root)
                 for (int j : paTemp) {
                     paPoly[root][j] = 3;
                     paPoly[j][root] = 2;
                     flagCB[root] = true;
                 }
-//                for (int j : paTree[root]) {
-//                    if (paPoly[root][j] != 3) {
-//                        paPoly[root][j] = 2;
-//                        paPoly[j][root] = 3;
-//                        flagCB[j] = true;
-//                    }
-//                }
             }
+            // save the non-parent nodes as child nodes
             for (int j : paTree[root]) {
                 if (paPoly[root][j] != 3) {
                     paPoly[root][j] = 2;
@@ -579,54 +528,6 @@ public class Polytree {
             visited[root] = true;
             numVisited ++;
         }
-
-
-
-
-//        for (int j : paTree[root]) {
-//            if (root < j)
-//                miSum += CD[root][j];
-//            else
-//                miSum += CD[j][root];
-//        }
-//
-//        miThreshold = 0.3 * miSum / (double)paTree[root].length;
-////        System.out.println("node "+(root+1)+"; Threshold: "+miThreshold);
-
-//        for (int j : paTree[root]) {
-//            for (int k : paTree[root]) {
-//                if ( j < k ) {
-////                    if (CD[j][k] < miThreshold) {
-//                    if (CD[j][k] < miThreshold || CD[j][k] == 0.0) {
-//                        paPoly[root][j] = 3;
-//                        paPoly[root][k] = 3;
-//                        paPoly[j][root] = 2;
-//                        paPoly[k][root] = 2;
-//                        flagCB[root] = true;
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (flagCB[root]) {       // 2.1 if causal basin exists for root
-//            for (int j : paTree[root]) {
-//                if (paPoly[root][j] != 3) {
-//                    paPoly[root][j] = 2;
-//                    paPoly[j][root] = 3;
-//                    flagCB[j] = true;
-//                }
-//            }
-//            visited[root] = true;
-//            numVisited ++;
-//        } else {                         // 2.2 if causal basin doesn't exist for root
-//            for (int j : paTree[root]) {
-//                if (paPoly[root][j] == 0)
-//                    paPoly[root][j] = 1;
-//            }
-//
-//            visited[root] = true;
-//            numVisited ++;
-//        }
     }
 
     // Build a directed tree from a root
