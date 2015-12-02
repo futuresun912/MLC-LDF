@@ -86,7 +86,7 @@ public class PerformMLC {
         String filename = arfflist[1];
 //        String filename = "birds";
 
-        int i = 3;
+        int i = 2;
 
         switch (i) {
             case 0:
@@ -309,13 +309,13 @@ public class PerformMLC {
         gOptions[0] = "-t";
         gOptions[1] = "/home/sunlu/workspace/data/" + arffname + ".arff";
 
-//		// use n-fold cross validation // comment this snippet when using
-//		gOptions[2] = "-x";
-//		gOptions[3] = n;
+		// use n-fold cross validation // comment this snippet when using
+		gOptions[2] = "-x";
+		gOptions[3] = n;
 
-        // split train/test in percent%
-        gOptions[2] = "-split-percentage";
-        gOptions[3] = percent;
+//        // split train/test in percent%
+//        gOptions[2] = "-split-percentage";
+//        gOptions[3] = percent;
 
         // unknown
         gOptions[4] = "-s";
