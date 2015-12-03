@@ -79,14 +79,17 @@ public class PerformMLC {
         BRLDF testClassifier53 = new BRLDF();                     // BR-IG+CFS
 
 
+        PACC_LDF testClassifier999 = new PACC_LDF();              // PACC-IG+Cfs
+
+
         // **************************************************************
         // *************** Evaluate a single method *********************
         // **************************************************************
 
-        String filename = arfflist[1];
+        String filename = arfflist[5];
 //        String filename = "birds";
 
-        int i = 3;
+        int i = 999;
 
         switch (i) {
             case 0:
@@ -188,6 +191,10 @@ public class PerformMLC {
             case 53:
                 setTestOptions(filename, "brldf", 1, 0);
                 Evaluation.runExperiment(testClassifier53, options);
+                break;
+            case 999:
+                setTestOptions(filename, "paccldf", 1, 0);
+                Evaluation.runExperiment(testClassifier999, options);
                 break;
         }
         // **************************************************************
@@ -332,8 +339,8 @@ public class PerformMLC {
 //		gOptions[10] = "weka.classifiers.bayes.NaiveBayes";
 
         // output debug information
-        gOptions[11] = "-output-debug-info";
-//        gOptions[11] = "";
+//        gOptions[11] = "-output-debug-info";
+        gOptions[11] = "";
 
         // *************** general options ********************
 

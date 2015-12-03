@@ -40,7 +40,7 @@ public class Polytree {
     protected boolean depMode;  // true for conMI; false for margMI
 
     public Polytree () {
-        this.para1 = 0.3;
+        this.para1 = 0.2;
         this.para2 = 4;
         this.numFolds = 3;
         this.depMode = false;
@@ -100,9 +100,9 @@ public class Polytree {
         int[][] paPoly = new int[L][L];
         causalBasin(root, paTree, paPoly);
 
-        System.out.println("CD: \n"+M.toString(CD));
-        System.out.println("paTree: \n"+M.toString(paTree));
-        System.out.println("paPoly: \n"+M.toString(paPoly));
+//        System.out.println("CD: \n"+M.toString(CD));
+//        System.out.println("paTree: \n"+M.toString(paTree));
+//        System.out.println("paPoly: \n"+M.toString(paPoly));
 
         // If causal basin can't cover all labels, build a directed tree (paTemp)
         int[][] paTemp = new int[L][0];
@@ -150,7 +150,7 @@ public class Polytree {
 
         // Enhance the polytree
         int[] temp = new int[]{};
-        double thCD = 0.05;
+        double thCD = 0.01;
         for (int j : chainOrder) {
             for (int k : temp) {
                 if (paPoly[j][k] != 3) {
@@ -208,7 +208,6 @@ public class Polytree {
                     MI[j][k] = conMI(D_test[j], D_test[k], miNodes, j, k);
             MI = addMatrix(MI, MI);
         }
-//        MI = M.multiply(MI, 1.0 / (double) numFolds);
         return MI;
     }
 
@@ -251,10 +250,7 @@ public class Polytree {
                     MI[j][k] = conMI(D_test[j], D_test[k], miNodes, j, k);
             MI = addMatrix(MI, MI);
         }
-
         return MI;
-//        return MI / numFolds;
-//        return M.multiply(MI, 1.0 / (double) numFolds);
     }
 
 
@@ -269,23 +265,18 @@ public class Polytree {
         double p_12[] = {0.0,0.0};       // p_12[0] = p( y_j = 1 | y_k = 0, x ) and p_12[1] = p( y_j = 1 | y_k = 1, x )
 
         for (int i = 0; i < N; i ++) {
-
             Arrays.fill(y, 0);
-            p_1 = Math.max( miNodes[j][0].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );                         // p( y_j = 1 | x )
+            p_1 = Math.max( miNodes[j][0].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );           // p( y_j = 1 | x )
             p_1 = Math.min(p_1, 0.999999);
             p_1 = Math.max(p_1, 0.000001);
-
             Arrays.fill(y, 0);
-            p_2 = Math.max( miNodes[k][0].distribution((Instance)D_k.instance(i).copy(), y)[1], 0.000001 );                           // p( y_k = 1 | x )
+            p_2 = Math.max( miNodes[k][0].distribution((Instance)D_k.instance(i).copy(), y)[1], 0.000001 );           // p( y_k = 1 | x )
             p_2 = Math.min(p_2, 0.999999);
             p_2 = Math.max(p_2, 0.000001);
-
             Arrays.fill(y, 0);
             p_12[0] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 0, x )
             p_12[0] = Math.min(p_12[0], 0.999999);
             p_12[0] = Math.max(p_12[0], 0.000001);
-
-
             Arrays.fill(y, 0);
             Arrays.fill(y, k, k+1, 1.0);
             p_12[1] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 1, x )
@@ -300,65 +291,6 @@ public class Polytree {
         I = I / N;
         return I;
     }
-
-
-//    // use the learned classifiers to get normalized conditional probability
-//    protected double conMI(Instances D_j, Instances D_k, CNode[][] miNodes, int j, int k) throws Exception {
-//
-//        int L = D_j.classIndex();
-//        int N = D_j.numInstances();
-//        double y[] = new double[L];
-//        double I = 0.0;       		 	 // conditional mutual information for y_j and y_k
-//        double H_1 = 0.0;
-//        double H_2 = 0.0;                 // conditional entropy for Y_j and Y_k
-//        double minH, meanH;
-//        double p_1, p_2;      			 // p( y_j = 1 | x ), p( y_k = 1 | x )
-//        double p_12[] = {0.0,0.0};       // p_12[0] = p( y_j = 1 | y_k = 0, x ) and p_12[1] = p( y_j = 1 | y_k = 1, x )
-//
-//        for (int i = 0; i < N; i ++) {
-//
-//            Arrays.fill(y, 0);
-//            p_1 = Math.max( miNodes[j][0].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );                         // p( y_j = 1 | x )
-//            p_1 = Math.min(p_1, 0.999999);
-////            p_1 = Math.max(p_1, 0.000001);
-//
-//            Arrays.fill(y, 0);
-//            p_2 = Math.max(miNodes[k][0].distribution((Instance) D_k.instance(i).copy(), y)[1], 0.000001);                           // p( y_k = 1 | x )
-//            p_2 = Math.min(p_2, 0.999999);
-////            p_2 = Math.max(p_2, 0.000001);
-//
-//            Arrays.fill(y, 0);
-//            p_12[0] = Math.max(miNodes[j][k - j].distribution((Instance) D_j.instance(i).copy(), y)[1], 0.000001);     // p( y_j = 1 | y_k = 0, x )
-//            p_12[0] = Math.min(p_12[0], 0.999999);
-////            p_12[0] = Math.max(p_12[0], 0.000001);
-//
-//
-//            Arrays.fill(y, 0);
-//            Arrays.fill(y, k, k+1, 1.0);
-//            p_12[1] = Math.max( miNodes[j][k-j].distribution((Instance)D_j.instance(i).copy(), y)[1], 0.000001 );     // p( y_j = 1 | y_k = 1, x )
-//            p_12[1] = Math.min(p_12[1], 0.999999);
-////            p_12[1] = Math.max(p_12[1], 0.000001);
-//
-//            // calculation of conditional MI
-//            I += ( 1 - p_12[0] ) * ( 1 - p_2 ) * Math.log( ( 1 - p_12[0] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 0 )
-//            I += ( 1 - p_12[1] ) * (     p_2 ) * Math.log( ( 1 - p_12[1] ) / ( 1 - p_1 ) );     // I( y_j = 0 ; y_k = 1 )
-//            I += (     p_12[0] ) * ( 1 - p_2 ) * Math.log( (     p_12[0] ) / (     p_1 ) );     // I( y_j = 1 ; y_k = 0 )
-//            I += (     p_12[1] ) * (     p_2 ) * Math.log( (     p_12[1] ) / (     p_1 ) );     // I( y_j = 1 ; y_k = 0 )
-//
-//            // calculation of conditional entropy
-//            H_1 -=      p_1  * Math.log(    p_1);
-//            H_1 -= (1 - p_1) * Math.log(1 - p_1);
-//            H_2 -=      p_2  * Math.log(    p_2);
-//            H_2 -= (1 - p_2) * Math.log(1 - p_2);
-//         }
-//
-//        minH = H_1 < H_2 ? H_1 : H_2;
-////        meanH = (H_1 + H_2) / 2.0;
-//
-//        return I / minH;
-//
-//    }
-
 
     // C = A + B
     protected double[][] addMatrix(double[][] A, double[][] B) {
@@ -438,7 +370,7 @@ public class Polytree {
                 min = CD[j][root] < min ? CD[j][root] : min;
         }
         double miThreshold = para1 * min;
-        System.out.println("node "+(root+1)+"; Threshold: "+miThreshold);
+//        System.out.println("node "+(root+1)+"; Threshold: "+miThreshold);
 
         // Find all the candidates parents by thresholding
         int[] paTemp = new int[]{};
@@ -448,7 +380,8 @@ public class Polytree {
             for (int k : paTree[root]) {
                 if (j < k) {
                     // prevent from contradiction ( root -> j(k) && root <- j(k))
-                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2) {
+                    if( paPoly[root][j] != 2 && paPoly[root][k] != 2 ) {
+//                    && paPoly[root][j] != 3 && paPoly[root][k] != 3) {
                         if (CD[j][k] < miThreshold) {
                             if (!selected[j]) {
                                 paTemp = A.append(paTemp, j);
@@ -467,6 +400,10 @@ public class Polytree {
         // 1 if root is a multi-parent node, save its direct parents and children if any
         if (paTemp.length > 1) {
             // Rank the parents by their average independence degrees
+//            for (int k : paPoly[root]) {
+//                if ( k == 3 )
+//                    para2 --;
+//            }
             int maxN = para2;  // set the maximum number of parents
             double[] DepScore = new double[paTemp.length];
             for (int j = 0; j < paTemp.length; j++) {

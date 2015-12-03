@@ -388,6 +388,7 @@ public class MLFeaSelect {
         GreedyStepwise searcher = new GreedyStepwise();
         searcher.setNumExecutionSlots(m_numThreads);
 //        searcher.setConservativeForwardSelection(true);
+        searcher.setSearchBackwards(true);
 
 //        // BestFirst search
 //        BestFirst searcher = new BestFirst();
@@ -411,7 +412,7 @@ public class MLFeaSelect {
         m_instHeader[j] = new Instances(outputD);
         m_instHeader[j].delete();
 
-//        System.out.println(j + " " + (outputD.numAttributes() - L));
+        System.out.println(j + " " + (outputD.numAttributes() - L));
         m_FlagFS[1] =true;
         return outputD;
     }

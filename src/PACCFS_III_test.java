@@ -28,21 +28,21 @@ public class PACCFS_III_test extends CC {
         testCapabilities(D);
         int L = D.classIndex();
 
-        // Get the IR factor for Wrapper
-        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
-        System.out.println(A.toString(IRfactor));
+//        // Get the IR factor for Wrapper
+//        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
+//        System.out.println(A.toString(IRfactor));
 
         // First-stage feature selection
         mlFeaSelect = new MLFeaSelect(L);
         mlFeaSelect.setFilterIG(true);
-//        mlFeaSelect.setPercentFeature(0.5);
-//        Instances[] newD = mlFeaSelect.feaSelect1(D);
-        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
+        mlFeaSelect.setPercentFeature(0.1);
+        Instances[] newD = mlFeaSelect.feaSelect1(D);
+//        Instances[] newD = mlFeaSelect.feaSelect1IR(D, IRfactor);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
-        polytree.setNumFolds(3);
-        polytree.setDepMode(false);
+//        polytree.setNumFolds(3);
+//        polytree.setDepMode(false);
         int[][] pa = polytree.polyTree(D, newD);
         m_Chain = polytree.getChainOrder();
 
