@@ -68,7 +68,7 @@ public class MLFeaSelect2 {
 
 
     // The first-stage feature selection for MLC
-    protected void feaSelect1(Instances D) throws Exception {
+    protected void feaSelect1(Instances D, int num) throws Exception {
 
         int n = D.numAttributes();
         int numFeature;
@@ -81,7 +81,7 @@ public class MLFeaSelect2 {
         }
 
         // Perform FS for each label
-        for (int j = 0; j < L; j++) {
+        for (int j = 0; j < num; j++) {
 
             int[] pa = new int[0];
             pa = A.append(pa, j);
@@ -121,13 +121,13 @@ public class MLFeaSelect2 {
         AttributeSelection selector = new AttributeSelection();
         CfsSubsetEval evaluator = new CfsSubsetEval();
 
-        BestFirst searcher = new BestFirst();
-        searcher.setSearchTermination(10);
-        searcher.setLookupCacheSize(5);
+//        BestFirst searcher = new BestFirst();
+//        searcher.setSearchTermination(10);
+//        searcher.setLookupCacheSize(5);
 
-//        GreedyStepwise searcher = new GreedyStepwise();
-//        searcher.setNumExecutionSlots(m_numThreads);
-//        searcher.setSearchBackwards(true);
+        GreedyStepwise searcher = new GreedyStepwise();
+        searcher.setNumExecutionSlots(m_numThreads);
+        searcher.setSearchBackwards(true);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);

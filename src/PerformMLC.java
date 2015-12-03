@@ -86,7 +86,7 @@ public class PerformMLC {
         // *************** Evaluate a single method *********************
         // **************************************************************
 
-        String filename = arfflist[5];
+        String filename = arfflist[1];
 //        String filename = "birds";
 
         int i = 999;

@@ -41,7 +41,7 @@ public class Polytree {
 
     public Polytree () {
         this.para1 = 0.2;
-        this.para2 = 4;
+        this.para2 = 6;
         this.numFolds = 3;
         this.depMode = false;
     }
@@ -150,7 +150,7 @@ public class Polytree {
 
         // Enhance the polytree
         int[] temp = new int[]{};
-        double thCD = 0.01;
+        double thCD = 0.05;
         for (int j : chainOrder) {
             for (int k : temp) {
                 if (paPoly[j][k] != 3) {
