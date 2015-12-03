@@ -148,23 +148,22 @@ public class Polytree {
         rankLabel(root, paPoly, rank);
         chainOrder = Utils.sort(rank);
 
-//        // Enhance the polytree
-//        int[] temp = new int[]{};
-//        double thCD = 0.01;
-//        for (int j : chainOrder) {
-//            for (int k : temp) {
-//                if (paPoly[j][k] != 3) {
-//
+        // Enhance the polytree
+        int[] temp = new int[]{};
+        double thCD = 0.05;
+        for (int j : chainOrder) {
+            for (int k : temp) {
+                if (paPoly[j][k] != 3) {
 //                    pa[j] = A.append(pa[j], k);
-//
-////                    if (j < k && CD[j][k] > thCD)
-////                        pa[j] = A.append(pa[j], k);
-////                    if (j > k && CD[k][j] > thCD)
-////                        pa[j] = A.append(pa[j], k);
-//                }
-//            }
-//            temp = A.append(temp, j);
-//        }
+
+                    if (j < k && CD[j][k] > thCD)
+                        pa[j] = A.append(pa[j], k);
+                    if (j > k && CD[k][j] > thCD)
+                        pa[j] = A.append(pa[j], k);
+                }
+            }
+            temp = A.append(temp, j);
+        }
 
         return pa;
     }

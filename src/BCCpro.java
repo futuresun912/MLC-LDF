@@ -27,7 +27,7 @@ public class BCCpro extends BCC {
         int d = D.numAttributes()-L;
 
         // CD is the normalized mutual information matrix.
-       double[][] CD = StatUtilsPro.NormMargDep(D);
+        double[][] CD = StatUtilsPro.NormMargDep(D);
 
         if (getDebug())
             System.out.println("Normalized MI matrix: \n" + M.toString(CD));
@@ -100,11 +100,24 @@ public class BCCpro extends BCC {
 		*/
         if (getDebug()) System.out.println("Build Classifier Tree ...");
         nodes = new CNode[L];
+
+//        int[] paTemp = new int[]{};
+//        int[][] paCopy = pa.clone();
+
         for(int j : m_Chain) {
+
+//            for ( int k : paTemp ) {
+//                if ( k != paCopy[j][0] ) {
+//                    paCopy[j] = A.append(paCopy[j], k);
+//                }
+//            }
+
             if (getDebug())
                 System.out.println("\t node h_"+j+" : P(y_"+j+" | x_[1:"+d+"], y_"+Arrays.toString(pa[j])+")");
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(D, m_Classifier);
+
+//            paTemp = A.append(paTemp, j);
         }
 
         if (getDebug()) System.out.println(" * DONE * ");
@@ -135,47 +148,47 @@ public class BCCpro extends BCC {
 
 
     // ***************************************************************************************
-	// THE MAX-SUM ALGORITHM FOR PREDICTION **************************************************
-	// ***************************************************************************************
-	@Override
-	public double[] distributionForInstance(Instance xy) throws Exception {
+    // THE MAX-SUM ALGORITHM FOR PREDICTION **************************************************
+    // ***************************************************************************************
+    @Override
+    public double[] distributionForInstance(Instance xy) throws Exception {
 
-		int L = xy.classIndex();
+        int L = xy.classIndex();
         double y[];                            // save the optimal assignment
         double[][] yMax = new double[L][];     // save the y_j for local maximum
         double msgSum[][];                     // save the sum of log probability for y_j = 0 and 1
-		double y_[];                           // traverse the path on parent nodes in push function
-		double[][] msg = new double[L][];      // the message passing upwards (ragged array)
+        double y_[];                           // traverse the path on parent nodes in push function
+        double[][] msg = new double[L][];      // the message passing upwards (ragged array)
         double[][][] cpt = new double[L][2][]; // conditional probability tables for all nodes
         int paL;                               // save the number of parents of current node
-		int powNumJ;                           // the number of 2 to the power of pa[j].length
+        int powNumJ;                           // the number of 2 to the power of pa[j].length
 
-		// Step 1: calculate the CPT for all nodes (from root(s) to leaf(s))
-		for (int j : m_Chain ) {
-			y = new double[L];
-			paL = pa[j].length;
+        // Step 1: calculate the CPT for all nodes (from root(s) to leaf(s))
+        for (int j : m_Chain ) {
+            y = new double[L];
+            paL = pa[j].length;
             powNumJ = (int) Math.pow(2, paL);
-			cpt[j][0] = new double[powNumJ];
-			cpt[j][1] = new double[powNumJ];
-			y_ = new double [paL];
+            cpt[j][0] = new double[powNumJ];
+            cpt[j][1] = new double[powNumJ];
+            y_ = new double [paL];
 
-			for (int k = 0; k < powNumJ; k ++) {
-				for (int m = 0; m < paL; m ++) {
-					y[pa[j][m]] = y_[m];
-				}
+            for (int k = 0; k < powNumJ; k ++) {
+                for (int m = 0; m < paL; m ++) {
+                    y[pa[j][m]] = y_[m];
+                }
                 cpt[j][0][k] = nodes[j].distribution((Instance)xy.copy(),y)[0];
                 cpt[j][1][k] = 1.0 - cpt[j][0][k];
-				if( push(y_, paL-1) ) {
-					break;
-				}
-			}
-		}
+                if( push(y_, paL-1) ) {
+                    break;
+                }
+            }
+        }
 
         // Step 2: receive all the messages sent by the children of j  (from leaf(s) to root(s))
-		for ( int i = L-1; i >= 0; i--)  {
-			int j = m_Chain[i];
+        for ( int i = L-1; i >= 0; i--)  {
+            int j = m_Chain[i];
             paL = pa[j].length;
-			powNumJ = (int) Math.pow(2, paL);
+            powNumJ = (int) Math.pow(2, paL);
             msg[j] = new double[powNumJ];
             msgSum = new double[2][powNumJ];
             yMax[j] = new double[powNumJ];
@@ -209,14 +222,14 @@ public class BCCpro extends BCC {
         y = new double[L];
         for (  int j : m_Chain ) {
             if ( pa[j].length == 0) {
-                 indexJ = 0;
+                indexJ = 0;
             } else {
                 indexJ = (int)y[pa[j][0]];
             }
             y[j] = yMax[j][indexJ];
         }
-		return y;
-	}
+        return y;
+    }
 
     private boolean push(double y[], int j) {
         if (j < 0 ) {
@@ -232,8 +245,8 @@ public class BCCpro extends BCC {
         }
     }
     // ***************************************************************************************
-	// ***************************************************************************************
-	// ***************************************************************************************
+    // ***************************************************************************************
+    // ***************************************************************************************
 
 
 
