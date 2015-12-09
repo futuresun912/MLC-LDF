@@ -26,7 +26,7 @@ public class PACC_LDF extends CC {
 
         // First-stage feature selection
         double perFea = getPerFeature(D);
-        mlFeaSelect = new MLFeaSelect2(L, n, 100);
+        mlFeaSelect = new MLFeaSelect2(L, n, 20);
         mlFeaSelect.setPercentFeature(perFea);
         mlFeaSelect.feaSelect1(D, L);
 
@@ -49,6 +49,7 @@ public class PACC_LDF extends CC {
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(tempD, m_Classifier);
         }
+
 
     }
 
@@ -77,7 +78,7 @@ public class PACC_LDF extends CC {
         double perTemp = d > 1000 ? 0.1 : 0.4;
         int numTest = 3;
 
-        mlFeaSelect = new MLFeaSelect2(L, n, 100);
+        mlFeaSelect = new MLFeaSelect2(L, n, 20);
         mlFeaSelect.setPercentFeature(perTemp);
         mlFeaSelect.feaSelect1(D, numTest);
 
