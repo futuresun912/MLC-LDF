@@ -22,10 +22,11 @@ public class PACC_LDF extends CC {
 
         testCapabilities(D);
         int L = D.classIndex();
+        int n = D.numInstances();
 
         // First-stage feature selection
         double perFea = getPerFeature(D);
-        mlFeaSelect = new MLFeaSelect2(L);
+        mlFeaSelect = new MLFeaSelect2(L, n, 100);
         mlFeaSelect.setPercentFeature(perFea);
         mlFeaSelect.feaSelect1(D, L);
 
@@ -71,11 +72,12 @@ public class PACC_LDF extends CC {
     protected double getPerFeature(Instances D) throws Exception {
 
         int L = D.classIndex();
-        int n = D.numAttributes() - L;
-        double perTemp = n > 1000 ? 0.1 : 0.4;
-        int numTest = 4;
+        int d = D.numAttributes() - L;
+        int n = D.numInstances();
+        double perTemp = d > 1000 ? 0.1 : 0.4;
+        int numTest = 3;
 
-        mlFeaSelect = new MLFeaSelect2(L);
+        mlFeaSelect = new MLFeaSelect2(L, n, 100);
         mlFeaSelect.setPercentFeature(perTemp);
         mlFeaSelect.feaSelect1(D, numTest);
 
@@ -88,7 +90,7 @@ public class PACC_LDF extends CC {
         }
 
         System.out.println("*******************************");
-        return (double)(maxNum+10) / n;
+        return (double)(maxNum+10) / d;
     }
 
 }

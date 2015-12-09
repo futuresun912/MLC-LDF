@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class MLFeaSelect2 {
 
     protected int L;
+    protected int n;
     protected int m_numThreads;
     protected boolean m_FlagRanker;
     protected boolean m_IG;
@@ -26,9 +27,11 @@ public class MLFeaSelect2 {
     protected int[][] m_Indices;
     protected Instances[] m_dataHeader;
     protected Instance[] m_instTemplate;
+    protected int m_dataSize;
 
-    public MLFeaSelect2(int L) {
+    public MLFeaSelect2(int L, int n, int percent) {
         this.L = L;
+        this.n = n;
         this.m_numThreads = 8;
         this.m_FlagRanker = false;
         this.m_IG = false;
@@ -40,6 +43,8 @@ public class MLFeaSelect2 {
         this.m_Indices = new int[L][];
         this.m_dataHeader = new Instances[L];
         this.m_instTemplate = new Instance[L];
+        this.m_dataSize = n * percent / 100;
+
     }
 
     protected void setPercentFeature(double fraction) throws Exception {
@@ -54,22 +59,22 @@ public class MLFeaSelect2 {
     // The first-stage feature selection for MLC
     protected void feaSelect1(Instances D, int num) throws Exception {
 
-        int n = D.numAttributes();
-        int numFeature;
-        numFeature = (int) ((n - L) * m_PercentFeature);
+        int d = D.numAttributes();
+        int d_cut = (int) ((d - L) * m_PercentFeature);
+        Instances D_cut = new Instances(D, 0, m_dataSize);
 
         // Perform FS for each label
         for (int j = 0; j < num; j++) {
 
             int[] pa = new int[0];
             pa = A.append(pa, j);
-            Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
+            Instances D_j = MLUtils.keepAttributesAt(new Instances(D_cut), pa, L);
             D_j.setClassIndex(0);
 
             AttributeSelection selector = new AttributeSelection();
             InfoGainAttributeEval evaluator = new InfoGainAttributeEval();
             Ranker searcher = new Ranker();
-            searcher.setNumToSelect(numFeature);
+            searcher.setNumToSelect(d_cut);
             selector.setEvaluator(evaluator);
             selector.setSearch(searcher);
 
@@ -89,23 +94,25 @@ public class MLFeaSelect2 {
     // The second-stage feature selection for MLC
     protected void feaSelect2(Instances D_j, int j) throws Exception {
 
+        Instances Dj_cut = new Instances(D_j, 0, m_dataSize);
+
         // Remove all the labels except j and its parents
         int[] pa = new int[0];
-        D_j.setClassIndex(j);
+        Dj_cut.setClassIndex(j);
         pa = A.append(pa, j);
-        Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), pa, L);
+        Instances tempD = MLUtils.keepAttributesAt(new Instances(Dj_cut), pa, L);
 
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
         CfsSubsetEval evaluator = new CfsSubsetEval();
 
-//        BestFirst searcher = new BestFirst();
-//        searcher.setSearchTermination(10);
-//        searcher.setLookupCacheSize(5);
+        BestFirst searcher = new BestFirst();
+        searcher.setSearchTermination(10);
+        searcher.setLookupCacheSize(5);
 
-        GreedyStepwise searcher = new GreedyStepwise();
-        searcher.setNumExecutionSlots(m_numThreads);
-        searcher.setSearchBackwards(true);
+//        GreedyStepwise searcher = new GreedyStepwise();
+//        searcher.setNumExecutionSlots(m_numThreads);
+//        searcher.setSearchBackwards(true);
 
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
@@ -180,7 +187,7 @@ public class MLFeaSelect2 {
         }
 
         D.setClassIndex(-1);
-        Instances D_j = F.remove(new Instances(D), index_j, true);
+        Instances D_j = F.remove(D, index_j, true);
         D_j.setClassIndex(L);
         D.setClassIndex(L);
         m_instTemplate[j] = D_j.instance(1);
