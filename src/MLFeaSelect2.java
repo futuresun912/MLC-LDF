@@ -10,13 +10,11 @@ import weka.attributeSelection.*;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
-import java.util.Arrays;
 
 
 public class MLFeaSelect2 {
 
     protected int L;
-    protected int n;
     protected int m_numThreads;
     protected boolean m_FlagRanker;
     protected boolean m_IG;
@@ -27,11 +25,9 @@ public class MLFeaSelect2 {
     protected int[][] m_Indices;
     protected Instances[] m_dataHeader;
     protected Instance[] m_instTemplate;
-    protected int m_dataSize;
 
-    public MLFeaSelect2(int L, int n, int percent) {
+    public MLFeaSelect2(int L) {
         this.L = L;
-        this.n = n;
         this.m_numThreads = 8;
         this.m_FlagRanker = false;
         this.m_IG = false;
@@ -42,8 +38,6 @@ public class MLFeaSelect2 {
         this.m_Indices = new int[L][];
         this.m_dataHeader = new Instances[L];
         this.m_instTemplate = new Instance[L];
-        this.m_dataSize = n * percent / 100;
-
     }
 
     protected void setPercentFeature(double fraction) throws Exception {
@@ -59,7 +53,6 @@ public class MLFeaSelect2 {
     protected void feaSelect1(Instances D, int num) throws Exception {
 
         int d_cut = (int) ((D.numAttributes() - L) * m_PercentFeature);
-        D = new Instances(D, 0, m_dataSize);
 
         // Perform FS for each label
         for (int j = 0; j < num; j++) {
@@ -92,7 +85,6 @@ public class MLFeaSelect2 {
     // The second-stage feature selection for MLC
     protected void feaSelect2(Instances D_j, int j) throws Exception {
         // Remove all the labels except j and its parents
-        D_j = new Instances(D_j, 0, m_dataSize);
         int[] pa = new int[0];
         D_j.setClassIndex(j);
         pa = A.append(pa, j);
