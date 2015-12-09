@@ -43,7 +43,7 @@ public class PACC_LDF extends CC {
         nodes = new CNode[L];
         for (int j : m_Chain) {
             Instances tempD = mlFeaSelect.instTransform(D, j);
-            mlFeaSelect.feaSelect2CFS(tempD, j);
+            mlFeaSelect.feaSelect2(tempD, j);
             tempD = mlFeaSelect.instTransform(D, j);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(tempD, m_Classifier);
@@ -82,7 +82,7 @@ public class PACC_LDF extends CC {
         int maxNum = 1;
         for (int j = 0; j < numTest; j ++) {
             Instances tempD = mlFeaSelect.instTransform(D, j);
-            mlFeaSelect.feaSelect2CFS(tempD, j);
+            mlFeaSelect.feaSelect2(tempD, j);
             int temp = mlFeaSelect.getNumFeaCfs(j);
             maxNum = temp > maxNum ? temp : maxNum;
         }

@@ -24,9 +24,8 @@ public class MLFeaSelect2 {
     protected int[][] m_Indices1;
     protected int[][] m_Indices2;
     protected int[][] m_Indices;
-    protected Instances[] m_instHeader;
-    protected boolean m_IGPercent;
-    protected Instance[] m_temp;
+    protected Instances[] m_dataHeader;
+    protected Instance[] m_instTemplate;
 
     public MLFeaSelect2(int L) {
         this.L = L;
@@ -39,18 +38,12 @@ public class MLFeaSelect2 {
         this.m_Indices1 = new int[L][];
         this.m_Indices2 = new int[L][];
         this.m_Indices = new int[L][];
-        this.m_instHeader = new Instances[L];
-        this.m_temp = new Instance[L];
-        this.m_IGPercent =false;
-    }
-
-    protected void setNumThreads(int numThreads) throws Exception {
-        this.m_numThreads = numThreads;
+        this.m_dataHeader = new Instances[L];
+        this.m_instTemplate = new Instance[L];
     }
 
     protected void setPercentFeature(double fraction) throws Exception {
         this.m_PercentFeature = fraction;
-        this.m_IGPercent = true;
     }
 
     protected int getNumFeaCfs(int j) throws Exception {
@@ -63,13 +56,7 @@ public class MLFeaSelect2 {
 
         int n = D.numAttributes();
         int numFeature;
-        if (m_IGPercent) {
-            numFeature = (int) ((n - L) * m_PercentFeature);
-//            numFeature = numFeature > 80 ? 80 : numFeature < 20 ? 20 : numFeature;
-        }
-        else {
-            numFeature = 30;
-        }
+        numFeature = (int) ((n - L) * m_PercentFeature);
 
         // Perform FS for each label
         for (int j = 0; j < num; j++) {
@@ -100,7 +87,7 @@ public class MLFeaSelect2 {
 
 
     // The second-stage feature selection for MLC
-    protected void feaSelect2CFS(Instances D_j, int j) throws Exception {
+    protected void feaSelect2(Instances D_j, int j) throws Exception {
 
         // Remove all the labels except j and its parents
         int[] pa = new int[0];
@@ -160,16 +147,12 @@ public class MLFeaSelect2 {
             }
             indices = temp2.clone();
         }
-
         return indices;
     }
 
     // Transform an instances based on the indices of selected features
     protected Instances instTransform(Instances D, int j) throws Exception {
-
         int L = D.classIndex();
-        int n = D.numAttributes();
-
         if (m_IG && m_CFS[j]) {
             // m_Indices <-- m_Indices1( m_Indices2 )
             if ( m_Indices2[j].length == 0 ) {
@@ -186,37 +169,31 @@ public class MLFeaSelect2 {
             m_Indices[j] = m_Indices2[j].clone();
         }
 
-        int[] index_j = m_Indices[j].clone();
-        // Add indices of labels
-        for (int k = 0; k < L; k ++)
-            index_j = A.append(index_j, k);
-
-        int[] tempIndexJ = new int[index_j.length];
-        for (int k = 0; k < tempIndexJ.length; k ++) {
-            if ( k < L ) {
-                tempIndexJ[k] = k;
-            } else {
-                tempIndexJ[k] = index_j[k-L];
+        int[] index_j = new int[m_Indices[j].length+L];
+        for (int k = 0; k < index_j.length; k ++) {
+            if (k < L) {
+                index_j[k] = k;
+            }
+            else {
+                index_j[k] = m_Indices[j][k - L];
             }
         }
 
         D.setClassIndex(-1);
-        Instances D_j = F.remove(new Instances(D), tempIndexJ, true);
+        Instances D_j = F.remove(new Instances(D), index_j, true);
         D_j.setClassIndex(L);
         D.setClassIndex(L);
-        m_temp[j] = D_j.instance(1);
-        m_instHeader[j] = new Instances(D_j, 0);
+        m_instTemplate[j] = D_j.instance(1);
+        m_dataHeader[j] = new Instances(D_j, 0);
         return D_j;
     }
 
     // Transform an test instance based on the indices of selected features
     protected Instance instTransform(Instance x_j, int j) throws Exception {
-
         int L = x_j.classIndex();
-        Instance x_out = m_temp[j];
+        Instance x_out = m_instTemplate[j];
         copyInstValues(x_out, x_j, m_Indices[j], L);
-        x_out.setDataset(m_instHeader[j]);
-
+        x_out.setDataset(m_dataHeader[j]);
         return x_out;
     }
 
@@ -224,7 +201,8 @@ public class MLFeaSelect2 {
     /**
      * CopyValues - Set x_dest[i++] = x_src[j] for all j in indices[].
      */
-    public Instance copyInstValues(Instance x_dest, Instance x_src, int indices[], int L) {
+    public Instance copyInstValues(Instance x_dest, Instance x_src,
+                                   int indices[], int L) {
         int i = L;
         for(int j : indices) {
             x_dest.setValue(i++,x_src.value(j));
