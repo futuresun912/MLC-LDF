@@ -4,6 +4,7 @@
 
 
 import meka.classifiers.multilabel.*;
+import meka.classifiers.multilabel.meta.MultilabelMetaClassifier;
 
 
 public class PerformMLC {
@@ -87,7 +88,7 @@ public class PerformMLC {
         // **************************************************************
 
         String filename = arfflist[1];
-//        String filename = "birds";
+//        String filename = "rcv1subset1";
 
         int i = 999;
 

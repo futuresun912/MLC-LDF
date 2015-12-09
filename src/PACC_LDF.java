@@ -27,7 +27,6 @@ public class PACC_LDF extends CC {
         double perFea = getPerFeature(D);
         mlFeaSelect = new MLFeaSelect2(L);
         mlFeaSelect.setPercentFeature(perFea);
-//        mlFeaSelect.setPercentFeature(0.5);
         mlFeaSelect.feaSelect1(D, L);
 
         // Learning of the polytree
@@ -81,21 +80,15 @@ public class PACC_LDF extends CC {
         mlFeaSelect.feaSelect1(D, numTest);
 
         int maxNum = 1;
-//        double sumNum = 0.0;
         for (int j = 0; j < numTest; j ++) {
             Instances tempD = mlFeaSelect.instTransform(D, j);
             mlFeaSelect.feaSelect2CFS(tempD, j);
-//            sumNum += mlFeaSelect.getNumFeaCfs(j);
             int temp = mlFeaSelect.getNumFeaCfs(j);
             maxNum = temp > maxNum ? temp : maxNum;
         }
 
-//        System.out.println("mean = "+sumNum/5);
         System.out.println("*******************************");
         return (double)(maxNum+10) / n;
-//        return (sumNum/numTest + 5) / n;
     }
-
-
 
 }

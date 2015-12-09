@@ -1,29 +1,18 @@
 /**
  * Created by sunlu on 12/3/15.
+ * Sampling techniques can be used for efficient FS
  */
 
 import meka.core.A;
+import meka.core.F;
 import meka.core.MLUtils;
-import sun.misc.Sort;
 import weka.attributeSelection.*;
-import weka.classifiers.functions.Logistic;
 import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.SelectedTag;
 import weka.core.Utils;
-
 import java.util.Arrays;
 
-/**
- * Created by sunlu on 9/14/15.
- * This class is designed to mine label-specific features by two-stage feature selection
- * It should implement the following methods:
- * 1. feaSelect1
- * 2. feaSelect2
- * 3. instTransform
- * 4. shiftIndices
- * 5. initialFS   /incomplete
- */
+
 public class MLFeaSelect2 {
 
     protected int L;
@@ -37,6 +26,7 @@ public class MLFeaSelect2 {
     protected int[][] m_Indices;
     protected Instances[] m_instHeader;
     protected boolean m_IGPercent;
+    protected Instance[] m_temp;
 
     public MLFeaSelect2(int L) {
         this.L = L;
@@ -50,6 +40,7 @@ public class MLFeaSelect2 {
         this.m_Indices2 = new int[L][];
         this.m_Indices = new int[L][];
         this.m_instHeader = new Instances[L];
+        this.m_temp = new Instance[L];
         this.m_IGPercent =false;
     }
 
@@ -141,7 +132,7 @@ public class MLFeaSelect2 {
     }
 
 
-    // Shift the indices of selected features for filtering D_j
+    // Shift the indices of selected features for filtering D
     protected int[] shiftIndices(int[] indices, int L, int[] pa) throws Exception {
 
         // Remove the current label j
@@ -200,12 +191,21 @@ public class MLFeaSelect2 {
         for (int k = 0; k < L; k ++)
             index_j = A.append(index_j, k);
 
-        D.setClassIndex(0);
-        Instances D_j = MLUtils.keepAttributesAt(new Instances(D), index_j, n);
+        int[] tempIndexJ = new int[index_j.length];
+        for (int k = 0; k < tempIndexJ.length; k ++) {
+            if ( k < L ) {
+                tempIndexJ[k] = k;
+            } else {
+                tempIndexJ[k] = index_j[k-L];
+            }
+        }
+
+        D.setClassIndex(-1);
+        Instances D_j = F.remove(new Instances(D), tempIndexJ, true);
         D_j.setClassIndex(L);
         D.setClassIndex(L);
-        m_instHeader[j] = new Instances(D_j);
-        m_instHeader[j].delete();
+        m_temp[j] = D_j.instance(1);
+        m_instHeader[j] = new Instances(D_j, 0);
         return D_j;
     }
 
@@ -213,18 +213,23 @@ public class MLFeaSelect2 {
     protected Instance instTransform(Instance x_j, int j) throws Exception {
 
         int L = x_j.classIndex();
-        int n = x_j.numAttributes();
-        Instance tempX = (Instance)x_j.copy();
-        tempX.setDataset(null);
+        Instance x_out = m_temp[j];
+        copyInstValues(x_out, x_j, m_Indices[j], L);
+        x_out.setDataset(m_instHeader[j]);
 
-        int[] indexTemp = m_Indices[j].clone();
-        for (int k = 0; k < L; k ++)
-            indexTemp = A.append(indexTemp, k);
+        return x_out;
+    }
 
-        x_j = MLUtils.keepAttributesAt(tempX, indexTemp, n);  // Consume too much time in this step
-        x_j.setDataset(m_instHeader[j]);
 
-        return x_j;
+    /**
+     * CopyValues - Set x_dest[i++] = x_src[j] for all j in indices[].
+     */
+    public Instance copyInstValues(Instance x_dest, Instance x_src, int indices[], int L) {
+        int i = L;
+        for(int j : indices) {
+            x_dest.setValue(i++,x_src.value(j));
+        }
+        return x_dest;
     }
 
 }
