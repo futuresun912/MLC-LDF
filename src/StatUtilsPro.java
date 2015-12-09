@@ -152,7 +152,7 @@ public class StatUtilsPro extends StatUtils{
 //        }
 
 
-        double r = 0.07;
+        double r = 0.05;
         for (int j = 0; j < L; j ++) {
             double temp = Math.exp( meanIR / (IR[j]*(CVIR+1)) );
             factor[j] = 2*r*(temp - 1) / (temp + 1) + r;

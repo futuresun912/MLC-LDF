@@ -150,7 +150,7 @@ public class Polytree {
 
         // Enhance the polytree
         int[] temp = new int[]{};
-        double thCD = 0.05;
+        double thCD = 0.01;
         for (int j : chainOrder) {
             for (int k : temp) {
                 if (paPoly[j][k] != 3) {

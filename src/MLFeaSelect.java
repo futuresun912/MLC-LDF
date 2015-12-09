@@ -342,6 +342,7 @@ public class MLFeaSelect {
 //            searcher.m_pa = pa;
 //            searcher.setSearchTermination(10);
 //            searcher.setLookupCacheSize(5);
+//            searcher.setDirection(new SelectedTag(0, BestFirst.TAGS_SELECTION));
 
             selector.setEvaluator(evaluator);
             selector.setSearch(searcher);
@@ -416,107 +417,6 @@ public class MLFeaSelect {
         m_FlagFS[1] =true;
         return outputD;
     }
-
-
-
-
-//    // The second-stage feature selection for MLC
-//    protected Instances feaSelect2PACC(Instances D_j, int j, int[] paAll, int[] pa, double factor) throws Exception {
-//
-//        int n = D_j.numAttributes();
-//        m_paPACC = pa.clone();
-//
-//        // Remove all the labels except j and its parents
-//        D_j.setClassIndex(j);
-//        paAll = A.append(paAll, j);
-//        pa = A.append(pa, j);
-//        Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), paAll, L);
-//
-//        // Initialization of the feature selector
-//        AttributeSelection selector = new AttributeSelection();
-//
-//        // Wrapper evaluator
-//        WrapperSubset evaluator = new WrapperSubset();
-//        evaluator.setClassifier(new Logistic());
-//        evaluator.setFolds(5);
-//        evaluator.setIRfactor(factor);
-//        evaluator.setEvaluationMeasure(new SelectedTag(8, WrapperSubset.TAGS_EVALUATION));
-//
-//        // GreedyStepwise search
-//        GreedyCC searcher = new GreedyCC();
-//        searcher.m_pa = pa;
-//        searcher.setNumExecutionSlots(m_numThreads);
-//        searcher.setConservativeForwardSelection(true);
-//
-////        // generate the start set for searching
-////        int[] paIndices = Utils.sort(pa);
-////        int[] paTemp = Arrays.copyOf(paIndices, paIndices.length - 1);
-////        for (int k = 0; k < paTemp.length; k ++)
-////            paTemp[k] += 1;
-////        String startSet = Arrays.toString(paTemp).replace("[", "").replace("]","");
-////        searcher.setStartSet(startSet);
-//
-//        selector.setEvaluator(evaluator);
-//        selector.setSearch(searcher);
-//
-//        // Obtain the indices of selected features
-//        selector.SelectAttributes(tempD);
-//        m_Indices2[j] = selector.selectedAttributes();
-//
-//
-//
-//        if (paAll.length != pa.length) {
-//            int[] tempIndex = {};
-//            int[] tempK = {};
-//            for (int k = 0; k < paAll.length ; k++) {
-//                if (m_Indices2[j][k] < paAll.length) {
-//                    for (int l : pa) {
-//                        if (m_Indices2[j][k] != l) {     // remove paAll-pa
-//                            tempIndex = A.append(tempIndex, m_Indices2[j][k]);
-//                            tempK = A.append(tempK, k);
-//                        }
-//                    }
-////                m_Indices2[j] = A.delete(m_Indices2[j],k);
-//                }
-//            }
-//            m_Indices2[j] = A.delete(m_Indices2[j], tempK);
-//            for (int k = 0; k < m_Indices2[j].length; k ++) {
-//                if ( m_Indices2[j][k] == j) {
-//                    m_Indices2[j] = A.delete(m_Indices2[j],k);
-//                    m_Indices2[j] = A.append(m_Indices2[j],j);
-//                    break;
-//                }
-//            }
-//
-//
-//            int[] paIndex = Utils.sort(paAll);
-//            for (int k : tempIndex) {
-//                for (int l : paIndex) {
-//                    if (k == l) {
-//                        m_paPACC = A.append(m_paPACC, paAll[l]);
-//                    }
-//                }
-//            }
-//        }
-//
-//        m_Indices2[j] = shiftIndices(m_Indices2[j], L, paAll);
-//
-//        D_j.setClassIndex(0);
-//        Instances outputD = MLUtils.keepAttributesAt(new Instances(D_j), m_Indices2[j], n);
-//        outputD.setClassIndex(L);
-//        D_j.setClassIndex(L);
-//
-//        // Save the header information for transform the test instance
-//        m_instHeader[j] = new Instances(outputD);
-//        m_instHeader[j].delete();
-//
-//        System.out.println(j + " " + (outputD.numAttributes() - L));
-//
-//        m_FlagFS[1] =true;
-//        return outputD;
-//    }
-
-
 
 
     // Transform an test instance based on the indices of selected features

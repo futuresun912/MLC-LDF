@@ -9,13 +9,13 @@ import meka.core.MLUtils;
 import weka.attributeSelection.*;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SelectedTag;
 import weka.core.Utils;
 
 
 public class MLFeaSelect2 {
 
     protected int L;
-    protected int m_numThreads;
     protected boolean m_FlagRanker;
     protected boolean m_IG;
     protected boolean m_CFS;
@@ -28,7 +28,6 @@ public class MLFeaSelect2 {
 
     public MLFeaSelect2(int L) {
         this.L = L;
-        this.m_numThreads = 8;
         this.m_FlagRanker = false;
         this.m_IG = false;
         this.m_CFS = false;
@@ -47,7 +46,6 @@ public class MLFeaSelect2 {
     protected int getNumFeaCfs(int j) throws Exception {
         return m_Indices2.length;
     }
-
 
     // The first-stage feature selection for MLC
     protected void feaSelect1(Instances D, int num) throws Exception {
@@ -81,7 +79,6 @@ public class MLFeaSelect2 {
         m_IG = true;
     }
 
-
     // The second-stage feature selection for MLC
     protected void feaSelect2(Instances D_j, int j) throws Exception {
         // Remove all the labels except j and its parents
@@ -93,15 +90,65 @@ public class MLFeaSelect2 {
         // Initialization of the feature selector
         AttributeSelection selector = new AttributeSelection();
         CfsSubsetEval evaluator = new CfsSubsetEval();
+        GreedyStepwise searcher = new GreedyStepwise();
+        searcher.setSearchBackwards(true);
+        selector.setEvaluator(evaluator);
+        selector.setSearch(searcher);
 
-        BestFirst searcher = new BestFirst();
-        searcher.setSearchTermination(10);
-        searcher.setLookupCacheSize(5);
+        // Obtain the indices of selected features
+        selector.SelectAttributes(tempD);
+        m_Indices2 = selector.selectedAttributes();
+        m_Indices2 = shiftIndices(m_Indices2, L, pa);
+        System.out.println(j + " " + m_Indices2.length);
+        m_CFS = true;
+    }
 
-//        GreedyStepwise searcher = new GreedyStepwise();
-//        searcher.setNumExecutionSlots(m_numThreads);
-//        searcher.setSearchBackwards(true);
+    // The first-stage feature selection for MLC
+    protected void feaSelect1IR(Instances D, int num, double[] factor) throws Exception {
 
+        int d_cut = (int) ((D.numAttributes() - L) * m_PercentFeature);
+
+        // Perform FS for each label
+        for (int j = 0; j < num; j++) {
+
+            int[] pa = new int[0];
+            pa = A.append(pa, j);
+            Instances D_j = MLUtils.keepAttributesAt(new Instances(D), pa, L);
+            D_j.setClassIndex(0);
+
+            AttributeSelection selector = new AttributeSelection();
+            InfoGainAttributeEval evaluator = new InfoGainAttributeEval();
+            Ranker searcher = new Ranker();
+            searcher.setNumToSelect((int)(d_cut*(1.0+factor[j])));
+            selector.setEvaluator(evaluator);
+            selector.setSearch(searcher);
+
+            // Obtain the indices of selected features
+            selector.SelectAttributes(D_j);
+            m_Indices1[j] = selector.selectedAttributes();
+            // Sort the selected features for the Ranker
+            m_FlagRanker = true;
+            m_Indices1[j] = shiftIndices(m_Indices1[j], L, pa);
+            System.out.println(j+" "+m_Indices1[j].length);
+        }
+        System.out.println("********************************");
+        m_IG = true;
+    }
+
+    // The second-stage feature selection for MLC
+    protected void feaSelect2PA(Instances D_j, int j) throws Exception {
+        // Remove all the labels except j and its parents
+        int[] pa = new int[0];
+        D_j.setClassIndex(j);
+        pa = A.append(pa, j);
+        Instances tempD = MLUtils.keepAttributesAt(new Instances(D_j), pa, L);
+
+        // Initialization of the feature selector
+        AttributeSelection selector = new AttributeSelection();
+        CfsSubsetEval evaluator = new CfsSubsetEval();
+        GreedyCC searcher = new GreedyCC();
+        searcher.m_pa = pa;
+        searcher.setConservativeForwardSelection(true);
         selector.setEvaluator(evaluator);
         selector.setSearch(searcher);
 

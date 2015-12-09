@@ -22,12 +22,14 @@ public class PACC_LDF extends CC {
 
         testCapabilities(D);
         int L = D.classIndex();
+//        double[] IRfactor = StatUtilsPro.CalcIRFactor(D);
 
         // First-stage feature selection
         double perFea = getPerFeature(D);
         mlFeaSelect = new MLFeaSelect2(L);
         mlFeaSelect.setPercentFeature(perFea);
         mlFeaSelect.feaSelect1(D, L);
+//        mlFeaSelect.feaSelect1IR(D, L, IRfactor);
 
         // Learning of the polytree
         Polytree polytree = new Polytree();
@@ -44,6 +46,7 @@ public class PACC_LDF extends CC {
         for (int j : m_Chain) {
             Instances tempD = mlFeaSelect.instTransform(D, j);
             mlFeaSelect.feaSelect2(tempD, j);
+//            mlFeaSelect.feaSelect2PA(tempD, j);
             tempD = mlFeaSelect.instTransform(D, j);
             nodes[j] = new CNode(j, null, pa[j]);
             nodes[j].build(tempD, m_Classifier);
@@ -67,13 +70,11 @@ public class PACC_LDF extends CC {
         return y;
     }
 
-
     // estimate the number of selected features
     protected double getPerFeature(Instances D) throws Exception {
 
         int L = D.classIndex();
         int d = D.numAttributes() - L;
-        int numTest = 2;
         double perTemp;
         if (d < 500) {
             perTemp = 0.4;
@@ -89,17 +90,13 @@ public class PACC_LDF extends CC {
 
         mlFeaSelect = new MLFeaSelect2(L);
         mlFeaSelect.setPercentFeature(perTemp);
-        mlFeaSelect.feaSelect1(D, numTest);
-        int maxNum = 1;
-        for (int j = 0; j < numTest; j ++) {
-            Instances tempD = mlFeaSelect.instTransform(D, j);
-            mlFeaSelect.feaSelect2(tempD, j);
-            int temp = mlFeaSelect.getNumFeaCfs(j);
-            maxNum = temp > maxNum ? temp : maxNum;
-        }
+        mlFeaSelect.feaSelect1(D, 1);
+        Instances tempD = mlFeaSelect.instTransform(D, 0);
+        mlFeaSelect.feaSelect2(tempD, 0);
+        int num = mlFeaSelect.getNumFeaCfs(0);
 
         System.out.println("*******************************");
-        return (double)maxNum*2.0 / d;
+        return (double)num*2.0 / d;
     }
 
 }
